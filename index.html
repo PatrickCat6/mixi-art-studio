@@ -47,11 +47,11 @@ body, p, li, td, span, div {
 body { overflow-x:hidden; background:var(--white); color:var(--black); font-family:Arial,Helvetica,sans-serif; -webkit-font-smoothing:antialiased; }
 
 /* NAV */
-nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify-content:space-between; align-items:center; padding:0 32px; height:64px; background:var(--white); border-bottom:1px solid var(--black); }
+nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify-content:space-between; align-items:center; padding:0 32px; height:80px; background:var(--white); border-bottom:1px solid var(--black); }
 .nav-logo { height:20px; display:block; flex-shrink:0; }
 .nav-r { display:flex; align-items:center; gap:20px; }
 .nav-links { display:flex; gap:20px; list-style:none; }
-.nav-links a { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:10px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:var(--black); transition:opacity .2s; }
+.nav-links a { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:var(--black); transition:opacity .2s; }
 .nav-links a:hover { opacity:.4; }
 .nav-acts { display:flex; gap:6px; flex-shrink:0; }
 .nbtn { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:8px 12px; text-decoration:none; transition:all .2s; white-space:nowrap; }
@@ -109,13 +109,13 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify
 
 /* IDENTITY BAR */
 .identity-bar { border-bottom:1px solid var(--black); }
-.identity-inner { display:flex; flex-direction:column; align-items:center; gap:14px; padding:36px 32px; }
+.identity-inner { display:flex; flex-direction:column; align-items:center; gap:14px; padding:112px 32px; }
 .identity-logo { width:140px; display:block; }
 .identity-tag { font-family:var(--druk); font-weight:500; font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--gray); text-align:center; }
 
 /* TICKER */
 .ticker { border-bottom:1px solid var(--black); overflow:hidden; background:var(--black); padding:11px 0; }
-.t-track { display:flex; animation:tick 28s linear infinite; width:max-content; }
+.t-track { display:flex; animation:tick 14s linear infinite; width:max-content; }
 .t-item { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.5); padding:0 36px; white-space:nowrap; }
 .t-dot { color:rgba(255,255,255,.18); }
 @keyframes tick { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
@@ -135,8 +135,8 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify
 .on-view { display:inline-flex; align-items:center; gap:8px; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); margin-bottom:20px; }
 .dot { width:5px; height:5px; border-radius:50%; background:var(--black); animation:pulse 2s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.2; } }
-.exh-title { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:clamp(22px,3vw,42px); letter-spacing:-1px; text-transform:uppercase; line-height:.95; margin-bottom:14px; }
-.exh-artists { font-size:13px; color:var(--gray); letter-spacing:1px; text-transform:uppercase; margin-bottom:14px; }
+.exh-title { font-family:Arial,Helvetica,sans-serif; font-weight:900; font-size:clamp(52px,6.8vw,92px); letter-spacing:-2px; text-transform:uppercase; line-height:.9; margin-bottom:14px; }
+.exh-artists { font-size:26px; font-weight:700; color:var(--gray); letter-spacing:1px; text-transform:uppercase; margin-bottom:14px; }
 .exh-desc { font-size:16px; line-height:1.8; color:#555; max-width:400px; margin-bottom:28px; }
 .exh-dates { display:flex; gap:24px; margin-bottom:28px; padding-top:18px; border-top:1px solid var(--gl); }
 .d-item { display:flex; flex-direction:column; gap:3px; }
@@ -194,16 +194,16 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify
 footer { background:var(--black); }
 .ft { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; padding:48px 48px 40px; border-bottom:1px solid rgba(255,255,255,.06); }
 .flogo { height:18px; display:block; filter:invert(1); margin-bottom:16px; }
-.fdesc { font-size:14px; line-height:1.8; color:rgba(255,255,255,.5); max-width:220px; }
-.fct { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:10px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:14px; }
+.fdesc { font-size:16px; line-height:1.8; color:rgba(255,255,255,.5); max-width:220px; }
+.fct { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:14px; }
 .flinks { list-style:none; display:flex; flex-direction:column; gap:8px; padding:0; margin:0; }
-.flinks a, .flinks span { font-size:14px; color:rgba(255,255,255,.7); text-decoration:none; transition:color .2s; }
+.flinks a, .flinks span { font-size:16px; color:rgba(255,255,255,.7); text-decoration:none; transition:color .2s; }
 .flinks a:hover { color:var(--white); }
 .fb { padding:14px 48px; display:flex; justify-content:space-between; align-items:center; }
-.fcopy { font-size:11px; color:rgba(255,255,255,.3); letter-spacing:1px; }
+.fcopy { font-size:13px; color:rgba(255,255,255,.3); letter-spacing:1px; }
 .fsoc { display:flex; gap:18px; }
-.fsoc a { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.4); text-decoration:none; transition:color .2s; }
-.fsoc a:hover { color:var(--white); }
+.fsoc a { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:var(--white); text-decoration:none; transition:opacity .2s; }
+.fsoc a:hover { opacity:.6; }
 .fu { opacity:1; transform:none; }
 
 /* NEWSLETTER */
@@ -374,7 +374,7 @@ footer { background:var(--black); }
 <body>
 
 <nav>
-  <a href="index.html" style="font-family:var(--druk);font-weight:700;font-size:18px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--black);flex-shrink:0;">MIXI</a>
+  <a href="index.html" style="font-family:var(--druk);font-weight:700;font-size:46px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--black);flex-shrink:0;">MIXI</a>
   <div class="nav-r">
     <button class="nav-search" onclick="document.getElementById('search-overlay').classList.add('active');document.getElementById('search-input').focus();" aria-label="Search">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
@@ -403,7 +403,7 @@ footer { background:var(--black); }
 </div>
 
 <!-- EXHIBITIONS HERO CAROUSEL -->
-<section class="exh-carousel" style="padding-top:64px;">
+<section class="exh-carousel" style="padding-top:80px;">
   <div class="exh-carousel-track" id="exh-track">
     <!-- Slide 1: Sebastián Dávila -->
     <div class="exh-slide" data-index="0">

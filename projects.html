@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Projects — Mixi Art Studio</title>
+  <title>Open Call — Mixi Art Studio</title>
   <style>
 
 /* GLOBAL LAYOUT FIX */
@@ -185,225 +185,200 @@ footer { background:var(--black); }
 
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 :root { --black:#0C0C0C; --white:#F5F4F0; --gray:#999; --gl:#E0DDD8; --druk:'Drukwide',sans-serif; }
-body { overflow-x:hidden; background:var(--white); color:var(--black); font-family:Arial,Helvetica,sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+body { background:var(--black); color:var(--white); font-family:Arial,Helvetica,sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden; min-height:100vh; }
 
-nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify-content:space-between; align-items:center; padding:0 32px; height:80px; background:var(--white); border-bottom:1px solid var(--black); }
-.nav-logo { font-family:var(--druk); font-weight:700; font-size:46px; letter-spacing:2px; text-transform:uppercase; text-decoration:none; color:var(--black); }
+nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify-content:space-between; align-items:center; padding:0 32px; height:64px; background:var(--black); border-bottom:1px solid rgba(255,255,255,.1); }
+.nav-logo { font-family:var(--druk); font-weight:700; font-size:18px; letter-spacing:2px; text-transform:uppercase; text-decoration:none; color:var(--white); }
 .nav-r { display:flex; align-items:center; gap:24px; }
 .nav-links { display:flex; gap:20px; list-style:none; }
-.nav-links a { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:var(--black); transition:opacity .2s; }
-.nav-links a:hover { opacity:.4; }
-.nav-links a.active { border-bottom:1px solid var(--black); padding-bottom:1px; }
+.nav-links a { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:10px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:rgba(255,255,255,.4); transition:color .2s; }
+.nav-links a:hover { color:var(--white); }
+.nav-links a.active { color:var(--white); border-bottom:1px solid rgba(255,255,255,.3); padding-bottom:1px; }
 .nav-acts { display:flex; gap:6px; }
 .nbtn { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:9px 14px; text-decoration:none; transition:all .2s; white-space:nowrap; }
-.nbtn-artsy { border:1px solid var(--black); color:var(--black); }
-.nbtn-artsy:hover { background:var(--black); color:var(--white); }
-.nbtn-oc { background:var(--black); color:var(--white); }
+.nbtn-artsy { border:1px solid rgba(255,255,255,.2); color:rgba(255,255,255,.5); }
+.nbtn-artsy:hover { border-color:var(--white); color:var(--white); }
+.nbtn-oc { background:var(--white); color:var(--black); }
 
-/* HERO STATEMENT */
-.hero-statement {
-  padding:136px 48px 80px;
-  border-bottom:1px solid var(--black);
+/* MAIN LAYOUT — single screen */
+.oc-wrap {
+  min-height:100vh;
+  padding-top:80px;
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:80px;
-  align-items:end;
 }
-.hero-eyebrow {
+
+/* LEFT — context */
+.oc-left {
+  padding:64px 48px;
+  border-right:1px solid rgba(255,255,255,.08);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.oc-eyebrow {
   font-family:Arial,Helvetica,sans-serif; font-weight:700;
   font-size:9px; letter-spacing:3px; text-transform:uppercase;
-  color:var(--gray); margin-bottom:20px;
+  color:rgba(255,255,255,.4); margin-bottom:24px;
 }
-.hero-title {
+.oc-title {
   font-family:Arial,Helvetica,sans-serif; font-weight:700;
-  font-size:clamp(48px,7vw,96px);
-  letter-spacing:-3px; text-transform:uppercase;
-  line-height:.88;
+  font-size:clamp(40px,5.5vw,80px);
+  letter-spacing:-2px; text-transform:uppercase;
+  line-height:.88; margin-bottom:32px;
+  color:var(--white);
 }
-.hero-body {
-  font-size:17px; line-height:1.9; color:#444;
-  align-self:end;
+.oc-desc {
+  font-size:16px; line-height:1.85;
+  color:rgba(255,255,255,.45);
+  max-width:480px; margin-bottom:48px;
 }
-.hero-body p + p { margin-top:18px; }
+.oc-desc strong { color:rgba(255,255,255,.75); font-weight:400; }
 
-/* VISION STRIP — black band */
-.vision-strip {
-  background:var(--black);
-  padding:64px 48px;
-  border-bottom:1px solid rgba(255,255,255,.06);
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:1px;
-  background:var(--black);
-}
-.vision-pillar {
-  padding:40px 40px;
-  border-right:1px solid rgba(255,255,255,.08);
-}
-.vision-pillar:last-child { border-right:none; }
-.vp-num {
-  font-family:Arial,Helvetica,sans-serif; font-weight:700;
-  font-size:11px; letter-spacing:3px;
-  color:rgba(255,255,255,.3); margin-bottom:20px;
-}
-.vp-title {
-  font-family:Arial,Helvetica,sans-serif; font-weight:700;
-  font-size:clamp(16px,2vw,24px);
-  letter-spacing:-0.5px; text-transform:uppercase;
-  color:var(--white); line-height:.95;
-  margin-bottom:16px;
-}
-.vp-body {
-  font-size:13px; line-height:1.8;
-  color:rgba(255,255,255,.35);
-}
-
-/* MIXI COLLECTORS PROJECT */
-.project-header {
-  padding:40px 48px 32px;
-  border-bottom:1px solid var(--black);
-  display:flex; justify-content:space-between; align-items:baseline;
-}
-.project-section-label {
-  font-family:Arial,Helvetica,sans-serif; font-weight:700;
-  font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--gray);
-}
-.project-edition {
-  font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--gl);
-}
-
-.project-feature {
-  display:grid; grid-template-columns:1fr 1fr;
-  border-bottom:1px solid var(--black);
-  min-height:520px;
-}
-.project-image {
-  background:#1a1a1a;
-  border-right:1px solid var(--black);
-  display:flex; align-items:center; justify-content:center;
-  min-height:520px; position:relative; overflow:hidden;
-}
-.project-img-ph {
-  width:100%; height:100%; min-height:520px;
-  display:flex; align-items:center; justify-content:center;
-}
-.project-img-ph span {
-  font-size:8px; letter-spacing:3px; text-transform:uppercase;
-  color:rgba(255,255,255,.1);
-}
-.project-badge {
-  position:absolute; top:24px; right:24px;
-  background:rgba(255,255,255,.06);
+/* STATUS BADGE */
+.oc-status {
+  display:inline-flex; align-items:center; gap:10px;
   border:1px solid rgba(255,255,255,.1);
-  padding:6px 14px;
+  padding:10px 18px;
+  margin-bottom:48px;
+  width:fit-content;
+}
+.status-dot {
+  width:7px; height:7px; border-radius:50%;
+  background:rgba(255,255,255,.15);
+}
+.status-text {
   font-family:Arial,Helvetica,sans-serif; font-weight:700;
   font-size:8px; letter-spacing:2px; text-transform:uppercase;
+  color:rgba(255,255,255,.25);
+}
+
+/* CRITERIA */
+.oc-criteria {
+  display:flex; flex-direction:column; gap:0;
+}
+.criteria-label {
+  font-size:8px; letter-spacing:3px; text-transform:uppercase;
+  color:rgba(255,255,255,.4); margin-bottom:16px;
+}
+.criteria-item {
+  padding:16px 0;
+  border-top:1px solid rgba(255,255,255,.07);
+  display:flex; gap:16px; align-items:baseline;
+}
+.ci-num {
+  font-family:Arial,Helvetica,sans-serif; font-weight:700;
+  font-size:9px; letter-spacing:1px;
+  color:rgba(255,255,255,.3); flex-shrink:0; width:20px;
+}
+.ci-text {
+  font-size:13px; line-height:1.6;
+  color:rgba(255,255,255,.35);
+}
+.ci-text strong { color:rgba(255,255,255,.6); font-weight:400; }
+
+/* RIGHT — CTA panel */
+.oc-right {
+  padding:64px 48px;
+  display:flex; flex-direction:column; justify-content:space-between;
+}
+.oc-right-top {
+  display:flex; flex-direction:column; gap:24px;
+}
+.oc-collectors-badge {
+  display:flex; flex-direction:column; gap:6px;
+  padding:20px 24px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.03);
+  margin-bottom:16px;
+}
+.ocb-label {
+  font-size:8px; letter-spacing:3px; text-transform:uppercase;
+  color:rgba(255,255,255,.4);
+}
+.ocb-title {
+  font-family:Arial,Helvetica,sans-serif; font-weight:700;
+  font-size:18px; letter-spacing:-0.5px; text-transform:uppercase;
+  color:rgba(255,255,255,.5);
+}
+.ocb-note {
+  font-size:12px; line-height:1.7;
+  color:rgba(255,255,255,.4); margin-top:4px;
+}
+
+/* MAIN CTA */
+.oc-cta-block {
+  display:flex; flex-direction:column; gap:16px;
+  margin-top:auto; padding-top:48px;
+}
+.oc-cta-closed {
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  padding:32px;
+  text-align:center;
+}
+.occ-icon { font-size:24px; margin-bottom:16px; opacity:.2; }
+.occ-title {
+  font-family:Arial,Helvetica,sans-serif; font-weight:700;
+  font-size:14px; letter-spacing:1px; text-transform:uppercase;
+  color:rgba(255,255,255,.3); margin-bottom:8px;
+}
+.occ-text {
+  font-size:12px; line-height:1.7;
+  color:rgba(255,255,255,.4);
+}
+.oc-follow {
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  padding:14px 24px;
+  border:1px solid rgba(255,255,255,.1);
+  text-decoration:none;
+  transition:border-color .2s;
+}
+.oc-follow:hover { border-color:rgba(255,255,255,.3); }
+.oc-follow span {
+  font-family:Arial,Helvetica,sans-serif; font-weight:700;
+  font-size:9px; letter-spacing:2px; text-transform:uppercase;
   color:rgba(255,255,255,.3);
 }
 
-.project-info {
-  padding:48px;
-  display:flex; flex-direction:column; justify-content:space-between;
+/* PAST EDITIONS */
+.oc-past {
+  margin-top:48px;
+  padding-top:32px;
+  border-top:1px solid rgba(255,255,255,.07);
 }
-.project-name {
-  font-family:Arial,Helvetica,sans-serif; font-weight:700;
-  font-size:clamp(32px,4.5vw,64px);
-  letter-spacing:-2px; text-transform:uppercase;
-  line-height:.88; margin-bottom:8px;
+.op-label {
+  font-size:8px; letter-spacing:3px; text-transform:uppercase;
+  color:rgba(255,255,255,.3); margin-bottom:16px;
 }
-.project-tagline {
-  font-size:13px; letter-spacing:2px; text-transform:uppercase;
-  color:var(--gray); margin-bottom:32px;
-  padding-bottom:24px; border-bottom:1px solid var(--gl);
+.op-edition {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px 0;
+  border-top:1px solid rgba(255,255,255,.06);
 }
-.project-desc {
-  font-size:15px; line-height:1.85; color:#444;
-  margin-bottom:32px;
+.ope-name {
+  font-size:12px; color:rgba(255,255,255,.25);
 }
-.project-desc p + p { margin-top:14px; }
-.project-stats {
-  display:grid; grid-template-columns:1fr 1fr;
-  gap:1px; background:var(--gl);
-  border:1px solid var(--gl);
-  margin-bottom:32px;
+.ope-meta {
+  font-size:10px; letter-spacing:1px; text-transform:uppercase;
+  color:rgba(255,255,255,.12);
 }
-.pstat {
-  background:var(--white);
-  padding:16px 20px;
-}
-.pstat-n {
-  font-family:Arial,Helvetica,sans-serif; font-weight:700;
-  font-size:clamp(20px,2.5vw,32px);
-  letter-spacing:-1px; color:var(--black);
-  line-height:1; margin-bottom:4px;
-}
-.pstat-l {
-  font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(--gray);
-}
-.project-cta {
-  display:inline-block; font-family:Arial,Helvetica,sans-serif; font-weight:700;
-  font-size:9px; letter-spacing:2px; text-transform:uppercase;
-  padding:13px 24px; background:var(--black); color:var(--white);
-  text-decoration:none; transition:opacity .2s;
-}
-.project-cta:hover { opacity:.75; }
 
-/* HORIZON — upcoming projects */
-.horizon {
-  border-bottom:1px solid var(--black);
+/* BOTTOM BAR */
+.oc-bottom {
+  grid-column:1/-1;
+  border-top:1px solid rgba(255,255,255,.07);
+  padding:18px 48px;
+  display:flex; justify-content:space-between; align-items:center;
 }
-.horizon-header {
-  padding:40px 48px 32px;
-  border-bottom:1px solid var(--black);
-}
-.horizon-title {
+.ob-left { font-size:11px; color:rgba(255,255,255,.3); }
+.ob-right { display:flex; gap:24px; }
+.ob-right a {
   font-family:Arial,Helvetica,sans-serif; font-weight:700;
-  font-size:clamp(24px,3.5vw,48px);
-  letter-spacing:-1.5px; text-transform:uppercase;
-  line-height:.92; margin-top:12px;
-}
-.horizon-grid {
-  display:grid; grid-template-columns:1fr 1fr 1fr;
-}
-.horizon-card {
-  padding:40px 40px 48px;
-  border-right:1px solid var(--black);
-  display:flex; flex-direction:column; gap:16px;
-}
-.horizon-card:last-child { border-right:none; }
-.hc-num {
-  font-family:Arial,Helvetica,sans-serif; font-weight:700;
-  font-size:9px; letter-spacing:3px; color:var(--gl);
-}
-.hc-title {
-  font-family:Arial,Helvetica,sans-serif; font-weight:700;
-  font-size:clamp(18px,2vw,26px);
-  letter-spacing:-0.5px; text-transform:uppercase;
-  line-height:.95;
-}
-.hc-body {
-  font-size:13px; line-height:1.8; color:#555;
-  flex:1;
-}
-.hc-status {
   font-size:8px; letter-spacing:2px; text-transform:uppercase;
-  color:var(--gray); border-top:1px solid var(--gl); padding-top:14px;
+  color:rgba(255,255,255,.3); text-decoration:none; transition:color .2s;
 }
-
-/* FOOTER */
-footer { background:var(--black); }
-.ft { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; padding:48px; border-bottom:1px solid rgba(255,255,255,.06); }
-.flogo { height:18px; display:block; filter:invert(1); margin-bottom:16px; }
-.fdesc { font-size:16px; line-height:1.8; color:rgba(255,255,255,.5); max-width:220px; }
-.fct { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:14px; }
-.flinks { list-style:none; display:flex; flex-direction:column; gap:8px; }
-.flinks a { font-size:16px; color:rgba(255,255,255,.7); text-decoration:none; transition:color .2s; }
-.flinks a:hover { color:var(--white); }
-.fb { padding:14px 48px; display:flex; justify-content:space-between; align-items:center; }
-.fcopy { font-size:13px; color:rgba(255,255,255,.3); letter-spacing:1px; }
-.fsoc { display:flex; gap:18px; }
-.fsoc a { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:var(--white); text-decoration:none; transition:color .2s; }
-.fsoc a:hover { opacity:.6; }
+.ob-right a:hover { color:rgba(255,255,255,.4); }
 
 
 /* Hamburger button - hidden on desktop */
@@ -415,7 +390,7 @@ footer { background:var(--black); }
 
 /* Desktop: hide hamburger */
 @media (min-width: 769px) {
-  .nav-toggle { display: none; }
+  @media (min-width: 769px) { .nav-toggle { display: none; } }
 }
 
 @media (max-width: 768px) {
@@ -545,125 +520,6 @@ footer { background:var(--black); }
   .fb { flex-direction: column !important; gap: 10px; padding: 14px 16px !important; text-align: center; }
   .fsoc { justify-content: center !important; }
 }
-
-@media (max-width: 768px) {
-  /* Projects - image top, text bottom */
-  .project-feature {
-    display: flex !important;
-    flex-direction: column !important;
-    grid-template-columns: unset !important;
-    min-height: auto !important;
-  }
-  .project-image {
-    order: -1 !important;
-    width: 100% !important;
-    min-height: 260px !important;
-    border-right: none !important;
-    border-bottom: 1px solid var(--black) !important;
-  }
-  .project-image img { width: 100% !important; min-height: 260px !important; object-fit: cover !important; }
-  .project-info {
-    width: 100% !important;
-    padding: 24px 16px !important;
-    border-right: none !important;
-    border-left: none !important;
-  }
-  /* Hero section */
-  .project-header {
-    display: flex !important;
-    flex-direction: column !important;
-    grid-template-columns: unset !important;
-    padding: 80px 16px 24px !important;
-    gap: 16px !important;
-  }
-  .hero-title { font-size: clamp(28px, 9vw, 80px) !important; letter-spacing: -1px !important; }
-  .hero-statement { width: 100% !important; padding: 24px 16px !important; }
-  /* Vision pillars */
-  .vision-strip {
-    display: flex !important;
-    flex-direction: column !important;
-    grid-template-columns: unset !important;
-  }
-  .vision-pillar {
-    width: 100% !important;
-    border-right: none !important;
-    border-bottom: 1px solid var(--black) !important;
-    padding: 24px 16px !important;
-  }
-  .page-title { font-size: clamp(28px, 9vw, 80px) !important; letter-spacing: -1px !important; }
-}
-
-
-@media (max-width: 768px) {
-  /* project-header: Beyond the Wall title top, body below */
-  .project-header {
-    flex-direction: column !important;
-    padding: 80px 16px 24px !important;
-    gap: 16px !important;
-    align-items: flex-start !important;
-  }
-  .hero-title { font-size: clamp(28px, 9vw, 80px) !important; letter-spacing: -1px !important; }
-  .hero-statement {
-    display: flex !important;
-    flex-direction: column !important;
-    grid-template-columns: unset !important;
-    padding: 80px 16px 32px !important;
-    gap: 24px !important;
-    border-left: none !important;
-  }
-  .hero-statement > div { width: 100% !important; }
-  .hero-body { width: 100% !important; padding: 0 !important; border-left: none !important; }
-
-  /* project-feature: image top, info below */
-  .project-feature {
-    display: flex !important;
-    flex-direction: column !important;
-    grid-template-columns: unset !important;
-    min-height: auto !important;
-  }
-  .project-image {
-    order: -1 !important;
-    width: 100% !important;
-    min-height: 260px !important;
-    border-right: none !important;
-    border-bottom: 1px solid var(--black) !important;
-  }
-  .project-image img { width: 100% !important; min-height: 260px !important; object-fit: cover !important; }
-  .project-info {
-    width: 100% !important;
-    padding: 24px 16px !important;
-    border-left: none !important;
-  }
-
-  /* horizon-grid: On the Horizon - 1 column stacked */
-  .horizon-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    grid-template-columns: unset !important;
-  }
-  .horizon-card {
-    width: 100% !important;
-    border-right: none !important;
-    border-bottom: 1px solid var(--black) !important;
-    padding: 24px 16px !important;
-  }
-
-  /* vision-strip */
-  .vision-strip {
-    display: flex !important;
-    flex-direction: column !important;
-    grid-template-columns: unset !important;
-  }
-  .vision-pillar {
-    width: 100% !important;
-    border-right: none !important;
-    border-bottom: 1px solid var(--black) !important;
-    padding: 24px 16px !important;
-  }
-
-  .page-title { font-size: clamp(28px, 9vw, 80px) !important; letter-spacing: -1px !important; }
-}
-
 </style>
 </head>
 <body>
@@ -672,158 +528,123 @@ footer { background:var(--black); }
   <div class="nav-r"><button class="nav-toggle" onclick="this.closest('nav').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button><ul class="nav-links">
       <li><a href="artists.html">Artists</a></li>
       <li><a href="exhibitions.html">Exhibitions</a></li>
-      <li><a href="projects.html" class="active">Projects</a></li>
+      <li><a href="projects.html">Projects</a></li>
       <li><a href="about.html">About</a></li>
     </ul>
     <div class="nav-acts">
       <a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank" class="nbtn nbtn-artsy">Collect on Artsy</a>
-      <a href="open-call.html" class="nbtn nbtn-oc">Open Call</a>
+      <a href="open-call.html" class="nbtn nbtn-oc active">Open Call</a>
     </div>
   </div>
 </nav>
 
-<!-- HERO STATEMENT -->
-<div class="hero-statement">
-  <div>
-    <div class="hero-eyebrow">Projects</div>
-    <h1 class="hero-title">Beyond<br>the wall</h1>
-  </div>
-  <div class="hero-body">
-    <p>Exhibitions are where art lives on the wall. Projects are where the studio thinks beyond it — building structures, programs, and platforms that strengthen artists over time.</p>
-    <p>Each project at Mixi is a long-term commitment: to a question, to a community, or to an idea that requires more than a single show to develop.</p>
-  </div>
-</div>
+<div class="oc-wrap">
 
-<!-- VISION PILLARS -->
-<div class="vision-strip">
-  <div class="vision-pillar">
-    <div class="vp-num">01</div>
-    <div class="vp-title">Acquisition<br>& Collection</div>
-    <div class="vp-body">Identifying and acquiring significant works into the Mixi private collection. Creating conditions for artists to enter permanent collections through merit-based programs.</div>
-  </div>
-  <div class="vision-pillar">
-    <div class="vp-num">02</div>
-    <div class="vp-title">Education<br>& Exchange</div>
-    <div class="vp-body">Conversatorios, workshops, and residencies that bridge Latin American and North American contemporary practices. Knowledge as a curatorial act.</div>
-  </div>
-  <div class="vision-pillar">
-    <div class="vp-num">03</div>
-    <div class="vp-title">Publishing<br>& Archive</div>
-    <div class="vp-body">Catalogs, e-books, and artist monographs that document the work and create a lasting record. Art that exists beyond the duration of an exhibition.</div>
-  </div>
-</div>
-
-<!-- MIXI COLLECTORS -->
-<div class="project-header">
-  <span class="project-section-label">Active project</span>
-  <span class="project-edition">First edition completed · 2025</span>
-</div>
-
-<div class="project-feature">
-  <div class="project-image">
-    <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69b7280c970e13a739255588_Mixi-Collectors.jpg" alt="Mixi Collectors — Casa Siza CDMX 2025" class="lightbox-trigger" style="width:100%;height:100%;object-fit:cover;min-height:500px;display:block;cursor:zoom-in;">
-    <span class="project-badge">Mixi Collectors</span>
-  </div>
-  <div class="project-info">
+  <!-- LEFT -->
+  <div class="oc-left">
     <div>
-      <h2 class="project-name">Mixi<br>Collectors</h2>
-      <div class="project-tagline">Choice Award · Annual Acquisition Program</div>
-      <div class="project-desc">
-        <p>Mixi Collectors is an annual acquisition program that identifies emerging painters through open call, convenes a specialized jury, and awards the winning work a place in Mixi's permanent collection.</p>
-        <p>More than a prize — it is a commitment. Each edition builds a body of work that reflects a specific moment in contemporary painting, creating an archive that grows with the studio.</p>
-        <p>The first edition focused on chromatic possibilities in painting under the title <em>El Color: ¿Forma o Deforma?</em>, gathering 16 Mexican artists selected from 183 applications at Casa Siza, Mexico City.</p>
+      <div class="oc-eyebrow">Mixi Art Studio · Open Call</div>
+      <h1 class="oc-title">Apply<br>to Mixi<br>Collectors</h1>
+      <p class="oc-desc">
+        Mixi Collectors is our annual acquisition program for artists. <strong>Each edition selects a small group of artists</strong> through open call, convenes a specialized jury, and awards the winning work a place in Mixi's permanent collection.
+      </p>
+
+      <div class="oc-status">
+        <span class="status-dot"></span>
+        <span class="status-text">Currently closed · Next edition TBA</span>
       </div>
     </div>
-    <div>
-      <div class="project-stats">
-        <div class="pstat">
-          <div class="pstat-n">183</div>
-          <div class="pstat-l">Applications · Ed. 1</div>
-        </div>
-        <div class="pstat">
-          <div class="pstat-n">16</div>
-          <div class="pstat-l">Selected artists</div>
-        </div>
-        <div class="pstat">
-          <div class="pstat-n">01</div>
-          <div class="pstat-l">Acquisition prize</div>
-        </div>
-        <div class="pstat">
-          <div class="pstat-n">Annual</div>
-          <div class="pstat-l">Program frequency</div>
+
+    <div class="oc-criteria">
+      <div class="criteria-label">Who can apply</div>
+      <div class="criteria-item">
+        <span class="ci-num">01</span>
+        <span class="ci-text"><strong>Artists</strong> at any career stage — no minimum exhibition history required.</span>
+      </div>
+      <div class="criteria-item">
+        <span class="ci-num">02</span>
+        <span class="ci-text">Each edition focuses on a <strong>specific theme or medium</strong>. Ed. 1 focused on chromatic possibilities in painting.</span>
+      </div>
+      <div class="criteria-item">
+        <span class="ci-num">03</span>
+        <span class="ci-text">Applications are reviewed by a <strong>jury of specialists</strong> from galleries, collections, and curatorial practices.</span>
+      </div>
+      <div class="criteria-item">
+        <span class="ci-num">04</span>
+        <span class="ci-text">The winning work is <strong>acquired into Mixi's private collection</strong> — a permanent record of the program's history.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="oc-right">
+    <div class="oc-right-top">
+      <div class="oc-collectors-badge">
+        <span class="ocb-label">Next edition</span>
+        <span class="ocb-title">Mixi Collectors · Ed. 2</span>
+        <span class="ocb-note">Theme and dates to be announced. Follow @mixi.art.studio to be notified when the call opens.</span>
+      </div>
+    </div>
+
+    <div class="oc-cta-block">
+      <div class="oc-cta-closed">
+        <div class="occ-icon">—</div>
+        <div class="occ-title">Call currently closed</div>
+        <div class="occ-text">When the next edition opens, the application form will be available here. Check back or follow us on Instagram for the announcement.</div>
+      </div>
+      <a href="https://instagram.com/mixi.art.studio" target="_blank" class="oc-follow">
+        <span>Follow @mixi.art.studio for updates →</span>
+      </a>
+
+      <div class="oc-past">
+        <div class="op-label">Past editions</div>
+        <div class="op-edition">
+          <span class="ope-name">Mixi Collectors Ed. 1 · El Color: ¿Forma o Deforma?</span>
+          <span class="ope-meta">CDMX · Nov 2025</span>
         </div>
       </div>
-      <a href="exhibitions.html" class="project-cta">View exhibition →</a>
     </div>
   </div>
-</div>
 
-<!-- HORIZON -->
-<div class="horizon">
-  <div class="horizon-header">
-    <div class="project-section-label">On the horizon</div>
-    <h2 class="horizon-title">What we're building next</h2>
-  </div>
-  <div class="horizon-grid">
-    <div class="horizon-card">
-      <div class="hc-num">—</div>
-      <div class="hc-title">Mixi Collection</div>
-      <div class="hc-body">A public window into the private collection — 102 works, 55 artists, 14 countries. Documenting what we've collected and why, as a curatorial and intellectual record.</div>
-      <div class="hc-status">In development</div>
-    </div>
-    <div class="horizon-card">
-      <div class="hc-num">—</div>
-      <div class="hc-title">Mixi Publishing</div>
-      <div class="hc-body">Artist monographs, exhibition catalogs, and e-books. Starting with the documentation of Mixi Collectors Ed. 1 and expanding to artist-specific publications.</div>
-      <div class="hc-status">In development</div>
-    </div>
-    <div class="horizon-card">
-      <div class="hc-num">—</div>
-      <div class="hc-title">Mixi Lab</div>
-      <div class="hc-body">Conversatorios, residencies, and collaborative programs that activate the studio as a site of production and exchange — not just exhibition.</div>
-      <div class="hc-status">Coming soon</div>
-    </div>
-  </div>
-</div>
+  <!-- BOTTOM BAR -->
+  <div class="oc-bottom">
+    <span class="ob-left">© 2026 Mixi Art Studio LLC · Salt Lake City, UT</span>
+    <div class="ob-right">
+    
 
-<footer>
-  <div class="ft">
-    <div>
-      <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69af872c152808cad0b1b964_logo%20png.png" alt="Mixi Art Studio" class="flogo">
-      <p class="fdesc">Transdisciplinary contemporary art studio. Latin American and North American artists. Salt Lake City, 2022.</p>
-    </div>
-    <div>
-      <div class="fct">Navigate</div>
-      <ul class="flinks">
-        <li><a href="artists.html">Artists</a></li>
-        <li><a href="exhibitions.html">Exhibitions</a></li>
-        <li><a href="projects.html">Projects</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="open-call.html">Open Call</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="fct">Collect</div>
-      <ul class="flinks">
-        <li><a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank">Browse on Artsy</a></li>
-        <li><a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#105;&#110;&#102;&#111;&#64;&#109;&#105;&#120;&#105;&#97;&#114;&#116;&#115;&#116;&#117;&#100;&#105;&#111;&#46;&#117;&#115;">Inquire</a></li>
-      </ul>
-    </div>
-    <div>
-            <div class="fct">Contact</div>
-      <ul class="flinks">
-        <li><span style="font-size:12px;color:rgba(255,255,255,.7);">info&#64;mixiartstudio&#46;us</span></li>
-        <li><a href="https://instagram.com/mixi.art.studio" target="_blank">&#64;mixi.art.studio</a></li>
-      </ul>TYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Projects — Mixi Art Studio</title>
-  
-</head>
-<body>
-</body>
-</html>
+
+
+<script>
+(function(){
+  var btn = document.getElementById('nav-toggle');
+  var nav = document.querySelector('nav');
+  if(!btn || !nav) return;
+  btn.addEventListener('cl
+
+
+
+
+<script>
+(function(){
+  var btn = document.getElementById('nav-toggle');
+  var nav = document.querySelector('nav');
+  if(!btn || !nav) return;
+  btn.addEventListener('cl
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  var btn = document.getElementById("nav-toggle");
+  var nav = document.querySelector("nav");
+  if(!btn || !nav) return;
+  btn.addEventListener("click", function(){
+    nav.classList.toggle("open");
+  });
+  var links = document.querySelectorAll(".nav-links a, .nbtn");
+  for(var i=0; i<links.length; i++){
+    links[i].addEventListener("click", function(){
+      nav.classList.remove("open");
+    });
+  }
+});
+</script>
 </body>
 </html>

@@ -405,8 +405,30 @@ footer { background:var(--black); }
 <!-- EXHIBITIONS HERO CAROUSEL -->
 <section class="exh-carousel" style="padding-top:80px;">
   <div class="exh-carousel-track" id="exh-track">
-    <!-- Slide 1: Sebastián Dávila -->
+    <!-- Slide 1: Monica Loya -->
     <div class="exh-slide" data-index="0">
+      <div class="exh-slide-img">
+        <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69feadbbc404352cc7ae4dfc_Moni.jpeg" alt="Monica Loya – Beauty Hurts">
+      </div>
+      <div class="exh-slide-info">
+        <div>
+          <div class="on-view" style="opacity:.5;">Coming May 15 · Artsy Viewing Room</div>
+          <h2 class="exh-title">Beauty<br>Hurts</h2>
+          <p class="exh-artists">Monica Loya</p>
+          <p class="exh-desc">Mixi presents: Beauty Hurts by Monica Loya. Opening May 15, 2026 on Artsy.</p>
+          <div class="exh-dates">
+            <div class="d-item"><span class="d-l">Opening</span><span class="d-v">May 15, 2026</span></div>
+            <div class="d-item"><span class="d-l">Closing</span><span class="d-v">June 16, 2026</span></div>
+            <div class="d-item"><span class="d-l">Venue</span><span class="d-v">Artsy Viewing Room</span></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <span class="btn" style="background:var(--gl);color:var(--gray);cursor:default;">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+    <!-- Slide 2: Sebastián Dávila -->
+    <div class="exh-slide" data-index="1">
       <div class="exh-slide-img">
         <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69ea83142b75549741d24589_Sartsy.jpeg" alt="Sebastián Dávila – Fire Before Water">
       </div>
@@ -428,6 +450,15 @@ footer { background:var(--black); }
         </div>
       </div>
     </div>
+  </div>
+  <!-- Carousel Nav -->
+  <div class="exh-carousel-nav">
+    <button class="exh-nav-btn" id="exh-prev" aria-label="Previous">←</button>
+    <div class="exh-nav-dots" id="exh-dots">
+      <span class="exh-dot active" data-i="0"></span>
+      <span class="exh-dot" data-i="1"></span>
+    </div>
+    <button class="exh-nav-btn" id="exh-next" aria-label="Next">→</button>
   </div>
 </section>
 
@@ -577,6 +608,36 @@ document.addEventListener("DOMContentLoaded", function(){
     }
   });
 });
+
+// Exhibitions Carousel
+(function(){
+  var track = document.getElementById("exh-track");
+  var dots = document.querySelectorAll(".exh-dot");
+  var prev = document.getElementById("exh-prev");
+  var next = document.getElementById("exh-next");
+  if(!track || !prev || !next) return;
+  var current = 0;
+  var total = document.querySelectorAll(".exh-slide").length;
+
+  function goTo(i){
+    if(i < 0) i = total - 1;
+    if(i >= total) i = 0;
+    current = i;
+    track.style.transform = "translateX(-" + (current * 100) + "%)";
+    dots.forEach(function(d,idx){ d.classList.toggle("active", idx === current); });
+  }
+  prev.addEventListener("click", function(){ goTo(current - 1); });
+  next.addEventListener("click", function(){ goTo(current + 1); });
+  dots.forEach(function(d){ d.addEventListener("click", function(){ goTo(parseInt(this.dataset.i)); }); });
+
+  // Swipe support
+  var startX = 0;
+  track.addEventListener("touchstart", function(e){ startX = e.touches[0].clientX; }, {passive:true});
+  track.addEventListener("touchend", function(e){
+    var diff = startX - e.changedTouches[0].clientX;
+    if(Math.abs(diff) > 50){ diff > 0 ? goTo(current+1) : goTo(current-1); }
+  }, {passive:true});
+})();
 
 // Mailchimp Subscribe via JSONP
 function mcSubscribe(){

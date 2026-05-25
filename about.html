@@ -361,6 +361,33 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify
 }
 .founder-social a:hover { border-color:var(--black); }
 
+/* CV TOGGLE */
+.cv-toggle { margin-top:24px; }
+.cv-toggle-btn {
+  font-family:Arial,Helvetica,sans-serif; font-weight:700;
+  font-size:11px; letter-spacing:2px; text-transform:uppercase;
+  background:none; border:1px solid var(--gl); color:var(--gray);
+  padding:10px 20px; cursor:pointer; transition:all .2s;
+}
+.cv-toggle-btn:hover { border-color:var(--black); color:var(--black); }
+.cv-content { margin-top:24px; }
+.cv-section { margin-bottom:28px; }
+.cv-section-title {
+  font-family:Arial,Helvetica,sans-serif; font-weight:700;
+  font-size:11px; letter-spacing:2px; text-transform:uppercase;
+  color:var(--gray); margin-bottom:12px; padding-bottom:8px;
+  border-bottom:1px solid var(--gl);
+}
+.cv-entry {
+  display:flex; gap:16px; padding:6px 0;
+  font-size:13px; line-height:1.6; color:#555;
+}
+.cv-year {
+  flex-shrink:0; width:100px; font-weight:700;
+  font-size:12px; color:var(--gray);
+}
+.cv-detail { flex:1; }
+
 /* MISSION STRIP */
 .mission {
   background:var(--black);
@@ -661,10 +688,75 @@ footer { background:var(--black); }
     <div class="founder-alias">Known as Yuskadd</div>
     <div class="founder-role">Creative Director · Mixi Art Studio</div>
     <div class="founder-bio">
-      <p>Yuri Ortiz, known as Yuskadd, is a transdisciplinary artist and curator originally from Cuautla, Morelos, Mexico, specializing in tattoo artists since 2018. Her curatorial focus bridges tattooing with contemporary art, advocating for its recognition within the broader artistic ecosystem.</p>
-      <p>Her training includes the Diploma in Aesthetic Appreciation of Visual Arts (Museo de Arte Contemporaneo Monterrey), Art Historiography (Edutin Academy, Newark), Exhibition Design and Political Curatorship (Instituto Mexicano de Curaduria y Restauracion), and launching independent spaces (NODE Center, Berlin).</p>
-      <p>In 2020, she settled in Salt Lake City, where she managed the collective Misery and Co. Tattoo and organized her first exhibition in 2023 as both artist and curator. In 2024, she curated PRIMAVERA, featuring 18 Utah artists. Her solo exhibition When Life Imitates AI (2025) reflects on the relationship between humanity and artificial intelligence.</p>
-      <p>She completed a residency at Uncool Artist in New York in 2025, consolidating her work as an artist and curator exploring new possibilities between contemporary art and tattooing.</p>
+      <p>Yuri Ortiz (b. Morelos, México) also known as Yuskadd, is a transdisciplinary artist who lives and works between Salt Lake City and Mexico City.</p>
+      <p>Her artistic practice merges painting, felt, wool, and generative AI video art to explore the everyday human interaction with artificial intelligence, as well as entropy and randomness as forms of resistance to algorithmic predictability, from a philosophical and dystopian perspective.</p>
+      <p>In 2022 she founded and directs Mixi Art Studio in Salt Lake City, where she serves as artistic director and curator. Mixi is a transdisciplinary exhibition space dedicated to contemporary art that functions as a bridge between artists, curators, and collectors. With a particular focus on Latin American art, the space promotes intercultural dialogue and international collaborations.</p>
+      <p>Since 2019 she has built a collection of contemporary art, an activity that has deeply nourished her artistic vision. It is from her own collection that the Mixi project emerged, followed by Mixi Collectors, an acquisition and exhibition initiative designed to encourage and professionalize art collecting.</p>
+      <p>In November 2025 she presented the first edition of Mixi Collectors at Casa Siza, Mexico City, and is currently working on the second edition, which will take place in the United States.</p>
+    </div>
+    <!-- CV Toggle -->
+    <div class="cv-toggle">
+      <button class="cv-toggle-btn" onclick="var cv=document.getElementById('yuri-cv');var btn=this;if(cv.style.display==='none'){cv.style.display='block';btn.textContent='Hide CV ↑';}else{cv.style.display='none';btn.textContent='View CV ↓';}">View CV ↓</button>
+      <div id="yuri-cv" class="cv-content" style="display:none;">
+
+        <div class="cv-section">
+          <div class="cv-section-title">Solo Exhibitions</div>
+          <div class="cv-entry"><span class="cv-year">2026</span><span class="cv-detail">"The War of the Machines Has Already Begun", Amplia Galería, Art Week México</span></div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">"When Life Imitates AI", The Gala, Salt Lake City, Utah (solo debut)</span></div>
+        </div>
+
+        <div class="cv-section">
+          <div class="cv-section-title">Group Exhibitions</div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">"What Remains Unsaid", Uncool Gallery, New York</span></div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">"Love Letters", The Gala, Salt Lake City, Utah</span></div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">Postcard Annual Show, Brassworks Gallery, Portland, Oregon</span></div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">"Latinarte: Nuestras Raíces", George S. &amp; Dolores Doré Eccles Gallery, Salt Lake City</span></div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">"Elements", Union Station Gallery, Ogden, Utah</span></div>
+          <div class="cv-entry"><span class="cv-year">2024</span><span class="cv-detail">"Primavera", Misery and Co Tattoo Collective, Salt Lake City</span></div>
+          <div class="cv-entry"><span class="cv-year">2023</span><span class="cv-detail">"Art Exhibit 1st Edition", Misery and Co Tattoo Collective, Salt Lake City</span></div>
+          <div class="cv-entry"><span class="cv-year">2020</span><span class="cv-detail">"Intersections", Malitzi Performing Arts, Morelos, México</span></div>
+        </div>
+
+        <div class="cv-section">
+          <div class="cv-section-title">Residencies</div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">Uncool Artist Residency, Brooklyn, New York</span></div>
+        </div>
+
+        <div class="cv-section">
+          <div class="cv-section-title">Projects and Cultural Management</div>
+          <div class="cv-entry"><span class="cv-year">2022 – Present</span><span class="cv-detail">Founder, Artistic Director and Curator, Mixi Art Studio, Salt Lake City</span></div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">Curator, "El color: ¿Forma o deforma?", First edition of Mixi Collectors, Casa Siza, Mexico City</span></div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">Curator, COLORS, Group Exhibition, Mixi Art Studio, Salt Lake City</span></div>
+          <div class="cv-entry"><span class="cv-year">2024</span><span class="cv-detail">Curator and Artist, "Primavera", Misery and Co Tattoo Collective, Salt Lake City</span></div>
+          <div class="cv-entry"><span class="cv-year">2023</span><span class="cv-detail">Curator and Visual Producer, Misery and Co. Tattoo Collective, Salt Lake City</span></div>
+          <div class="cv-entry"><span class="cv-year">2022 – 2023</span><span class="cv-detail">Visual Producer, Hans Serpa Tattoo, Salt Lake City</span></div>
+          <div class="cv-entry"><span class="cv-year">2018 – 2024</span><span class="cv-detail">Manager &amp; Visual Producer, Patrick Cat Tattoo (Mexico, United States, Spain, France, Germany)</span></div>
+        </div>
+
+        <div class="cv-section">
+          <div class="cv-section-title">Courses and Workshops</div>
+          <div class="cv-entry"><span class="cv-year">2024</span><span class="cv-detail">Rug Making &amp; Tufting Workshop, Melissa Monroe, Portland, Oregon</span></div>
+          <div class="cv-entry"><span class="cv-year">2024</span><span class="cv-detail">Career Structuring and Art Management Mentorship Program, Kontundente, Colombia</span></div>
+          <div class="cv-entry"><span class="cv-year">2023</span><span class="cv-detail">Felting Workshop, La Pinche Adultez, Mexico City</span></div>
+          <div class="cv-entry"><span class="cv-year">2023</span><span class="cv-detail">Tattoo Apprenticeship, Patrick Cat Tattoo, Salt Lake City</span></div>
+          <div class="cv-entry"><span class="cv-year">2023</span><span class="cv-detail">"Herstoria del Arte" – Art History from a Gender Perspective, Ellas Artes, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2022</span><span class="cv-detail">"Genias del Arte", Ellas Artes, México</span></div>
+        </div>
+
+        <div class="cv-section">
+          <div class="cv-section-title">Academic Background</div>
+          <div class="cv-entry"><span class="cv-year">2026</span><span class="cv-detail">Diploma in Art Collecting and Art Management, Tecnológico de Monterrey, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2024</span><span class="cv-detail">Course "Launching an Independent Art Space", NODE Center for Curatorial Studies, Berlin, Germany</span></div>
+          <div class="cv-entry"><span class="cv-year">2024</span><span class="cv-detail">Diploma in Curatorship and Storytelling, IMCR, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2023</span><span class="cv-detail">Diploma in Political Curatorship, IMCR, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2023</span><span class="cv-detail">Diploma in Introduction to Curatorship, IMCR, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2023</span><span class="cv-detail">Diploma in Exhibition Design, IMCR, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2020</span><span class="cv-detail">Diploma in Art Historiography, Edutin Academy, Newark, United States</span></div>
+          <div class="cv-entry"><span class="cv-year">2017</span><span class="cv-detail">Diploma in Aesthetic Appreciation of Visual Arts, MARCO, Monterrey, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2001</span><span class="cv-detail">Bachelor's Degree in Visual Arts, Universidad Autónoma del Estado de Morelos (UAEM), México</span></div>
+        </div>
+
+      </div>
     </div>
     <div class="founder-social">
       <a href="https://www.instagram.com/yuskadd/" target="_blank">@yuskadd on Instagram →</a>

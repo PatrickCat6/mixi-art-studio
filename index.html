@@ -54,7 +54,7 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify
 .nav-links a { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:var(--black); transition:opacity .2s; }
 .nav-links a:hover { opacity:.4; }
 .nav-acts { display:flex; gap:6px; flex-shrink:0; }
-.nbtn { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:8px 12px; text-decoration:none; transition:all .2s; white-space:nowrap; }
+.nbtn { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; padding:10px 16px; text-decoration:none; transition:all .2s; white-space:nowrap; }
 .nbtn-artsy { border:1px solid var(--black); color:var(--black); }
 .nbtn-artsy:hover { background:var(--black); color:var(--white); }
 .nbtn-oc { background:var(--black); color:var(--white); }
@@ -405,8 +405,31 @@ footer { background:var(--black); }
 <!-- EXHIBITIONS HERO CAROUSEL -->
 <section class="exh-carousel" style="padding-top:80px;">
   <div class="exh-carousel-track" id="exh-track">
-    <!-- Slide 1: Monica Loya -->
+    <!-- Slide 1: Ruth Gonzaluna -->
     <div class="exh-slide" data-index="0">
+      <div class="exh-slide-img">
+        <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/6a1a1c53b3db015796efb681_RG4X5004.jpeg" alt="Ruth Gonzaluna – Celebrations">
+      </div>
+      <div class="exh-slide-info">
+        <div>
+          <div class="on-view"><div class="dot"></div>On View · Artsy Viewing Room</div>
+          <h2 class="exh-title">Celebrations</h2>
+          <p class="exh-artists">Ruth Gonzaluna</p>
+          <p class="exh-desc">Mixi presents: Celebrations by Ruth Gonzaluna.</p>
+          <div class="exh-dates">
+            <div class="d-item"><span class="d-l">Opening</span><span class="d-v">June 1, 2026</span></div>
+            <div class="d-item"><span class="d-l">Closing</span><span class="d-v">July 1, 2026</span></div>
+            <div class="d-item"><span class="d-l">Venue</span><span class="d-v">Artsy Viewing Room</span></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="https://www.artsy.net/viewing-room/mixi-art-studio-celebrations-by-ruth-gonzaluna" target="_blank" class="btn btn-blk">View Exhibition</a>
+          <a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank" class="btn btn-out">Collect Artwork</a>
+        </div>
+      </div>
+    </div>
+    <!-- Slide 2: Monica Loya -->
+    <div class="exh-slide" data-index="1">
       <div class="exh-slide-img">
         <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69feadbbc404352cc7ae4dfc_Moni.jpeg" alt="Monica Loya – Beauty Hurts">
       </div>
@@ -424,29 +447,6 @@ footer { background:var(--black); }
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
           <a href="https://www.artsy.net/viewing-room/mixi-art-studio-beauty-hurts-by-monica-loya" target="_blank" class="btn btn-blk">View Exhibition</a>
-          <a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank" class="btn btn-out">Collect Artwork</a>
-        </div>
-      </div>
-    </div>
-    <!-- Slide 2: Sebastián Dávila -->
-    <div class="exh-slide" data-index="1">
-      <div class="exh-slide-img">
-        <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69ea83142b75549741d24589_Sartsy.jpeg" alt="Sebastián Dávila – Fire Before Water">
-      </div>
-      <div class="exh-slide-info">
-        <div>
-          <div class="on-view"><div class="dot"></div>On View · Artsy Viewing Room</div>
-          <h2 class="exh-title">Fire Before<br>Water</h2>
-          <p class="exh-artists">Sebastián Dávila</p>
-          <p class="exh-desc">Mixi presents: Fire Before Water by Sebastián Dávila. Opening May 1, 2026 on Artsy.</p>
-          <div class="exh-dates">
-            <div class="d-item"><span class="d-l">Opening</span><span class="d-v">May 1, 2026</span></div>
-            <div class="d-item"><span class="d-l">Closing</span><span class="d-v">June 1, 2026</span></div>
-            <div class="d-item"><span class="d-l">Venue</span><span class="d-v">Artsy Viewing Room</span></div>
-          </div>
-        </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <a href="https://www.artsy.net/viewing-room/mixi-art-studio-fire-before-water-by-sebastian-davila" target="_blank" class="btn btn-blk">View Exhibition</a>
           <a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank" class="btn btn-out">Collect Artwork</a>
         </div>
       </div>
@@ -496,7 +496,6 @@ footer { background:var(--black); }
   </div>
 </div>
 
-<div class="s-hdr fu"><span class="s-label">Represented Artists</span><a href="artists.html" class="s-link">View all artists →</a></div>
 
 <div class="abar fu">
   <div class="apanel apanel-a">

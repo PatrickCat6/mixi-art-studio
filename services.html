@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — Mixi Art Studio</title>
+<style>
+/* GLOBAL LAYOUT FIX */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+* { box-sizing: border-box; max-width: 100%; }
+
+@font-face {
+  font-family: 'Drukwide';
+  src: url('https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69af77f503b8b46eea176815_DrukWide-Bold.otf') format('opentype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Drukwide';
+  src: url('https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69af77f5068270eab58b0074_DrukWide-Medium.otf') format('opentype');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+
+:root {
+  --black:#0C0C0C; --white:#F5F4F0;
+  --gray:#999; --gl:#E0DDD8;
+  --druk:'Drukwide',sans-serif;
+}
+
+body, p, li, td, span, div { font-family: Arial, Helvetica, sans-serif; }
+body { overflow-x:hidden; background:var(--white); color:var(--black); font-family:Arial,Helvetica,sans-serif; -webkit-font-smoothing:antialiased; }
+
+/* NAV */
+nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify-content:space-between; align-items:center; padding:0 32px; height:80px; background:var(--white); border-bottom:1px solid var(--black); }
+.nav-logo { font-family:var(--druk); font-weight:700; font-size:46px; letter-spacing:2px; text-transform:uppercase; text-decoration:none; color:var(--black); flex-shrink:0; }
+.nav-r { display:flex; align-items:center; gap:24px; }
+.nav-links { display:flex; gap:20px; list-style:none; margin:0; padding:0; }
+.nav-links a { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:var(--black); transition:opacity .2s; }
+.nav-links a:hover { opacity:.4; }
+.nav-links a.active { border-bottom:1px solid var(--black); padding-bottom:1px; }
+.nav-acts { display:flex; gap:6px; flex-shrink:0; }
+.nbtn { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:9px 14px; text-decoration:none; transition:all .2s; white-space:nowrap; }
+.nbtn-artsy { border:1px solid var(--black); color:var(--black); }
+.nbtn-artsy:hover { background:var(--black); color:var(--white); }
+.nbtn-oc { background:var(--black); color:var(--white); }
+.nbtn-oc:hover { opacity:.7; }
+
+/* PAGE HEADER */
+.page-header {
+  padding: 120px 48px 64px;
+  border-bottom: 1px solid var(--black);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+  align-items: flex-end;
+}
+.page-eyebrow { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--gray); margin-bottom:20px; }
+.page-title { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:clamp(48px,7vw,96px); letter-spacing:-3px; text-transform:uppercase; line-height:.9; margin:0; }
+.page-intro { font-size:17px; line-height:1.85; color:#444; max-width:540px; align-self:flex-end; padding-bottom:4px; margin:0; }
+
+/* TICKER */
+.ticker { border-bottom:1px solid var(--black); overflow:hidden; background:var(--black); padding:11px 0; }
+.t-track { display:flex; animation:tick 28s linear infinite; width:max-content; }
+.t-item { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:9px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.5); padding:0 36px; white-space:nowrap; }
+.t-dot { color:rgba(255,255,255,.35); }
+@keyframes tick { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
+
+/* SECTION HEADER */
+.s-hdr { display:flex; justify-content:space-between; align-items:baseline; padding:28px 48px 22px; border-bottom:1px solid var(--black); }
+.s-label { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:3px; text-transform:uppercase; }
+.s-count { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); }
+
+/* SERVICES GRID */
+.svc-grid { display:grid; grid-template-columns:repeat(2,1fr); border-bottom:1px solid var(--black); }
+.svc-card { border-right:1px solid var(--black); border-bottom:1px solid var(--black); padding:40px 44px; display:flex; gap:32px; transition:background .18s; }
+.svc-grid.cols2 .svc-card:nth-child(2n) { border-right:none; }
+.svc-grid.cols2 .svc-card:nth-last-child(-n+2) { border-bottom:none; }
+.svc-card:hover { background:var(--black); }
+.svc-card:hover .svc-num, .svc-card:hover .svc-title, .svc-card:hover .svc-desc { color:var(--white); }
+.svc-card:hover .svc-num { color:rgba(255,255,255,.32); }
+.svc-num { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:13px; letter-spacing:1px; color:var(--gray); flex-shrink:0; padding-top:5px; transition:color .18s; }
+.svc-body { display:flex; flex-direction:column; gap:12px; }
+.svc-title { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:clamp(17px,1.7vw,22px); letter-spacing:-.5px; text-transform:uppercase; line-height:1.05; margin:0; transition:color .18s; }
+.svc-desc { font-size:14px; line-height:1.8; color:#555; max-width:440px; margin:0; transition:color .18s; }
+.svc-card:hover .svc-desc { color:rgba(255,255,255,.6); }
+
+/* FEATURE PANEL — EXHIBITION SPACE */
+.feature { display:grid; grid-template-columns:1fr 1fr; border-bottom:1px solid var(--black); min-height:480px; }
+.feature-img { background:#161616; border-right:1px solid var(--black); position:relative; overflow:hidden; min-height:480px; }
+.feature-img img { width:100%; height:100%; object-fit:cover; display:block; min-height:480px; }
+.feature-img-caption { position:absolute; bottom:20px; left:20px; font-size:9px; letter-spacing:1px; text-transform:uppercase; color:rgba(255,255,255,.5); }
+.feature-info { background:var(--black); padding:56px 48px; display:flex; flex-direction:column; justify-content:space-between; }
+.feature-eyebrow { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:9px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.32); margin-bottom:18px; }
+.feature-title { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:clamp(28px,3.4vw,48px); letter-spacing:-1.5px; text-transform:uppercase; line-height:.95; color:var(--white); margin:0 0 20px; }
+.feature-desc { font-size:15px; line-height:1.85; color:rgba(255,255,255,.55); max-width:440px; margin:0; }
+
+/* CTA */
+.cta { background:var(--black); padding:80px 48px; border-bottom:1px solid rgba(255,255,255,.1); display:flex; flex-direction:column; gap:30px; align-items:flex-start; }
+.cta-quote { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:clamp(28px,4.4vw,60px); letter-spacing:-2px; text-transform:uppercase; color:var(--white); line-height:.92; max-width:860px; margin:0; }
+.cta-sub { font-size:14px; line-height:1.8; color:rgba(255,255,255,.4); max-width:520px; margin:0; }
+
+.btn { display:inline-block; font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:2px; text-transform:uppercase; padding:14px 28px; text-decoration:none; transition:all .2s; }
+.btn-blk { background:var(--black); color:var(--white); }
+.btn-blk:hover { opacity:.75; }
+.btn-out { border:1px solid var(--black); color:var(--black); }
+.btn-out:hover { background:var(--black); color:var(--white); }
+.btn-light { background:var(--white); color:var(--black); }
+.btn-light:hover { opacity:.85; }
+.btn-ghost { border:1px solid rgba(255,255,255,.3); color:var(--white); }
+.btn-ghost:hover { border-color:var(--white); }
+
+/* NEWSLETTER */
+.newsletter { background:var(--black); border-bottom:1px solid rgba(255,255,255,.06); padding:56px 48px; display:flex; flex-direction:column; align-items:center; gap:28px; }
+.newsletter-text { font-family:Arial,Helvetica,sans-serif; font-weight:500; font-size:14px; letter-spacing:1px; color:rgba(255,255,255,.6); text-align:center; }
+.newsletter-form { display:flex; width:100%; max-width:640px; gap:0; }
+.newsletter-form input[type="email"] { flex:1; background:transparent; border:1px solid rgba(255,255,255,.25); color:var(--white); font-size:14px; padding:14px 18px; outline:none; transition:border-color .2s; }
+.newsletter-form input[type="email"]::placeholder { color:rgba(255,255,255,.25); }
+.newsletter-form input[type="email"]:focus { border-color:rgba(255,255,255,.6); }
+.newsletter-form button { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:2px; text-transform:uppercase; background:transparent; color:var(--white); border:1px solid rgba(255,255,255,.25); padding:14px 28px; cursor:pointer; transition:all .2s; white-space:nowrap; margin-left:-1px; }
+.newsletter-form button:hover { background:var(--white); color:var(--black); }
+.newsletter-msg { font-size:12px; color:rgba(255,255,255,.4); display:none; }
+
+/* FOOTER */
+footer { background:var(--black); }
+.ft { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; padding:48px 48px 40px; border-bottom:1px solid rgba(255,255,255,.06); }
+.flogo { height:18px; display:block; filter:invert(1); margin-bottom:16px; }
+.fdesc { font-size:16px; line-height:1.8; color:rgba(255,255,255,.5); max-width:220px; }
+.fct { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:14px; }
+.flinks { list-style:none; display:flex; flex-direction:column; gap:8px; padding:0; margin:0; }
+.flinks a, .flinks span { font-size:16px; color:rgba(255,255,255,.7); text-decoration:none; transition:color .2s; }
+.flinks a:hover { color:var(--white); }
+.fb { padding:14px 48px; display:flex; justify-content:space-between; align-items:center; }
+.fcopy { font-size:13px; color:rgba(255,255,255,.3); letter-spacing:1px; }
+.fsoc { display:flex; gap:18px; }
+.fsoc a { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:var(--white); text-decoration:none; transition:opacity .2s; }
+.fsoc a:hover { opacity:.6; }
+
+/* NAV TOGGLE (mobile) */
+@media (min-width: 769px) { .nav-toggle { display: none; } }
+.nav-toggle { display:none; }
+
+@media (max-width: 768px) {
+  html, body { overflow-x: hidden; width: 100%; }
+  nav { padding: 0 16px !important; height: 56px !important; }
+  .nav-logo { font-size: 34px !important; }
+  .nav-links { display: none !important; }
+  .nav-acts { display: none !important; }
+  .nav-toggle { display: flex !important; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; margin-left: auto; }
+  .nav-toggle span { display: block; width: 22px; height: 2px; background: var(--black); }
+  nav.open .nav-links { display: flex !important; flex-direction: column; position: fixed; top: 56px; left: 0; right: 0; background: var(--white); border-bottom: 1px solid var(--black); padding: 16px 20px 8px; gap: 0; z-index: 999; list-style: none; margin: 0; }
+  nav.open .nav-links li { border-bottom: 1px solid var(--gl); }
+  nav.open .nav-links a { display: block !important; padding: 14px 0 !important; font-size: 11px !important; }
+  nav.open .nav-acts { display: flex !important; flex-direction: column; position: fixed; left: 0; right: 0; background: var(--white); padding: 12px 20px 16px; gap: 8px; z-index: 999; border-bottom: 1px solid var(--black); top: calc(56px + 5 * 45px + 16px); }
+  nav.open .nbtn { display: block !important; text-align: center !important; padding: 12px !important; font-size: 9px !important; }
+
+  .page-header { display: flex !important; flex-direction: column !important; padding: 80px 16px 28px !important; gap: 16px !important; align-items: flex-start !important; }
+  .page-title { font-size: clamp(40px, 13vw, 80px) !important; letter-spacing: -2px !important; }
+  .page-intro { max-width: 100% !important; }
+
+  .s-hdr { padding: 18px 16px 16px !important; flex-wrap: wrap; gap: 6px; }
+
+  .svc-grid { grid-template-columns: 1fr !important; }
+  .svc-grid.cols2 .svc-card:nth-child(2n) { border-right: none; }
+  .svc-grid.cols2 .svc-card { border-right: none !important; border-bottom: 1px solid var(--black) !important; padding: 28px 16px !important; gap: 18px; }
+  .svc-grid.cols2 .svc-card:last-child { border-bottom: none !important; }
+  .svc-desc { max-width: 100% !important; }
+
+  .feature { grid-template-columns: 1fr !important; min-height: auto !important; }
+  .feature-img { min-height: 280px !important; border-right: none !important; border-bottom: 1px solid var(--black); }
+  .feature-img img { min-height: 280px !important; }
+  .feature-info { padding: 32px 16px !important; }
+
+  .cta { padding: 48px 16px !important; }
+  .cta-quote { font-size: clamp(28px, 9vw, 52px) !important; }
+
+  .newsletter { padding: 36px 16px !important; }
+  .newsletter-form { flex-direction: column; gap: 8px; }
+  .newsletter-form button { margin-left: 0; }
+  .ft { grid-template-columns: 1fr !important; gap: 24px; padding: 28px 16px !important; }
+  .fb { flex-direction: column !important; gap: 10px; padding: 14px 16px !important; text-align: center; }
+  .fsoc { justify-content: center !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">MIXI</a>
+  <div class="nav-r">
+    <button class="nav-toggle" onclick="this.closest('nav').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="artists.html">Artists</a></li>
+      <li><a href="exhibitions.html">Exhibitions</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="services.html" class="active">Services</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-acts">
+      <a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank" class="nbtn nbtn-artsy" style="font-size: 11px">Collect on Artsy</a>
+      <a href="open-call.html" class="nbtn nbtn-oc" style="font-size: 11px">Open Call</a>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header" data-screen-label="Services">
+  <div>
+    <div class="page-eyebrow" style="font-size: 14px">What We Offer</div>
+    <h1 class="page-title">Services</h1>
+  </div>
+  <p class="page-intro">A comprehensive range of professional services for artists, collectors, and art enthusiasts, supporting creators through every stage of their professional development and the management of their work.</p>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="t-track">
+    <span class="t-item">Professional Advice <span class="t-dot">·</span></span>
+    <span class="t-item" style="color: rgb(255, 255, 255)">Portfolio Development <span class="t-dot">·</span></span>
+    <span class="t-item" style="color: rgb(255, 255, 255)">Curatorship <span class="t-dot">·</span></span>
+    <span class="t-item" style="color: rgb(255, 255, 255)">Exhibition Design <span class="t-dot">·</span></span>
+    <span class="t-item" style="color: rgb(255, 255, 255)">Photographic Documentation <span class="t-dot">·</span></span>
+    <span class="t-item" style="color: rgb(251, 250, 250)">Sales Strategy <span class="t-dot">·</span></span>
+    <span class="t-item">Collection Management <span class="t-dot">·</span></span>
+    <span class="t-item">Professional Advice <span class="t-dot">·</span></span>
+    <span class="t-item">Portfolio Development <span class="t-dot">·</span></span>
+    <span class="t-item">Curatorship <span class="t-dot">·</span></span>
+    <span class="t-item">Exhibition Design <span class="t-dot">·</span></span>
+    <span class="t-item">Photographic Documentation <span class="t-dot">·</span></span>
+    <span class="t-item">Sales Strategy <span class="t-dot">·</span></span>
+    <span class="t-item">Collection Management <span class="t-dot">·</span></span>
+  </div>
+</div>
+
+<!-- SERVICES FOR ARTISTS -->
+<div class="s-hdr">
+  <div class="s-label" style="font-size: 11px">For Artists</div>
+  <div class="s-count">10 Services</div>
+</div>
+
+<div class="svc-grid cols2">
+  <div class="svc-card">
+    <div class="svc-num">01</div>
+    <div class="svc-body">
+      <h3 class="svc-title">Professional Advice for Artists</h3>
+      <p class="svc-desc">Personalized guidance for artistic career development, market positioning, and medium to long-term strategic planning.</p>
+    </div>
+  </div>
+  <div class="svc-card">
+    <div class="svc-num">02</div>
+    <div class="svc-body">
+      <h3 class="svc-title">Portfolio Creation &amp; Development</h3>
+      <p class="svc-desc">Design and production of professional portfolios, both physical and digital, optimized for galleries, residencies, open calls, and sales.</p>
+    </div>
+  </div>
+  <div class="svc-card">
+    <div class="svc-num">03</div>
+    <div class="svc-body">
+      <h3 class="svc-title">Applications to Open Calls, Residencies &amp; Galleries</h3>
+      <p class="svc-desc">Comprehensive support preparing and submitting applications, document review, proposal writing, artist statements, and selection of visual material for each opportunity.</p>
+    </div>
+  </div>
+  <div class="svc-card">
+    <div class="svc-num">04</div>
+    <div class="svc-body">
+      <h3 class="svc-title">Professional Photographic Documentation</h3>
+      <p class="svc-desc">High-resolution photography sessions to document artworks, ideal for personal archives, catalogs, applications, and digital promotion.</p>
+    </div>
+  </div>
+  <div class="svc-card">
+    <div class="svc-num">05</div>
+    <div class="svc-body">
+      <h3 class="svc-title">Artist Statement &amp; Text Development</h3>
+      <p class="svc-desc">Writing and refinement of artistic statements, professional biographies, and supporting texts for exhibitions and applications.</p>
+    </div>
+  </div>
+  <div class="svc-card">
+    <div class="svc-num">06</div>
+    <div class="svc-body">
+      <h3 class="svc-title">Branding &amp; Digital Presence</h3>
+      <p class="svc-desc">Advice on building the artist's brand identity and strategies to increase visibility on social media, websites, and specialized art platforms.</p>
+    </div>
+  </div>
+  <div class="svc-card">
+    <div class="svc-num">07</div>
+    <div class="svc-body">
+      <h3 class="svc-title">Preparation for Art Fairs</h3>
+      <p class="svc-desc">Support for participation in national and international art fairs, artwork selection, booth design, negotiation, and commercial follow-up.</p>
+    </div>
+  </div>
+  <div class="svc-card">
+    <div class="svc-num">08</div>
+    <div class="svc-body">
+      <h3 class="svc-title">Pricing &amp; Sales Strategy Advice</h3>
+      <p class="svc-desc">Analysis and establishment of appropriate pricing based on the artist's career, market, and type of work, along with commercialization strategies.</p>
+    </div>
+  </div>
+  <div class="svc-card">
+    <div class="svc-num">09</div>
+    <div class="svc-body">
+      <h3 class="svc-title">Social Media Management &amp; Marketing</h3>
+      <p class="svc-desc">Design of content and digital promotion strategies to increase visibility and generate sales and collaboration opportunities.</p>
+    </div>
+  </div>
+  <div class="svc-card">
+    <div class="svc-num">10</div>
+    <div class="svc-body">
+      <h3 class="svc-title">Basic Legal Advice</h3>
+      <p class="svc-desc">Guidance on copyright, exhibition contracts, consignment agreements, and other legal aspects related to the artistic career.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURE — EXHIBITION SPACE -->
+<div class="feature">
+  <div class="feature-img">
+    <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69b726d67c5a69bca4912799_Mixi%20Studio.jpg" alt="Mixi Art Studio exhibition space">
+    <span class="feature-img-caption">Mixi Headquarters · Salt Lake City, Utah</span>
+  </div>
+  <div class="feature-info">
+    <div>
+      <div class="feature-eyebrow" style="font-size: 6px; color: rgb(166, 166, 166)">Exhibition &amp; Management</div>
+      <h2 class="feature-title">A professional space to show your work</h2>
+      <p class="feature-desc">Our exhibition space is available with optimal lighting and promotional conditions, a venue designed to present contemporary art in the best possible way, backed by curatorial and museographic expertise.</p>
+    </div>
+    <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#105;&#110;&#102;&#111;&#64;&#109;&#105;&#120;&#105;&#97;&#114;&#116;&#115;&#116;&#117;&#100;&#105;&#111;&#46;&#117;&#115;" class="btn btn-ghost" style="align-self:flex-start;margin-top:32px;">Inquire about the space →</a>
+  </div>
+</div>
+
+<!-- EXHIBITION & MANAGEMENT SERVICES -->
+<div class="s-hdr">
+  <div class="s-label">Exhibition &amp; Management</div>
+  <div class="s-count">4 Services</div>
+</div>
+
+<div class="svc-grid cols2">
+  <div class="svc-card">
+    <div class="svc-num">01</div>
+    <div class="svc-body">
+      <h3 class="svc-title">Exhibition Design</h3>
+      <p class="svc-desc">Comprehensive design of exhibition presentation and installation,  spatial layout, lighting, museography, and artwork placement to create an optimal viewer experience.</p>
+    </div>
+  </div>
+  <div class="svc-card">
+    <div class="svc-num">02</div>
+    <div class="svc-body">
+      <h3 class="svc-title">Curatorship</h3>
+      <p class="svc-desc">Development of complete curatorial proposals for individual and group exhibitions.</p>
+    </div>
+  </div>
+  <div class="svc-card">
+    <div class="svc-num">03</div>
+    <div class="svc-body">
+      <h3 class="svc-title">Exhibition Space</h3>
+      <p class="svc-desc">Availability of our professional exhibition space with optimal lighting and promotional conditions.</p>
+    </div>
+  </div>
+  <div class="svc-card">
+    <div class="svc-num">04</div>
+    <div class="svc-body">
+      <h3 class="svc-title">Private Collection Management Advice</h3>
+      <p class="svc-desc">Specialized consulting for collectors on the organization, cataloging, conservation, and management of their art collections.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <p class="cta-quote">Let's build your<br>artistic career<br>together.</p>
+  <p class="cta-sub">Schedule a free 20-minute virtual meeting to address your questions and discover how we can work together.
+</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <a href="https://app.squareup.com/appointments/book/4aqojhbskjrmlm/LCN6NH6C5BJ0P/start" target="_blank" class="btn btn-light">SCHEDULE A MEETING →</a>
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="newsletter">
+  <p class="newsletter-text">Join our mailing list to stay up to date on Mixi Art Studio latest news!</p>
+  <div class="newsletter-form" id="mc-form">
+    <input type="email" id="mc-email" placeholder="Your email" required>
+    <button type="button" onclick="mcSubscribe()">Subscribe</button>
+  </div>
+  <span class="newsletter-msg" id="mc-msg"></span>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft">
+    <div>
+      <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69af872c152808cad0b1b964_logo%20png.png" alt="Mixi Art Studio" class="flogo">
+      <p class="fdesc">Transdisciplinary contemporary art studio. Latin American and North American artists. Salt Lake City, 2022.</p>
+    </div>
+    <div>
+      <div class="fct">Navigate</div>
+      <ul class="flinks">
+        <li><a href="artists.html">Artists</a></li>
+        <li><a href="exhibitions.html">Exhibitions</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="open-call.html">Open Call</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fct">Collect</div>
+      <ul class="flinks">
+        <li><a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank">Browse on Artsy</a></li>
+        <li><a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#105;&#110;&#102;&#111;&#64;&#109;&#105;&#120;&#105;&#97;&#114;&#116;&#115;&#116;&#117;&#100;&#105;&#111;&#46;&#117;&#115;">Inquire</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fct">Contact</div>
+      <ul class="flinks">
+        <li><span>info&#64;mixiartstudio&#46;us</span></li>
+        <li><a href="https://instagram.com/mixi.art.studio" target="_blank">&#64;mixi.art.studio</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="fb">
+    <span class="fcopy">© 2026 Mixi Art Studio. All rights reserved.</span>
+    <div class="fsoc">
+      <a href="https://instagram.com/mixi.art.studio" target="_blank">Instagram</a>
+      <a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank">Artsy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  var links = document.querySelectorAll(".nav-links a, .nbtn");
+  var nav = document.querySelector("nav");
+  for(var i=0; i<links.length; i++){
+    links[i].addEventListener("click", function(){ nav.classList.remove("open"); });
+  }
+});
+
+function mcSubscribe(){
+  var email = document.getElementById("mc-email").value.trim();
+  var msg = document.getElementById("mc-msg");
+  if(!email || !email.includes("@")){
+    msg.style.display = "block"; msg.style.color = "#e55";
+    msg.textContent = "Please enter a valid email address."; return;
+  }
+  var MC_URL = "https://opencallmixi.us5.list-manage.com/subscribe/post-json?u=1cdb93c51d3ddb0d7b431e2cf&id=de76f922f6&c=mcCallback";
+  var url = MC_URL + "&EMAIL=" + encodeURIComponent(email);
+  var old = document.getElementById("mc-script");
+  if(old) old.remove();
+  var s = document.createElement("script");
+  s.id = "mc-script"; s.src = url; document.body.appendChild(s);
+  msg.style.display = "block"; msg.style.color = "rgba(255,255,255,.4)";
+  msg.textContent = "Subscribing...";
+}
+function mcCallback(resp){
+  var msg = document.getElementById("mc-msg");
+  msg.style.display = "block";
+  if(resp.result === "success"){
+    msg.style.color = "#6c8"; msg.textContent = "Thank you for subscribing!";
+    document.getElementById("mc-email").value = "";
+  } else {
+    msg.style.color = "#e55";
+    var txt = (resp.msg || "Something went wrong. Please try again.").replace(/<[^>]*>/g,"");
+    msg.textContent = txt;
+  }
+}
+</script>
+</body>
+</html>
+
+<style id="__om-edit-overrides">
+.cta >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) { font-size: 14px !important }
+.cta >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) { font-size: 16px !important }
+.cta >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) { font-size: 146px !important }
+.cta >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) { font-size: 16px !important }
+.cta >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) { font-size: 6px !important }
+.cta >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) { font-size: 14px !important }
+.cta >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) { font-size: 6px !important }
+.cta >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) { font-size: 18px !important }
+</style>

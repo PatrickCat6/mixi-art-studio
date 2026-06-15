@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home — Mixi Art Studio</title>
+<style>
+/* GLOBAL LAYOUT FIX */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+* {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+@font-face {
+  font-family: 'Drukwide';
+  src: url('https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69af77f503b8b46eea176815_DrukWide-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Drukwide';
+  src: url('https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69af77f5068270eab58b0074_DrukWide-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --black:#0C0C0C; --white:#F5F4F0;
+  --gray:#999; --gl:#E0DDD8;
+  --druk:'Drukwide',sans-serif;
+}
+
+/* RESET WEBFLOW FONT OVERRIDES */
+body, p, li, td, span, div {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body { overflow-x:hidden; background:var(--white); color:var(--black); font-family:Arial,Helvetica,sans-serif; -webkit-font-smoothing:antialiased; }
+
+/* NAV */
+nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify-content:space-between; align-items:center; padding:0 32px; height:80px; background:var(--white); border-bottom:1px solid var(--black); }
+.nav-logo { display:block; flex-shrink:0; }
+.nav-r { display:flex; align-items:center; gap:20px; }
+.nav-links { display:flex; gap:20px; list-style:none; }
+.nav-links a { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:var(--black); transition:opacity .2s; }
+.nav-links a:hover { opacity:.4; }
+.nav-acts { display:flex; gap:6px; flex-shrink:0; }
+.nbtn { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; padding:10px 16px; text-decoration:none; transition:all .2s; white-space:nowrap; }
+.nbtn-artsy { border:1px solid var(--black); color:var(--black); }
+.nbtn-artsy:hover { background:var(--black); color:var(--white); }
+.nbtn-oc { background:var(--black); color:var(--white); }
+.nbtn-oc:hover { opacity:.7; }
+
+/* SEARCH OVERLAY */
+.search-overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(12,12,12,.92); z-index:500; align-items:flex-start; justify-content:center; padding-top:120px; }
+.search-overlay.active { display:flex; }
+.search-box { width:90%; max-width:600px; position:relative; }
+.search-box input { width:100%; font-family:Arial,Helvetica,sans-serif; font-weight:500; font-size:18px; letter-spacing:2px; text-transform:uppercase; background:transparent; border:none; border-bottom:2px solid rgba(255,255,255,.3); color:var(--white); padding:16px 40px 16px 0; outline:none; }
+.search-box input::placeholder { color:rgba(255,255,255,.25); }
+.search-close { position:absolute; right:0; top:50%; transform:translateY(-50%); background:none; border:none; color:rgba(255,255,255,.4); font-size:24px; cursor:pointer; font-family:Arial,Helvetica,sans-serif; }
+.search-close:hover { color:var(--white); }
+
+/* HERO */
+.hero { height:100vh; padding-top:64px; background:var(--white); display:flex; flex-direction:column; border-bottom:1px solid var(--black); overflow:hidden; }
+.hero-main { flex:1; display:flex; align-items:center; justify-content:center; position:relative; }
+.hero-bg-txt { position:absolute; font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:clamp(120px,22vw,320px); color:rgba(255,255,255,.025); letter-spacing:-4px; user-select:none; pointer-events:none; white-space:nowrap; }
+.hero-inner { position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; gap:24px; }
+.hero-logo { width:180px; display:block; background:transparent; }
+.hero-tag { font-family:Arial,Helvetica,sans-serif; font-weight:500; font-size:11px; letter-spacing:4px; text-transform:uppercase; color:var(--gray); text-align:center; }
+.hero-ctas { display:flex; gap:10px; }
+.hbtn { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:2px; text-transform:uppercase; padding:12px 24px; text-decoration:none; transition:all .2s; }
+.hbtn-w { background:var(--white); color:var(--black); }
+.hbtn-w:hover { opacity:.85; }
+.hbtn-o { border:1px solid var(--black); color:var(--black); }
+.hbtn-o:hover { background:var(--black); color:var(--white); border-color:var(--black); }
+
+.hero-stats { display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--black); flex-shrink:0; }
+.hstat { padding:16px 32px; border-right:1px solid var(--black); background:var(--black); }
+.hstat:last-child { border-right:none; }
+.hstat-l { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:3px; }
+.hstat-v { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--white); }
+
+/* EXHIBITIONS HERO CAROUSEL */
+.exh-carousel { border-bottom:1px solid var(--black); position:relative; overflow:hidden; }
+.exh-carousel-track { display:flex; transition:transform .5s ease; }
+.exh-slide { display:grid; grid-template-columns:1fr 1fr; min-height:calc(100vh - 64px); min-width:100%; flex-shrink:0; }
+.exh-slide-img { position:relative; overflow:hidden; background:#0C0C0C; border-right:1px solid var(--black); }
+.exh-slide-img img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
+.exh-slide-img-overlay { position:absolute; bottom:0; left:0; right:0; padding:40px; background:linear-gradient(transparent 0%, rgba(0,0,0,.65) 100%); }
+.exh-slide-img-label { font-size:14px; color:rgba(255,255,255,.7); margin-bottom:8px; }
+.exh-slide-img-name { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:clamp(48px,7vw,90px); letter-spacing:-2px; text-transform:none; line-height:.9; color:var(--white); margin-bottom:12px; }
+.exh-slide-img-sub { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:clamp(14px,1.6vw,20px); color:var(--white); line-height:1.3; }
+.exh-slide-info { padding:44px; display:flex; flex-direction:column; justify-content:space-between; }
+.exh-carousel-nav { position:absolute; bottom:20px; right:48px; display:flex; align-items:center; gap:12px; z-index:10; }
+.exh-nav-btn { background:var(--black); color:var(--white); border:none; width:36px; height:36px; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:opacity .2s; font-family:Arial,Helvetica,sans-serif; }
+.exh-nav-btn:hover { opacity:.7; }
+.exh-nav-dots { display:flex; gap:6px; }
+.exh-dot { width:8px; height:8px; border-radius:50%; background:var(--gl); cursor:pointer; transition:background .2s; }
+.exh-dot.active { background:var(--black); }
+
+/* IDENTITY BAR */
+.identity-bar { border-bottom:1px solid var(--black); }
+.identity-inner { display:flex; flex-direction:column; align-items:center; gap:14px; padding:112px 32px; }
+.identity-logo { width:140px; display:block; }
+.identity-tag { font-family:var(--druk); font-weight:500; font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--gray); text-align:center; }
+
+/* TICKER */
+.ticker { border-bottom:1px solid var(--black); overflow:hidden; background:var(--black); padding:11px 0; }
+.t-track { display:flex; animation:tick 14s linear infinite; width:max-content; }
+.t-item { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.5); padding:0 36px; white-space:nowrap; }
+.t-dot { color:rgba(255,255,255,.18); }
+@keyframes tick { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
+
+/* SECTION HDR */
+.s-hdr { display:flex; justify-content:space-between; align-items:baseline; padding:28px 48px 22px; border-bottom:1px solid var(--black); }
+.s-label { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:3px; text-transform:uppercase; }
+.s-link { font-size:11px; letter-spacing:2px; text-transform:uppercase; text-decoration:none; color:var(--gray); border-bottom:1px solid var(--gl); padding-bottom:1px; transition:color .2s,border-color .2s; }
+.s-link:hover { color:var(--black); border-color:var(--black); }
+
+/* EXHIBITION */
+.exh { display:grid; grid-template-columns:1fr 1fr; border-bottom:1px solid var(--black); min-height:460px; }
+.exh-img { background:#161616; border-right:1px solid var(--black); display:flex; align-items:center; justify-content:center; min-height:460px; }
+.exh-ph { width:100%; height:100%; min-height:460px; display:flex; align-items:center; justify-content:center; }
+.exh-ph span { font-size:8px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.1); }
+.exh-info { padding:44px; display:flex; flex-direction:column; justify-content:space-between; }
+.on-view { display:inline-flex; align-items:center; gap:8px; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); margin-bottom:20px; }
+.dot { width:5px; height:5px; border-radius:50%; background:var(--black); animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.2; } }
+.exh-title { font-family:Arial,Helvetica,sans-serif; font-weight:900; font-size:clamp(52px,6.8vw,92px); letter-spacing:-2px; text-transform:uppercase; line-height:.9; margin-bottom:14px; }
+.exh-artists { font-size:26px; font-weight:700; color:var(--gray); letter-spacing:1px; text-transform:uppercase; margin-bottom:14px; }
+.exh-desc { font-size:16px; line-height:1.8; color:#555; max-width:400px; margin-bottom:28px; }
+.exh-dates { display:flex; gap:24px; margin-bottom:28px; padding-top:18px; border-top:1px solid var(--gl); }
+.d-item { display:flex; flex-direction:column; gap:3px; }
+.d-l { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); }
+.d-v { font-family:Arial,Helvetica,sans-serif; font-weight:500; font-size:12px; letter-spacing:1px; text-transform:uppercase; }
+.btn { display:inline-block; font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:2px; text-transform:uppercase; padding:13px 24px; text-decoration:none; transition:all .2s; }
+.btn-blk { background:var(--black); color:var(--white); }
+.btn-blk:hover { opacity:.75; }
+.btn-out { border:1px solid var(--black); color:var(--black); }
+.btn-out:hover { background:var(--black); color:var(--white); }
+
+/* ARTISTS */
+.grid { display:grid; grid-template-columns:repeat(4,1fr); border-bottom:1px solid var(--black); }
+.artist-card { border-right:1px solid var(--black); border-bottom:1px solid var(--black); text-decoration:none; color:inherit; display:block; transition:background .15s; }
+.artist-card:nth-child(4n) { border-right:none; }
+.artist-card:nth-last-child(-n+4) { border-bottom:none; }
+.artist-card:hover { background:var(--black); }
+.artist-card:hover .artist-name, .artist-card:hover .artist-disc { color:var(--white); }
+.artist-img { width:100%; aspect-ratio:1/1; background:#e8e7e3; border-bottom:1px solid var(--black); display:flex; align-items:center; justify-content:center; }
+.artist-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:18px; color:#ccc; }
+.artist-info { padding:14px 18px; }
+.artist-name { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:.5px; text-transform:uppercase; margin-bottom:3px; transition:color .15s; line-height:1.3; }
+.artist-disc { font-size:11px; color:var(--gray); letter-spacing:1px; text-transform:uppercase; transition:color .15s; }
+
+/* ACTION BAR */
+.abar { display:grid; grid-template-columns:1fr 1fr; border-bottom:1px solid var(--black); }
+.apanel { padding:26px 48px; display:flex; align-items:center; justify-content:space-between; }
+.apanel-a { background:var(--white); border-right:1px solid var(--black); }
+.apanel-oc { background:var(--black); }
+.abadge { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:9px; letter-spacing:3px; text-transform:uppercase; padding:4px 8px; }
+.ab-artsy { background:var(--black); color:var(--white); }
+.ab-active { background:var(--white); color:var(--black); }
+.aleft { display:flex; align-items:center; gap:14px; }
+.atitle { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:clamp(13px,1.6vw,19px); letter-spacing:-.5px; text-transform:uppercase; }
+.asub { font-size:11px; letter-spacing:1px; text-transform:uppercase; margin-top:2px; }
+.asub-gray { color:var(--gray); }
+.asub-fade { color:rgba(255,255,255,.3); }
+
+/* STUDIO */
+.studio { display:grid; grid-template-columns:1fr 1fr; border-bottom:1px solid var(--black); min-height:320px; }
+.studio-l { padding:48px; border-right:1px solid var(--black); display:flex; flex-direction:column; justify-content:space-between; }
+.studio-d { background:var(--black); padding:48px; display:flex; flex-direction:column; justify-content:space-between; }
+.eyebrow { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:10px; letter-spacing:3px; text-transform:uppercase; margin-bottom:14px; }
+.ey-gray { color:var(--gray); }
+.ey-dark { color:rgba(255,255,255,.22); }
+.shd { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:clamp(19px,2.6vw,34px); letter-spacing:-1px; text-transform:uppercase; line-height:.95; margin-bottom:16px; }
+.studio-d .shd { color:var(--white); }
+.sbody { font-size:16px; line-height:1.8; color:#555; max-width:420px; margin-bottom:28px; }
+.founders { display:flex; gap:32px; margin-top:24px; }
+.founder { display:flex; flex-direction:column; gap:3px; }
+.fn { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--white); }
+.fr { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.28); }
+
+/* FOOTER */
+footer { background:var(--black); }
+.ft { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; padding:48px 48px 40px; border-bottom:1px solid rgba(255,255,255,.06); }
+.flogo { height:18px; display:block; filter:invert(1); margin-bottom:16px; }
+.fdesc { font-size:16px; line-height:1.8; color:rgba(255,255,255,.5); max-width:220px; }
+.fct { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:14px; }
+.flinks { list-style:none; display:flex; flex-direction:column; gap:8px; padding:0; margin:0; }
+.flinks a, .flinks span { font-size:16px; color:rgba(255,255,255,.7); text-decoration:none; transition:color .2s; }
+.flinks a:hover { color:var(--white); }
+.fb { padding:14px 48px; display:flex; justify-content:space-between; align-items:center; }
+.fcopy { font-size:13px; color:rgba(255,255,255,.3); letter-spacing:1px; }
+.fsoc { display:flex; gap:18px; }
+.fsoc a { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:var(--white); text-decoration:none; transition:opacity .2s; }
+.fsoc a:hover { opacity:.6; }
+.fu { opacity:1; transform:none; }
+
+/* NEWSLETTER */
+.newsletter { background:var(--black); border-bottom:1px solid rgba(255,255,255,.06); padding:56px 48px; display:flex; flex-direction:column; align-items:center; gap:28px; }
+.newsletter-text { font-family:Arial,Helvetica,sans-serif; font-weight:500; font-size:14px; letter-spacing:1px; color:rgba(255,255,255,.6); text-align:center; }
+.newsletter-form { display:flex; width:100%; max-width:640px; gap:0; }
+.newsletter-form input[type="email"] { flex:1; background:transparent; border:1px solid rgba(255,255,255,.25); color:var(--white); font-family:'Helvetica Neue',sans-serif; font-size:14px; padding:14px 18px; outline:none; transition:border-color .2s; }
+.newsletter-form input[type="email"]::placeholder { color:rgba(255,255,255,.25); }
+.newsletter-form input[type="email"]:focus { border-color:rgba(255,255,255,.6); }
+.newsletter-form button { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:2px; text-transform:uppercase; background:transparent; color:var(--white); border:1px solid rgba(255,255,255,.25); padding:14px 28px; cursor:pointer; transition:all .2s; white-space:nowrap; margin-left:-1px; }
+.newsletter-form button:hover { background:var(--white); color:var(--black); }
+.newsletter-msg { font-size:12px; color:rgba(255,255,255,.4); display:none; }
+
+/* NAV SEARCH BUTTON */
+.nav-search { background:none; border:1px solid var(--gl); cursor:pointer; font-family:Arial,Helvetica,sans-serif; font-weight:500; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); padding:7px 16px; transition:all .2s; display:flex; align-items:center; gap:6px; }
+.nav-search:hover { border-color:var(--black); color:var(--black); }
+.nav-search svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; }
+</style>
+
+<style>
+/* Desktop: hide hamburger */
+@media (min-width: 769px) {
+  .nav-toggle { display: none; }
+}
+
+@media (max-width: 768px) {
+  html, body { overflow-x: hidden; width: 100%; }
+  * { box-sizing: border-box; }
+
+  /* NAV */
+  nav { padding: 0 16px !important; height: 56px !important; position: fixed !important; }
+  .nav-links { display: none !important; }
+  .nav-acts { display: none !important; }
+  .nav-search { display: none !important; }
+  .nav-toggle {
+    display: flex !important;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    margin-left: auto;
+  }
+  .nav-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--black);
+  }
+  nav.open .nav-toggle { position: fixed; top: 0; right: 16px; height: 56px; justify-content: center; z-index: 1001; }
+  nav.open .nav-r {
+    display: flex !important;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    border-bottom: 1px solid var(--black);
+    padding: 8px 20px 16px;
+    z-index: 999;
+    max-height: calc(100vh - 56px);
+    overflow-y: auto;
+  }
+  nav.open .nav-links {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  nav.open .nav-links li { border-bottom: 1px solid var(--gl); }
+  nav.open .nav-links a { display: block !important; padding: 14px 0 !important; font-size: 11px !important; }
+  nav.open .nav-acts {
+    display: flex !important;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 14px;
+  }
+  nav.open .nbtn { display: block !important; text-align: center !important; padding: 10px 12px !important; font-size: 8px !important; white-space: nowrap !important; }
+
+  /* HERO */
+  .hero { height: 100svh !important; padding-top: 56px !important; }
+  .hero-bg-txt { display: none !important; }
+  .hero-inner { padding: 0 20px; width: 100%; gap: 16px !important; }
+  .hero-logo { width: 200px !important; margin: 0 auto; }
+  .hero-tag { font-size: 7px !important; letter-spacing: 3px !important; }
+  .hero-ctas { flex-direction: column !important; width: 100%; gap: 8px !important; }
+  .hbtn { width: 100% !important; text-align: center !important; padding: 14px !important; }
+  .hero-stats { display: flex !important; overflow-x: auto; scrollbar-width: none; }
+  .hero-stats::-webkit-scrollbar { display: none; }
+  .hstat { flex: 0 0 auto; min-width: 130px; padding: 12px 16px !important; }
+
+  /* HERO - EXHIBITIONS CAROUSEL */
+  .exh-slide { grid-template-columns: 1fr !important; min-height: auto !important; }
+  .exh-slide-img { min-height: 60vh; border-right: none !important; border-bottom: 1px solid var(--black); }
+  .exh-slide-img-overlay { padding: 24px 16px !important; }
+  .exh-slide-img-name { font-size: clamp(40px, 14vw, 70px) !important; }
+  .exh-slide-info { padding: 24px 16px !important; }
+  .exh-carousel-nav { right: 16px !important; bottom: 12px !important; }
+  .identity-inner { padding: 24px 16px !important; }
+  .identity-logo { width: 120px !important; }
+
+  /* SECTION HEADER */
+  .s-hdr { padding: 16px 16px 14px !important; flex-wrap: wrap; gap: 8px; }
+
+  /* HIDE ACTION BAR ON MOBILE */
+  .abar { display: none !important; }
+
+  /* EXHIBITION */
+  .exh { grid-template-columns: 1fr !important; min-height: auto !important; }
+  .exh-img { min-height: 260px !important; border-right: none !important; border-bottom: 1px solid var(--black); }
+  .exh-img img { min-height: 260px !important; }
+  .exh-info { padding: 24px 16px !important; }
+  .exh-title { font-size: clamp(22px, 8vw, 42px) !important; }
+  .exh-dates { flex-wrap: wrap; gap: 12px; }
+
+  /* ARTIST ROWS */
+  .artist-row, .artist-row-rev { grid-template-columns: 1fr !important; min-height: auto !important; }
+  .ar-img-left { border-right: none !important; border-bottom: 1px solid var(--black); }
+  .ar-img-right { border-left: none !important; border-top: 1px solid var(--black); order: -1; }
+  .ar-img img, .ar-ph { min-height: 280px !important; }
+  .ar-info { padding: 20px 16px !important; }
+  .ar-info-right { text-align: left !important; }
+  .ar-name { font-size: clamp(22px, 7vw, 40px) !important; }
+
+  /* STUDIO */
+  .studio { grid-template-columns: 1fr !important; min-height: auto !important; }
+  .studio-l { border-right: none !important; border-bottom: 1px solid var(--black); padding: 28px 16px !important; }
+  .studio-d { padding: 28px 16px !important; }
+
+  /* PAGE HEADER */
+  .page-header { padding: 80px 16px 24px !important; flex-direction: column !important; gap: 12px; align-items: flex-start !important; }
+  .page-title { font-size: clamp(36px, 12vw, 80px) !important; letter-spacing: -2px !important; }
+  .page-count { font-size: 36px !important; }
+  .page-meta { align-items: flex-start !important; }
+
+  /* EXHIBITIONS PAGE */
+  .archive-expo, .archive-expo.reversed { flex-direction: column !important; }
+  .expo-image { min-height: 260px !important; width: 100% !important; }
+  .expo-info { padding: 24px 16px !important; width: 100% !important; }
+  .expo-title { font-size: clamp(24px, 8vw, 52px) !important; }
+  .atags { flex-wrap: wrap; gap: 6px; }
+
+  /* ABOUT */
+  .story { flex-direction: column !important; }
+  .story-text { width: 100% !important; padding: 24px 16px !important; }
+  .story-image { width: 100% !important; min-height: 260px !important; }
+  .stats-row { grid-template-columns: repeat(2,1fr) !important; }
+  .stat { padding: 20px 16px !important; }
+  .founders-grid { grid-template-columns: 1fr !important; }
+  .founder-photo { min-height: 300px !important; }
+  .mission { padding: 40px 16px !important; }
+  .mission-quote { font-size: clamp(24px, 7vw, 48px) !important; }
+  .founders-header { padding: 24px 16px !important; }
+
+  /* FOOTER */
+  .newsletter { padding: 36px 16px !important; }
+  .newsletter-form { flex-direction: column; gap: 8px; }
+  .newsletter-form button { margin-left: 0; }
+  .ft { grid-template-columns: 1fr !important; gap: 24px; padding: 28px 16px !important; }
+  .fb { flex-direction: column !important; gap: 10px; padding: 14px 16px !important; text-align: center; }
+  .fsoc { justify-content: center !important; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" style="font-family:var(--druk);font-weight:700;font-size:46px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--black);flex-shrink:0;">MIXI</a>
+  <div class="nav-r">
+    <button class="nav-search" onclick="document.getElementById('search-overlay').classList.add('active');document.getElementById('search-input').focus();" aria-label="Search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      Search
+    </button>
+    <button class="nav-toggle" onclick="this.closest('nav').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="artists.html">Artists</a></li>
+      <li><a href="exhibitions.html">Exhibitions</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-acts">
+      <a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank" class="nbtn nbtn-artsy">Collect on Artsy</a>
+      <a href="open-call.html" class="nbtn nbtn-oc">Open Call</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Search Overlay -->
+<div id="search-overlay" class="search-overlay">
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="Search..." onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q){window.find(q);}}" autocomplete="off">
+    <button class="search-close" onclick="document.getElementById('search-overlay').classList.remove('active');document.getElementById('search-input').value='';">✕</button>
+  </div>
+</div>
+
+<!-- EXHIBITIONS HERO CAROUSEL -->
+<section class="exh-carousel" style="padding-top:80px;">
+  <div class="exh-carousel-track" id="exh-track">
+    <!-- Slide 1: Rafael Bores -->
+    <div class="exh-slide" data-index="0">
+      <div class="exh-slide-img">
+        <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/6a3022a10191d3e20929c91c_RB4X5005.jpg" alt="Rafael Bores – Liquid Modernity">
+      </div>
+      <div class="exh-slide-info">
+        <div>
+          <div class="on-view"><div class="dot"></div>On View · Artsy Viewing Room</div>
+          <h2 class="exh-title">Liquid<br>Modernity</h2>
+          <p class="exh-artists">Rafael Bores</p>
+          <p class="exh-desc">Mixi presents: Liquid Modernity by Rafael Bores.</p>
+          <div class="exh-dates">
+            <div class="d-item"><span class="d-l">Opening</span><span class="d-v">June 15, 2026</span></div>
+            <div class="d-item"><span class="d-l">Closing</span><span class="d-v">July 15, 2026</span></div>
+            <div class="d-item"><span class="d-l">Venue</span><span class="d-v">Artsy Viewing Room</span></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="https://www.artsy.net/viewing-room/mixi-art-studio-liquid-modernity-by-rafael-bores?utm_content=viewing-room-gallery-share" target="_blank" class="btn btn-blk">View Exhibition</a>
+          <a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank" class="btn btn-out">Collect Artwork</a>
+        </div>
+      </div>
+    </div>
+    <!-- Slide 2: Ruth Gonzaluna -->
+    <div class="exh-slide" data-index="1">
+      <div class="exh-slide-img">
+        <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/6a1a1c53b3db015796efb681_RG4X5004.jpeg" alt="Ruth Gonzaluna – Celebrations">
+      </div>
+      <div class="exh-slide-info">
+        <div>
+          <div class="on-view"><div class="dot"></div>On View · Artsy Viewing Room</div>
+          <h2 class="exh-title">Celebrations</h2>
+          <p class="exh-artists">Ruth Gonzaluna</p>
+          <p class="exh-desc">Mixi presents: Celebrations by Ruth Gonzaluna.</p>
+          <div class="exh-dates">
+            <div class="d-item"><span class="d-l">Opening</span><span class="d-v">June 1, 2026</span></div>
+            <div class="d-item"><span class="d-l">Closing</span><span class="d-v">July 1, 2026</span></div>
+            <div class="d-item"><span class="d-l">Venue</span><span class="d-v">Artsy Viewing Room</span></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="https://www.artsy.net/viewing-room/mixi-art-studio-celebrations-by-ruth-gonzaluna" target="_blank" class="btn btn-blk">View Exhibition</a>
+          <a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank" class="btn btn-out">Collect Artwork</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Carousel Nav -->
+  <div class="exh-carousel-nav">
+    <button class="exh-nav-btn" id="exh-prev" aria-label="Previous">←</button>
+    <div class="exh-nav-dots" id="exh-dots">
+      <span class="exh-dot active" data-i="0"></span>
+      <span class="exh-dot" data-i="1"></span>
+    </div>
+    <button class="exh-nav-btn" id="exh-next" aria-label="Next">→</button>
+  </div>
+</section>
+
+<!-- IDENTITY BAR -->
+<div class="identity-bar">
+  <div class="identity-inner">
+    <div id="mixi-3d" style="width:100%;max-width:280px;height:280px;cursor:grab;"></div>
+    <p class="identity-tag">Transdisciplinary Art Studio &nbsp;·&nbsp; Salt Lake City &nbsp;·&nbsp; Est. 2022</p>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-l">Artists</div><div class="hstat-v">19 Artists</div></div>
+    <div class="hstat"><div class="hstat-l">Focus</div><div class="hstat-v">Transdisciplinary Art</div></div>
+    <div class="hstat"><div class="hstat-l">Location</div><div class="hstat-v">Salt Lake City, UT</div></div>
+    <div class="hstat"><div class="hstat-l">Founded</div><div class="hstat-v">2022</div></div>
+  </div>
+</div>
+
+<div class="ticker">
+  <div class="t-track">
+    <span class="t-item">Mixi Art Studio <span class="t-dot">·</span></span>
+    <span class="t-item">Transdisciplinary Art <span class="t-dot">·</span></span>
+    <span class="t-item">Salt Lake City <span class="t-dot">·</span></span>
+    <span class="t-item">Transdisciplinary Laboratory <span class="t-dot">·</span></span>
+    <span class="t-item">19 Artists <span class="t-dot">·</span></span>
+    <span class="t-item">Contemporary Art <span class="t-dot">·</span></span>
+    <span class="t-item">Collect on Artsy <span class="t-dot">·</span></span>
+    <span class="t-item">Mixi Art Studio <span class="t-dot">·</span></span>
+    <span class="t-item">Transdisciplinary Art <span class="t-dot">·</span></span>
+    <span class="t-item">Salt Lake City <span class="t-dot">·</span></span>
+    <span class="t-item">Transdisciplinary Laboratory <span class="t-dot">·</span></span>
+    <span class="t-item">19 Artists <span class="t-dot">·</span></span>
+    <span class="t-item">Contemporary Art <span class="t-dot">·</span></span>
+    <span class="t-item">Collect on Artsy <span class="t-dot">·</span></span>
+  </div>
+</div>
+
+
+<div class="abar fu">
+  <div class="apanel apanel-a">
+    <div class="aleft">
+      <div>
+        <div class="atitle" style="color:var(--black)">Collect Artwork</div>
+        <div class="asub asub-gray">Browse works by all 19 artists</div>
+      </div>
+    </div>
+    <a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank" class="btn btn-blk">View on Artsy →</a>
+  </div>
+  <div class="apanel apanel-oc">
+    <div class="aleft">
+      <div>
+        <div class="atitle" style="color:var(--white)">Open Call</div>
+        <div class="asub asub-fade">Applications open now</div>
+      </div>
+    </div>
+    <a href="open-call.html" class="btn" style="background:var(--white);color:var(--black)">Apply Now →</a>
+  </div>
+</div>
+
+<div class="studio fu">
+  <div class="studio-l">
+    <div>
+      <div class="eyebrow ey-gray">About the Studio</div>
+      <h2 class="shd">A transdisciplinary<br>laboratory with<br>Latin roots</h2>
+      <p class="sbody">Founded in 2022 in Salt Lake City, Mixi Art Studio is a space of convergence for artists who cross borders between disciplines, geographies, and languages. We connect the global art scene bridging Latin American and North American contemporary practices.</p>
+    </div>
+    <a href="about.html" class="btn btn-out" style="align-self:flex-start">About Mixi →</a>
+  </div>
+  <div class="studio-d" style="justify-content:center;">
+    <p style="font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:clamp(22px,3vw,40px);letter-spacing:-1px;text-transform:uppercase;line-height:.95;color:var(--white);">Artists working with artists.<br>A studio built on<br>mutual support.</p>
+    <a href="about.html" class="btn" style="background:transparent;border:1px solid rgba(255,255,255,.3);color:var(--white);align-self:flex-start;margin-top:40px;transition:all .2s;" onmouseover="this.style.borderColor='white'" onmouseout="this.style.borderColor='rgba(255,255,255,.3)'">Learn about Mixi →</a>
+  </div>
+</div>
+
+<div class="newsletter">
+  <p class="newsletter-text">Join our mailing list to stay up to date on Mixi Art Studio latest news!</p>
+  <div class="newsletter-form" id="mc-form">
+    <input type="email" id="mc-email" placeholder="Your email" required>
+    <button type="button" onclick="mcSubscribe()">Subscribe</button>
+  </div>
+  <span class="newsletter-msg" id="mc-msg"></span>
+</div>
+
+<footer>
+  <div class="ft">
+    <div>
+      <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69af872c152808cad0b1b964_logo%20png.png" alt="Mixi Art Studio" class="flogo">
+      <p class="fdesc">Transdisciplinary contemporary art studio. Latin American and North American artists. Salt Lake City, 2022.</p>
+    </div>
+    <div>
+      <div class="fct">Navigate</div>
+      <ul class="flinks">
+        <li><a href="artists.html">Artists</a></li>
+        <li><a href="exhibitions.html">Exhibitions</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="open-call.html">Open Call</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fct">Collect</div>
+      <ul class="flinks">
+        <li><a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank">Browse on Artsy</a></li>
+        <li><a href="contact.html">Inquire</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fct">Contact</div>
+      <ul class="flinks">
+        <li><span>info&#64;mixiartstudio&#46;us</span></li>
+        <li><a href="https://instagram.com/mixi.art.studio" target="_blank">&#64;mixi.art.studio</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="fb">
+    <span class="fcopy">© 2026 Mixi Art Studio. All rights reserved.</span>
+    <div class="fsoc">
+      <a href="https://instagram.com/mixi.art.studio" target="_blank">Instagram</a>
+      <a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank">Artsy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  var btn = document.querySelector(".nav-toggle");
+  var nav = document.querySelector("nav");
+  if(!btn || !nav) return;
+  var links = document.querySelectorAll(".nav-links a, .nbtn");
+  for(var i=0; i<links.length; i++){
+    links[i].addEventListener("click", function(){
+      nav.classList.remove("open");
+    });
+  }
+  // Close search on Escape
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape"){
+      document.getElementById("search-overlay").classList.remove("active");
+      document.getElementById("search-input").value = "";
+    }
+  });
+  // Close search on clicking overlay background
+  document.getElementById("search-overlay").addEventListener("click", function(e){
+    if(e.target === this){
+      this.classList.remove("active");
+      document.getElementById("search-input").value = "";
+    }
+  });
+});
+
+// Exhibitions Carousel
+(function(){
+  var track = document.getElementById("exh-track");
+  var dots = document.querySelectorAll(".exh-dot");
+  var prev = document.getElementById("exh-prev");
+  var next = document.getElementById("exh-next");
+  if(!track || !prev || !next) return;
+  var current = 0;
+  var total = document.querySelectorAll(".exh-slide").length;
+
+  function goTo(i){
+    if(i < 0) i = total - 1;
+    if(i >= total) i = 0;
+    current = i;
+    track.style.transform = "translateX(-" + (current * 100) + "%)";
+    dots.forEach(function(d,idx){ d.classList.toggle("active", idx === current); });
+  }
+  prev.addEventListener("click", function(){ goTo(current - 1); });
+  next.addEventListener("click", function(){ goTo(current + 1); });
+  dots.forEach(function(d){ d.addEventListener("click", function(){ goTo(parseInt(this.dataset.i)); }); });
+
+  // Swipe support
+  var startX = 0;
+  track.addEventListener("touchstart", function(e){ startX = e.touches[0].clientX; }, {passive:true});
+  track.addEventListener("touchend", function(e){
+    var diff = startX - e.changedTouches[0].clientX;
+    if(Math.abs(diff) > 50){ diff > 0 ? goTo(current+1) : goTo(current-1); }
+  }, {passive:true});
+})();
+
+// Mailchimp Subscribe via JSONP
+function mcSubscribe(){
+  var email = document.getElementById("mc-email").value.trim();
+  var msg = document.getElementById("mc-msg");
+  if(!email || !email.includes("@")){
+    msg.style.display = "block";
+    msg.style.color = "#e55";
+    msg.textContent = "Please enter a valid email address.";
+    return;
+  }
+  // IMPORTANT: Replace YOUR_MAILCHIMP_URL below with your actual Mailchimp form action URL.
+  // To find it: Mailchimp → Audience → Signup forms → Embedded forms → copy the action URL
+  // It looks like: https://XXXXX.us21.list-manage.com/subscribe/post?u=XXXXXXX&id=XXXXXXX
+  // Change the "/post?" to "/post-json?" and add "&c=mcCallback" at the end.
+  var MC_URL = "https://opencallmixi.us5.list-manage.com/subscribe/post-json?u=1cdb93c51d3ddb0d7b431e2cf&id=de76f922f6&c=mcCallback";
+  // Build the JSONP URL
+  var url = MC_URL + "&EMAIL=" + encodeURIComponent(email);
+  // Remove old callback script if any
+  var old = document.getElementById("mc-script");
+  if(old) old.remove();
+  // Create JSONP script
+  var s = document.createElement("script");
+  s.id = "mc-script";
+  s.src = url;
+  document.body.appendChild(s);
+  msg.style.display = "block";
+  msg.style.color = "rgba(255,255,255,.4)";
+  msg.textContent = "Subscribing...";
+}
+// Mailchimp JSONP callback
+function mcCallback(resp){
+  var msg = document.getElementById("mc-msg");
+  msg.style.display = "block";
+  if(resp.result === "success"){
+    msg.style.color = "#6c8";
+    msg.textContent = "Thank you for subscribing!";
+    document.getElementById("mc-email").value = "";
+  } else {
+    msg.style.color = "#e55";
+    // Strip HTML from Mailchimp error
+    var txt = resp.msg || "Something went wrong. Please try again.";
+    txt = txt.replace(/<[^>]*>/g,"");
+    msg.textContent = txt;
+  }
+}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  var container = document.getElementById('mixi-3d');
+  if(!container) return;
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(45, container.clientWidth/container.clientHeight, 0.1, 1000);
+  camera.position.set(3, 2.5, 4);
+  camera.lookAt(0, 0, 0);
+
+  var renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  container.appendChild(renderer.domElement);
+
+  var mainColor = 0x0C0C0C;
+  var eyeColor = 0xffffff;
+
+  var S = 2, H = S, D = S;
+  var vDepth = S * 0.45;
+
+  var shape = new THREE.Shape();
+  shape.moveTo(-S/2, -H/2);
+  shape.lineTo(S/2, -H/2);
+  shape.lineTo(S/2, H/2);
+  shape.lineTo(0, H/2 - vDepth);
+  shape.lineTo(-S/2, H/2);
+  shape.closePath();
+
+  var geo = new THREE.ExtrudeGeometry(shape, {depth: D, bevelEnabled: false});
+  geo.center();
+
+  var mat = new THREE.MeshStandardMaterial({color: mainColor, roughness: 0.7, metalness: 0.1});
+  var mesh = new THREE.Mesh(geo, mat);
+  scene.add(mesh);
+
+  var eyeR = 0.17, eyeH = 0.08;
+  var eyeGeo = new THREE.CylinderGeometry(eyeR, eyeR, eyeH, 32);
+  var eyeMat = new THREE.MeshStandardMaterial({color: eyeColor, roughness: 0.3, metalness: 0.05});
+
+  var eyeOffsetX = 0.38, eyeOffsetY = -0.22;
+  var eyeZ = D/2 + eyeH/2;
+
+  var leftEye = new THREE.Mesh(eyeGeo, eyeMat);
+  leftEye.rotation.x = Math.PI / 2;
+  leftEye.position.set(-eyeOffsetX, eyeOffsetY, eyeZ);
+  mesh.add(leftEye);
+
+  var rightEye = new THREE.Mesh(eyeGeo, eyeMat);
+  rightEye.rotation.x = Math.PI / 2;
+  rightEye.position.set(eyeOffsetX, eyeOffsetY, eyeZ);
+  mesh.add(rightEye);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  var dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  dirLight.position.set(5, 5, 5);
+  scene.add(dirLight);
+  var fillLight = new THREE.DirectionalLight(0xffffff, 0.3);
+  fillLight.position.set(-3, 2, -3);
+  scene.add(fillLight);
+
+  var autoSpeed = 0.014; // speed 7
+  var isDragging = false, prevX = 0, prevY = 0;
+
+  container.addEventListener('pointerdown', function(e){
+    isDragging = true; prevX = e.clientX; prevY = e.clientY;
+    container.style.cursor = 'grabbing';
+  });
+  window.addEventListener('pointermove', function(e){
+    if(!isDragging) return;
+    mesh.rotation.y += (e.clientX - prevX) * 0.008;
+    mesh.rotation.x += (e.clientY - prevY) * 0.008;
+    prevX = e.clientX; prevY = e.clientY;
+  });
+  window.addEventListener('pointerup', function(){
+    isDragging = false; container.style.cursor = 'grab';
+  });
+
+  function animate(){
+    requestAnimationFrame(animate);
+    if(!isDragging) mesh.rotation.y += autoSpeed;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', function(){
+    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth, container.clientHeight);
+  });
+})();
+</script>
+</body>
+</html>

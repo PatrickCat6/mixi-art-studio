@@ -410,8 +410,31 @@ footer { background:var(--black); }
 <!-- EXHIBITIONS HERO CAROUSEL -->
 <section class="exh-carousel" style="padding-top:80px;">
   <div class="exh-carousel-track" id="exh-track">
-    <!-- Slide 1: Ruth Gonzaluna -->
+    <!-- Slide 1: Rafael Bores -->
     <div class="exh-slide" data-index="0">
+      <div class="exh-slide-img">
+        <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/6a3022a10191d3e20929c91c_RB4X5005.jpg" alt="Rafael Bores – Liquid Modernity">
+      </div>
+      <div class="exh-slide-info">
+        <div>
+          <div class="on-view"><div class="dot"></div>On View · Artsy Viewing Room</div>
+          <h2 class="exh-title">Liquid<br>Modernity</h2>
+          <p class="exh-artists">Rafael Bores</p>
+          <p class="exh-desc">Mixi presents: Liquid Modernity by Rafael Bores.</p>
+          <div class="exh-dates">
+            <div class="d-item"><span class="d-l">Opening</span><span class="d-v">June 15, 2026</span></div>
+            <div class="d-item"><span class="d-l">Closing</span><span class="d-v">July 15, 2026</span></div>
+            <div class="d-item"><span class="d-l">Venue</span><span class="d-v">Artsy Viewing Room</span></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="https://www.artsy.net/viewing-room/mixi-art-studio-liquid-modernity-by-rafael-bores?utm_content=viewing-room-gallery-share" target="_blank" class="btn btn-blk">View Exhibition</a>
+          <a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank" class="btn btn-out">Collect Artwork</a>
+        </div>
+      </div>
+    </div>
+    <!-- Slide 2: Ruth Gonzaluna -->
+    <div class="exh-slide" data-index="1">
       <div class="exh-slide-img">
         <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/6a1a1c53b3db015796efb681_RG4X5004.jpeg" alt="Ruth Gonzaluna – Celebrations">
       </div>
@@ -429,29 +452,6 @@ footer { background:var(--black); }
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
           <a href="https://www.artsy.net/viewing-room/mixi-art-studio-celebrations-by-ruth-gonzaluna" target="_blank" class="btn btn-blk">View Exhibition</a>
-          <a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank" class="btn btn-out">Collect Artwork</a>
-        </div>
-      </div>
-    </div>
-    <!-- Slide 2: Monica Loya -->
-    <div class="exh-slide" data-index="1">
-      <div class="exh-slide-img">
-        <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69feadbbc404352cc7ae4dfc_Moni.jpeg" alt="Monica Loya – Beauty Hurts">
-      </div>
-      <div class="exh-slide-info">
-        <div>
-          <div class="on-view"><div class="dot"></div>On View · Artsy Viewing Room</div>
-          <h2 class="exh-title">Beauty<br>Hurts</h2>
-          <p class="exh-artists">Monica Loya</p>
-          <p class="exh-desc">Mixi presents: Beauty Hurts by Monica Loya.</p>
-          <div class="exh-dates">
-            <div class="d-item"><span class="d-l">Opening</span><span class="d-v">May 15, 2026</span></div>
-            <div class="d-item"><span class="d-l">Closing</span><span class="d-v">June 16, 2026</span></div>
-            <div class="d-item"><span class="d-l">Venue</span><span class="d-v">Artsy Viewing Room</span></div>
-          </div>
-        </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <a href="https://www.artsy.net/viewing-room/mixi-art-studio-beauty-hurts-by-monica-loya" target="_blank" class="btn btn-blk">View Exhibition</a>
           <a href="https://www.artsy.net/partner/mixi-art-studio" target="_blank" class="btn btn-out">Collect Artwork</a>
         </div>
       </div>
@@ -656,17 +656,10 @@ function mcSubscribe(){
     msg.textContent = "Please enter a valid email address.";
     return;
   }
-  // IMPORTANT: Replace YOUR_MAILCHIMP_URL below with your actual Mailchimp form action URL.
-  // To find it: Mailchimp → Audience → Signup forms → Embedded forms → copy the action URL
-  // It looks like: https://XXXXX.us21.list-manage.com/subscribe/post?u=XXXXXXX&id=XXXXXXX
-  // Change the "/post?" to "/post-json?" and add "&c=mcCallback" at the end.
   var MC_URL = "https://opencallmixi.us5.list-manage.com/subscribe/post-json?u=1cdb93c51d3ddb0d7b431e2cf&id=de76f922f6&c=mcCallback";
-  // Build the JSONP URL
   var url = MC_URL + "&EMAIL=" + encodeURIComponent(email);
-  // Remove old callback script if any
   var old = document.getElementById("mc-script");
   if(old) old.remove();
-  // Create JSONP script
   var s = document.createElement("script");
   s.id = "mc-script";
   s.src = url;
@@ -685,7 +678,6 @@ function mcCallback(resp){
     document.getElementById("mc-email").value = "";
   } else {
     msg.style.color = "#e55";
-    // Strip HTML from Mailchimp error
     var txt = resp.msg || "Something went wrong. Please try again.";
     txt = txt.replace(/<[^>]*>/g,"");
     msg.textContent = txt;
@@ -753,7 +745,7 @@ function mcCallback(resp){
   fillLight.position.set(-3, 2, -3);
   scene.add(fillLight);
 
-  var autoSpeed = 0.014; // speed 7
+  var autoSpeed = 0.014;
   var isDragging = false, prevX = 0, prevY = 0;
 
   container.addEventListener('pointerdown', function(e){

@@ -656,10 +656,17 @@ function mcSubscribe(){
     msg.textContent = "Please enter a valid email address.";
     return;
   }
+  // IMPORTANT: Replace YOUR_MAILCHIMP_URL below with your actual Mailchimp form action URL.
+  // To find it: Mailchimp → Audience → Signup forms → Embedded forms → copy the action URL
+  // It looks like: https://XXXXX.us21.list-manage.com/subscribe/post?u=XXXXXXX&id=XXXXXXX
+  // Change the "/post?" to "/post-json?" and add "&c=mcCallback" at the end.
   var MC_URL = "https://opencallmixi.us5.list-manage.com/subscribe/post-json?u=1cdb93c51d3ddb0d7b431e2cf&id=de76f922f6&c=mcCallback";
+  // Build the JSONP URL
   var url = MC_URL + "&EMAIL=" + encodeURIComponent(email);
+  // Remove old callback script if any
   var old = document.getElementById("mc-script");
   if(old) old.remove();
+  // Create JSONP script
   var s = document.createElement("script");
   s.id = "mc-script";
   s.src = url;
@@ -678,6 +685,7 @@ function mcCallback(resp){
     document.getElementById("mc-email").value = "";
   } else {
     msg.style.color = "#e55";
+    // Strip HTML from Mailchimp error
     var txt = resp.msg || "Something went wrong. Please try again.";
     txt = txt.replace(/<[^>]*>/g,"");
     msg.textContent = txt;
@@ -745,7 +753,7 @@ function mcCallback(resp){
   fillLight.position.set(-3, 2, -3);
   scene.add(fillLight);
 
-  var autoSpeed = 0.014;
+  var autoSpeed = 0.014; // speed 7
   var isDragging = false, prevX = 0, prevY = 0;
 
   container.addEventListener('pointerdown', function(e){

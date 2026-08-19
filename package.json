@@ -5,8 +5,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "stripe": "^16.0.0",
-    "@vercel/speed-insights": "^1.0.12"
+    "stripe": "^16.0.0"
   },
   "engines": {
     "node": ">=18.x"

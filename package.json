@@ -1,0 +1,13 @@
+{
+  "name": "mixi-art-studio-api",
+  "version": "1.0.0",
+  "description": "Serverless API endpoints for Mixi Art Studio shop",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "stripe": "^16.0.0"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
+}

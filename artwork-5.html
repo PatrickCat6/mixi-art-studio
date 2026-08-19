@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Artwork — Mixi Art Studio</title>
+<link rel="icon" href="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69af872c152808cad0b1b964_logo%20png.png">
+<style>
+html, body { margin:0 !important; padding:0 !important; overflow-x:hidden !important; width:100% !important; max-width:100% !important; }
+* { box-sizing:border-box; max-width:100%; }
+
+@font-face {
+  font-family:'Drukwide';
+  src:url('https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69af77f503b8b46eea176815_DrukWide-Bold.otf') format('opentype');
+  font-weight:700; font-style:normal; font-display:swap;
+}
+@font-face {
+  font-family:'Drukwide';
+  src:url('https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69af77f5068270eab58b0074_DrukWide-Medium.otf') format('opentype');
+  font-weight:500; font-style:normal; font-display:swap;
+}
+
+:root {
+  --black:#0C0C0C; --white:#F5F4F0;
+  --gray:#999; --gl:#E0DDD8;
+  --druk:'Drukwide',sans-serif;
+}
+
+body, p, li, td, span, div { font-family:Arial,Helvetica,sans-serif; }
+body { overflow-x:hidden; background:var(--white); color:var(--black); font-family:Arial,Helvetica,sans-serif; -webkit-font-smoothing:antialiased; }
+
+/* NAV */
+nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify-content:space-between; align-items:center; padding:0 32px; height:80px; background:var(--white); border-bottom:1px solid var(--black); }
+.nav-logo { font-family:var(--druk); font-weight:700; font-size:46px; letter-spacing:2px; text-transform:uppercase; text-decoration:none; color:var(--black); flex-shrink:0; line-height:1; }
+.nav-r { display:flex; align-items:center; gap:20px; }
+.nav-links { display:flex; gap:18px; list-style:none; margin:0; padding:0; }
+.nav-links a { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:var(--black); transition:opacity .2s; white-space:nowrap; }
+.nav-links a:hover { opacity:.4; }
+.nav-links a.active { border-bottom:1px solid var(--black); padding-bottom:1px; }
+.nav-acts { display:flex; gap:6px; flex-shrink:0; }
+.nbtn { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; padding:10px 16px; text-decoration:none; transition:all .2s; white-space:nowrap; cursor:pointer; border:none; }
+.nbtn-artsy { border:1px solid var(--black); color:var(--black); background:transparent; }
+.nbtn-artsy:hover { background:var(--black); color:var(--white); }
+.nbtn-oc { background:var(--black); color:var(--white); }
+.nbtn-oc:hover { opacity:.7; }
+.nav-toggle { display:none; }
+
+/* BREADCRUMB */
+.breadcrumb { padding:100px 48px 0; font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); }
+.breadcrumb a { color:var(--gray); text-decoration:none; transition:color .2s; }
+.breadcrumb a:hover { color:var(--black); }
+.breadcrumb span { margin:0 8px; }
+
+/* STATE */
+.state { padding:160px 48px; text-align:center; font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); }
+.state a { color:var(--black); }
+
+/* LAYOUT */
+.artwork-layout { display:grid; grid-template-columns:1fr 400px; gap:0; max-width:1320px; margin:0 auto; padding:36px 48px 64px; align-items:start; }
+.artwork-left { padding-right:56px; }
+.main-image-wrap { background:var(--gl); display:flex; align-items:center; justify-content:center; margin-bottom:12px; cursor:zoom-in; overflow:hidden; border:1px solid var(--black); }
+.main-image-wrap img { width:100%; height:auto; max-height:720px; object-fit:contain; display:block; }
+.thumbnails { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; }
+.thumb { width:68px; height:68px; background:var(--gl); cursor:pointer; border:1px solid var(--gl); overflow:hidden; flex-shrink:0; transition:border-color .15s; }
+.thumb.active { border-color:var(--black); }
+.thumb img { width:100%; height:100%; object-fit:cover; }
+.video-wrap { margin-top:20px; }
+.video-wrap iframe { width:100%; aspect-ratio:16/9; border:1px solid var(--black); }
+
+/* RIGHT PANEL */
+.artwork-right { position:sticky; top:100px; }
+.stats-pill { display:inline-flex; gap:18px; padding:9px 14px; background:var(--gl); font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gray); margin-bottom:24px; }
+.stats-pill strong { color:var(--black); }
+.art-artist { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:clamp(22px,2.4vw,30px); letter-spacing:-1px; text-transform:uppercase; line-height:1; margin-bottom:8px; }
+.art-title { font-size:15px; color:var(--gray); font-style:italic; margin-bottom:0; line-height:1.4; }
+.art-materials { font-size:13px; color:#555; margin-top:14px; line-height:1.6; }
+.art-size { font-size:13px; color:#555; margin-top:4px; }
+.art-badges { display:flex; flex-direction:column; gap:7px; margin-top:16px; }
+.art-badge { font-size:12px; color:#444; display:flex; align-items:center; gap:7px; }
+.art-badge a { color:var(--black); text-decoration:underline; }
+
+.price-block { margin-top:24px; padding-top:24px; border-top:1px solid var(--black); }
+.price-main { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:26px; letter-spacing:-.5px; color:var(--black); margin-bottom:6px; }
+.price-installment { font-size:12px; color:var(--gray); margin-bottom:22px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; line-height:1.4; }
+.pay-tag { display:inline-block; border:1px solid var(--black); padding:3px 9px; font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; color:var(--black); }
+
+.btn-stack button { display:block; width:100%; font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:2px; text-transform:uppercase; padding:15px; cursor:pointer; border:none; transition:all .2s; }
+.btn-purchase { background:var(--black); color:var(--white); margin-bottom:10px; }
+.btn-purchase:hover { opacity:.75; }
+.btn-offer { background:var(--white); color:var(--black); border:1px solid var(--black) !important; margin-bottom:24px; }
+.btn-offer:hover { background:var(--black); color:var(--white); }
+.btn-contact { background:var(--black); color:var(--white); margin-bottom:24px; }
+.btn-contact:hover { opacity:.75; }
+.btn-sold { background:var(--gl); color:var(--gray); margin-bottom:24px; cursor:default !important; }
+
+/* ACCORDION */
+.acc-row { border-top:1px solid var(--gl); padding:16px 0; display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
+.acc-row span:first-child { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; }
+.acc-row .arr { font-size:16px; color:var(--gray); transition:transform .2s; }
+.acc-row.open .arr { transform:rotate(180deg); }
+.acc-body { display:none; padding-bottom:16px; font-size:13px; color:#555; line-height:1.7; }
+.acc-body.open { display:block; }
+
+/* GALLERY ROW */
+.gallery-row { border-top:1px solid var(--gl); padding:18px 0; display:flex; justify-content:space-between; align-items:center; }
+.gallery-row-info p { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:.5px; text-transform:uppercase; margin-bottom:3px; }
+.gallery-row-info span { font-size:11px; color:var(--gray); letter-spacing:.5px; }
+.btn-contact-sm { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; border:1px solid var(--black); background:var(--white); color:var(--black); padding:9px 16px; cursor:pointer; transition:all .2s; }
+.btn-contact-sm:hover { background:var(--black); color:var(--white); }
+
+/* BELOW FOLD */
+.below-fold { max-width:1320px; margin:0 auto; padding:0 48px 80px; }
+.section-block { margin-bottom:56px; }
+.section-title { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:13px; letter-spacing:2px; text-transform:uppercase; padding-bottom:14px; border-bottom:1px solid var(--black); margin-bottom:24px; }
+.ficha-table { width:100%; border-collapse:collapse; }
+.ficha-table td { padding:14px 0; border-bottom:1px solid var(--gl); font-size:13px; vertical-align:top; }
+.ficha-table td:first-child { width:230px; font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--black); padding-right:24px; }
+.ficha-table td:last-child { color:#555; }
+.art-description { font-size:14px; color:#444; line-height:1.85; max-width:680px; margin-top:24px; }
+.art-description p + p { margin-top:14px; }
+
+.artist-card { border:1px solid var(--black); padding:32px; }
+.artist-card-header { display:flex; align-items:center; gap:16px; margin-bottom:20px; }
+.artist-avatar { width:56px; height:56px; border-radius:50%; background:var(--gl); overflow:hidden; flex-shrink:0; }
+.artist-avatar img { width:100%; height:100%; object-fit:cover; }
+.artist-name-block p { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:14px; letter-spacing:.5px; text-transform:uppercase; margin-bottom:3px; }
+.artist-name-block span { font-size:11px; color:var(--gray); letter-spacing:.5px; text-transform:uppercase; }
+.artist-bio { font-size:14px; color:#444; line-height:1.85; }
+.artist-bio p + p { margin-top:14px; }
+
+/* LIGHTBOX */
+.lightbox { position:fixed; inset:0; background:rgba(12,12,12,.94); z-index:600; display:none; align-items:center; justify-content:center; cursor:zoom-out; }
+.lightbox.open { display:flex; }
+.lightbox img { max-width:92vw; max-height:92vh; object-fit:contain; }
+.lightbox-close { position:fixed; top:20px; right:24px; font-size:26px; color:#fff; cursor:pointer; background:none; border:none; }
+
+/* MODAL */
+.modal-overlay { position:fixed; inset:0; background:rgba(12,12,12,.6); z-index:500; display:none; align-items:center; justify-content:center; padding:20px; }
+.modal-overlay.open { display:flex; }
+.modal { background:var(--white); width:100%; max-width:460px; padding:40px; position:relative; border:1px solid var(--black); }
+.modal-close { position:absolute; top:18px; right:20px; font-size:22px; cursor:pointer; color:var(--gray); background:none; border:none; line-height:1; }
+.modal-close:hover { color:var(--black); }
+.modal h3 { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:14px; letter-spacing:1px; text-transform:uppercase; margin:0 0 18px; }
+.modal label { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gray); display:block; margin-bottom:6px; margin-top:18px; }
+.modal input, .modal textarea { width:100%; border:1px solid var(--gl); padding:11px 12px; font-size:14px; font-family:Arial,Helvetica,sans-serif; outline:none; background:var(--white); color:var(--black); }
+.modal input:focus, .modal textarea:focus { border-color:var(--black); }
+.modal textarea { resize:vertical; min-height:90px; }
+.modal-check { display:flex; align-items:center; gap:8px; margin-top:16px; }
+.modal-check input { width:auto; }
+.modal-check label { font-size:12px; color:var(--gray); margin:0; letter-spacing:0; text-transform:none; font-weight:400; }
+.btn-modal-submit { width:100%; background:var(--black); color:var(--white); padding:14px; font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:10px; letter-spacing:2px; text-transform:uppercase; border:none; cursor:pointer; margin-top:24px; transition:opacity .2s; }
+.btn-modal-submit:hover { opacity:.75; }
+.modal-success { text-align:center; padding:24px 0; display:none; }
+.modal-success p { font-size:14px; color:#555; line-height:1.7; }
+
+/* FOOTER */
+footer { background:var(--black); }
+.ft { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; padding:48px; border-bottom:1px solid rgba(255,255,255,.06); }
+.flogo { height:18px; display:block; filter:invert(1); margin-bottom:16px; }
+.fdesc { font-size:16px; line-height:1.8; color:rgba(255,255,255,.5); max-width:220px; }
+.fct { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:14px; }
+.flinks { list-style:none; display:flex; flex-direction:column; gap:8px; margin:0; padding:0; }
+.flinks a, .flinks span { font-size:16px; color:rgba(255,255,255,.7); text-decoration:none; transition:color .2s; }
+.flinks a:hover { color:var(--white); }
+.fb { padding:14px 48px; display:flex; justify-content:space-between; align-items:center; }
+.fcopy { font-size:13px; color:rgba(255,255,255,.3); letter-spacing:1px; }
+.fsoc { display:flex; gap:18px; }
+.fsoc a { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:var(--white); text-decoration:none; transition:opacity .2s; }
+.fsoc a:hover { opacity:.6; }
+
+/* MOBILE */
+@media (min-width:769px) { .nav-toggle { display:none; } }
+@media (max-width:900px) {
+  .artwork-layout { grid-template-columns:1fr; padding:30px 16px 48px; }
+  .artwork-left { padding-right:0; margin-bottom:32px; }
+  .artwork-right { position:static; }
+}
+@media (max-width:768px) {
+  nav { padding:0 16px !important; height:56px !important; }
+  .nav-logo { font-size:34px !important; }
+  .nav-links { display:none !important; }
+  .nav-acts { display:none !important; }
+  .nav-toggle { display:flex !important; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:6px; margin-left:auto; }
+  .nav-toggle span { display:block; width:22px; height:2px; background:var(--black); }
+  nav.open .nav-toggle { position:fixed; top:0; right:16px; height:56px; justify-content:center; z-index:1001; }
+  nav.open .nav-r { display:flex !important; flex-direction:column; align-items:stretch; gap:0; position:fixed; top:56px; left:0; right:0; background:var(--white); border-bottom:1px solid var(--black); padding:8px 20px 16px; z-index:999; max-height:calc(100vh - 56px); overflow-y:auto; }
+  nav.open .nav-links { display:flex !important; flex-direction:column; gap:0; }
+  nav.open .nav-links li { border-bottom:1px solid var(--gl); }
+  nav.open .nav-links a { display:block !important; padding:14px 0 !important; font-size:11px !important; }
+  nav.open .nav-acts { display:flex !important; flex-direction:column; gap:8px; padding-top:14px; }
+  nav.open .nbtn { display:block !important; text-align:center !important; padding:12px !important; }
+  .breadcrumb { padding:76px 16px 0 !important; }
+  .below-fold { padding:0 16px 56px !important; }
+  .ficha-table td:first-child { width:140px; }
+  .ft { grid-template-columns:1fr !important; gap:24px; padding:28px 16px !important; }
+  .fb { flex-direction:column !important; gap:10px; padding:14px 16px !important; text-align:center; }
+  .fsoc { justify-content:center !important; }
+  .modal { padding:28px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">MIXI</a>
+  <div class="nav-r">
+    <button class="nav-toggle" onclick="this.closest('nav').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="artists.html">Artists</a></li>
+      <li><a href="exhibitions.html">Exhibitions</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-acts">
+      <a href="shop.html" class="nbtn nbtn-oc">Shop</a>
+      <a href="open-call.html" class="nbtn nbtn-oc">Open Call</a>
+    </div>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="shop.html">Shop</a><span>›</span><span id="bc-artist"></span><span>›</span><span id="bc-title"></span>
+</div>
+
+<!-- STATES -->
+<div id="stateLoading" class="state">Loading…</div>
+<div id="stateError" class="state" style="display:none">Artwork not found. <a href="shop.html">Back to Shop</a></div>
+
+<!-- MAIN -->
+<main id="artworkMain" style="display:none">
+  <div class="artwork-layout">
+    <!-- LEFT -->
+    <div class="artwork-left">
+      <div class="main-image-wrap" id="mainImgWrap" onclick="openLightbox()">
+        <img id="mainImg" alt="">
+      </div>
+      <div class="thumbnails" id="thumbnails"></div>
+      <div class="video-wrap" id="videoWrap" style="display:none">
+        <iframe id="videoIframe" allowfullscreen></iframe>
+      </div>
+    </div>
+    <!-- RIGHT -->
+    <div class="artwork-right">
+      <div class="stats-pill" id="statsPill">
+        <span><strong id="statViews">0</strong> Views</span>
+        <span><strong id="statInquiries">0</strong> Inquiries</span>
+      </div>
+      <p class="art-artist" id="artArtist"></p>
+      <p class="art-title" id="artTitle"></p>
+      <p class="art-materials" id="artMaterials"></p>
+      <p class="art-size" id="artSize"></p>
+      <div class="art-badges" id="artBadges"></div>
+
+      <div class="price-block">
+        <div id="priceSection">
+          <p class="price-main" id="priceMain"></p>
+          <div class="price-installment" id="installmentLine" style="display:none">
+            <span id="installmentText"></span>
+            <span class="pay-tag">Klarna</span>
+            <span class="pay-tag">Afterpay</span>
+          </div>
+          <div class="btn-stack">
+            <button class="btn-purchase" id="btnPurchase" onclick="startCheckout()">Purchase</button>
+          </div>
+        </div>
+        <div id="contactSection" style="display:none">
+          <div class="btn-stack"><button class="btn-contact" onclick="document.getElementById('inquiryModal').classList.add('open')">Contact Gallery</button></div>
+        </div>
+        <div id="soldSection" style="display:none">
+          <div class="btn-stack"><button class="btn-sold">Sold</button></div>
+        </div>
+      </div>
+
+      <div class="acc-row" onclick="toggleAcc('accShipping')">
+        <span>Shipping and taxes</span><span class="arr">⌄</span>
+      </div>
+      <div class="acc-body" id="accShipping">
+        Professional art packing and shipping from Salt Lake City, UT. Domestic and international shipping available. Shipping costs calculated at checkout. All applicable taxes apply.
+      </div>
+      <div class="acc-row" onclick="toggleAcc('accPayment')">
+        <span>Payment options</span><span class="arr">⌄</span>
+      </div>
+      <div class="acc-body" id="accPayment">
+        Secure checkout via <strong>Square</strong>. Split into 4 interest-free installments with <strong>Klarna</strong> or <strong>Afterpay</strong> (USA only). Mixi Art Studio receives full payment at time of purchase.
+      </div>
+
+      <div class="gallery-row">
+        <div class="gallery-row-info">
+          <p>Mixi Art Studio</p>
+          <span>Salt Lake City, UT</span>
+        </div>
+        <button class="btn-contact-sm" onclick="document.getElementById('inquiryModal').classList.add('open')">Contact Gallery</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BELOW FOLD -->
+  <div class="below-fold">
+    <div class="section-block">
+      <h2 class="section-title">About the work</h2>
+      <table class="ficha-table" id="fichaTable"></table>
+      <div class="art-description" id="artDescription"></div>
+    </div>
+    <div class="section-block" id="artistSection" style="display:none">
+      <h2 class="section-title">About the artist</h2>
+      <div class="artist-card">
+        <div class="artist-card-header">
+          <div class="artist-avatar"><img id="artistAvatar" alt=""></div>
+          <div class="artist-name-block">
+            <p id="artistNameFull"></p>
+            <span id="artistMeta"></span>
+          </div>
+        </div>
+        <div class="artist-bio" id="artistBio"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft">
+    <div>
+      <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69af872c152808cad0b1b964_logo%20png.png" alt="Mixi Art Studio" class="flogo">
+      <p class="fdesc">Transdisciplinary contemporary art studio. Latin American and North American artists. Salt Lake City, 2022.</p>
+    </div>
+    <div>
+      <div class="fct">Navigate</div>
+      <ul class="flinks">
+        <li><a href="artists.html">Artists</a></li>
+        <li><a href="exhibitions.html">Exhibitions</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="open-call.html">Open Call</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fct">Collect</div>
+      <ul class="flinks">
+        <li><a href="shop.html">Browse Shop</a></li>
+        <li><a href="contact.html">Inquire</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fct">Contact</div>
+      <ul class="flinks">
+        <li><span>info&#64;mixiartstudio&#46;us</span></li>
+        <li><a href="https://instagram.com/mixi.art.studio" target="_blank">&#64;mixi.art.studio</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="fb">
+    <span class="fcopy">© 2026 Mixi Art Studio. All rights reserved.</span>
+    <div class="fsoc">
+      <a href="https://instagram.com/mixi.art.studio" target="_blank">Instagram</a>
+    </div>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightboxImg" alt="">
+</div>
+
+<!-- INQUIRY MODAL -->
+<div class="modal-overlay" id="inquiryModal">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('inquiryModal').classList.remove('open')">✕</button>
+    <h3>Inquire about this work</h3>
+    <div id="inquiryForm">
+      <label>Name</label>
+      <input type="text" id="inqName" placeholder="Your name">
+      <label>Email</label>
+      <input type="email" id="inqEmail" placeholder="your@email.com">
+      <label>Phone (optional)</label>
+      <input type="tel" id="inqPhone" placeholder="+1 (555) 000-0000">
+      <label>Message</label>
+      <textarea id="inqMessage" placeholder="I'm interested in this work…"></textarea>
+      <div class="modal-check">
+        <input type="checkbox" id="inqInstallments">
+        <label for="inqInstallments">Interested in payment installments (Klarna / Afterpay)</label>
+      </div>
+      <button class="btn-modal-submit" onclick="submitInquiry()">Send Inquiry</button>
+    </div>
+    <div class="modal-success" id="inquirySuccess">
+      <p style="font-size:24px;margin-bottom:12px">✓</p>
+      <p>Your inquiry has been sent.<br>Mixi Art Studio will be in touch shortly.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const PROJECT_ID='vocdg9am', DATASET='production', API_VER='2024-01-01'
+  // Token de solo lectura — generado en sanity.io/manage → API → Tokens
+  // Permisos: Viewer (read-only). Reemplazar con el token real antes de subir.
+  const READ_TOKEN='skdHMxE03mK8R3IDQSnqboQlLU5taLlqVL0vBsJtIIt56JlC3pmxERiX7FtNuo7dzDySxVEyYCyEIGSpH8lumOy9jdi1pjPvtlibibZ4xqwagghs61qskFvDmgCg9lr1UGBkRx3Z9D8zb7tAKYocuonOFKzT2gWZOvBwiujr6TvdhWXdGznI'
+  const slug = new URLSearchParams(window.location.search).get('slug')
+
+  // ── DEMO FALLBACK (real Mixi CDN images) ───────────────
+  const CDN='https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/'
+  const DEMO = {
+    title:'Celebrations No. 4', slug:'ruth-gonzaluna-celebrations-4',
+    mainImage:CDN+'69d58935c00d4a4f20e99069_Ruth%20Gonzaluna_Preparativos%20para%20un%20aniversario%20-%20Ruth%20Gonza%CC%81lez.jpg',
+    images:[], videoUrl:null,
+    materials:'Oil on canvas', medium:'Painting', year:2025,
+    dimensions:{height:36, width:48, heightCm:91, widthCm:122},
+    rarity:'Unique', signature:'Hand-signed by the artist',
+    certificateOfAuthenticity:'Includes a Certificate of Authenticity',
+    frame:'Unframed', condition:'Excellent',
+    description:[{ _type:'block', children:[{ text:'Part of Ruth Gonzaluna\u2019s Celebrations series, this work explores ritual, color, and the choreography of gathering. Layered oil passages build a luminous surface that shifts between figuration and abstraction.' }]}],
+    availability:'available', price:3800, priceOnRequest:false, installmentsAvailable:true,
+    views:482, inquiryCount:7,
+    artist:{ name:'Ruth Gonzaluna', nationality:'Mexico', birthYear:null, basedIn:'Mexico',
+      portrait:CDN+'69d58935c00d4a4f20e99069_Ruth%20Gonzaluna_Preparativos%20para%20un%20aniversario%20-%20Ruth%20Gonza%CC%81lez.jpg',
+      bio:[{ _type:'block', children:[{ text:'Ruth Gonzaluna is a Mexican painter working between figuration and memory. Her practice centers on domestic ritual and celebration as sites of meaning.' }]}] }
+  }
+
+  async function loadArtwork(){
+    if(!slug){ render(DEMO); return }
+    const query=encodeURIComponent(`
+      *[_type == "artwork" && slug.current == "${slug}"][0]{
+        title, "slug": slug.current, "mainImage": mainImage.asset->url,
+        "images": images[]{ "url": asset->url, caption }, videoUrl,
+        materials, medium, year, dimensions,
+        rarity, signature, certificateOfAuthenticity, frame, condition,
+        description, availability, price, priceOnRequest, installmentsAvailable,
+        views, inquiryCount,
+        "artist": artist->{ name, nationality, birthYear, basedIn, "portrait": portrait.asset->url, bio }
+      }
+    `)
+    try {
+      const ctrl = new AbortController()
+      const t = setTimeout(()=>ctrl.abort(), 3000)
+      const res=await fetch(`https://${PROJECT_ID}.api.sanity.io/v${API_VER}/data/query/${DATASET}?query=${query}`, {
+        signal: ctrl.signal,
+        headers: READ_TOKEN !== '' ? { Authorization: `Bearer ${READ_TOKEN}` } : {}
+      })
+      clearTimeout(t)
+      const json=await res.json()
+      if(!json.result){ render(DEMO); return }
+      trackView(); render(json.result)
+    } catch { render(DEMO) }
+  }
+
+  function imgParam(url, params){ return url && url.includes('cdn.sanity.io') ? `${url}?${params}` : url }
+
+  function render(a){
+    document.getElementById('stateLoading').style.display='none'
+    document.getElementById('artworkMain').style.display='block'
+    document.title=`${a.title} — ${a.artist?.name||''} — Mixi Art Studio`
+    document.getElementById('bc-artist').textContent=a.artist?.name||''
+    document.getElementById('bc-title').textContent=a.title||''
+    document.getElementById('statViews').textContent=(a.views||0).toLocaleString()
+    document.getElementById('statInquiries').textContent=(a.inquiryCount||0).toLocaleString()
+    document.getElementById('artArtist').textContent=a.artist?.name||''
+    document.getElementById('artTitle').innerHTML=`${a.title||''}${a.year?`, ${a.year}`:''}`
+    document.getElementById('artMaterials').textContent=a.materials||''
+
+    const d=a.dimensions
+    if(d?.height && d?.width){
+      let s=`${d.height} × ${d.width}${d.depth?` × ${d.depth}`:''} in`
+      if(d.heightCm && d.widthCm) s+=`  |  ${d.heightCm} × ${d.widthCm}${d.depthCm?` × ${d.depthCm}`:''} cm`
+      document.getElementById('artSize').textContent=s
+    }
+
+    const badges=document.getElementById('artBadges')
+    if(a.rarity) badges.innerHTML+=`<span class="art-badge">◆ <a href="#">${a.rarity}</a></span>`
+    if(a.certificateOfAuthenticity && !a.certificateOfAuthenticity.includes('Not'))
+      badges.innerHTML+=`<span class="art-badge">▣ Includes a <a href="#">Certificate of Authenticity</a></span>`
+
+    if(a.availability==='sold'){
+      document.getElementById('priceSection').style.display='none'
+      document.getElementById('contactSection').style.display='none'
+      document.getElementById('soldSection').style.display='block'
+    } else if(a.priceOnRequest||!a.price){
+      document.getElementById('priceSection').style.display='none'
+      document.getElementById('contactSection').style.display='block'
+    } else {
+      document.getElementById('priceMain').textContent=`US$${Number(a.price).toLocaleString()}`
+      if(a.installmentsAvailable){
+        const mo=Math.ceil(a.price/4).toLocaleString()
+        document.getElementById('installmentText').textContent=`or 4 × US$${mo}`
+        document.getElementById('installmentLine').style.display='flex'
+      }
+    }
+
+    if(a.mainImage){
+      document.getElementById('mainImg').src=imgParam(a.mainImage,'w=900&auto=format')
+      document.getElementById('mainImg').alt=a.title
+      document.getElementById('lightboxImg').src=imgParam(a.mainImage,'w=1800&auto=format')
+    }
+
+    const all=[]
+    if(a.mainImage) all.push({url:a.mainImage, caption:a.title})
+    if(a.images) all.push(...a.images)
+    if(all.length>1){
+      const el=document.getElementById('thumbnails')
+      all.forEach((img,i)=>{
+        const t=document.createElement('div')
+        t.className='thumb'+(i===0?' active':'')
+        t.innerHTML=`<img src="${imgParam(img.url,'w=136&auto=format')}" loading="lazy">`
+        t.onclick=()=>{
+          document.getElementById('mainImg').src=imgParam(img.url,'w=900&auto=format')
+          document.getElementById('lightboxImg').src=imgParam(img.url,'w=1800&auto=format')
+          document.querySelectorAll('.thumb').forEach(x=>x.classList.remove('active'))
+          t.classList.add('active')
+        }
+        el.appendChild(t)
+      })
+    }
+
+    if(a.videoUrl){
+      let embed=a.videoUrl
+      if(a.videoUrl.includes('vimeo.com')) embed=`https://player.vimeo.com/video/${a.videoUrl.split('/').pop()}`
+      else if(a.videoUrl.includes('youtube')||a.videoUrl.includes('youtu.be')){
+        const id=a.videoUrl.includes('v=')?a.videoUrl.split('v=')[1].split('&')[0]:a.videoUrl.split('/').pop()
+        embed=`https://www.youtube.com/embed/${id}`
+      }
+      document.getElementById('videoIframe').src=embed
+      document.getElementById('videoWrap').style.display='block'
+    }
+
+    const fichaRows=[
+      ['Materials', a.materials],
+      ['Size', document.getElementById('artSize').textContent||null],
+      ['Rarity', a.rarity],
+      ['Medium', a.medium],
+      ['Signature', a.signature],
+      ['Certificate of authenticity', a.certificateOfAuthenticity],
+      ['Frame', a.frame],
+      ['Condition', a.condition]
+    ]
+    const table=document.getElementById('fichaTable')
+    fichaRows.forEach(([label,val])=>{ if(!val) return; const tr=document.createElement('tr'); tr.innerHTML=`<td>${label}</td><td>${val}</td>`; table.appendChild(tr) })
+
+    if(a.description?.length){
+      const el=document.getElementById('artDescription')
+      a.description.forEach(b=>{ if(b._type==='block'){ const p=document.createElement('p'); p.textContent=b.children?.map(c=>c.text).join('')||''; el.appendChild(p) } })
+    }
+
+    if(a.artist){
+      document.getElementById('artistSection').style.display='block'
+      document.getElementById('artistNameFull').textContent=a.artist.name||''
+      const meta=[a.artist.nationality, a.artist.birthYear?`b. ${a.artist.birthYear}`:null].filter(Boolean).join(' · ')
+      document.getElementById('artistMeta').textContent=meta
+      if(a.artist.portrait) document.getElementById('artistAvatar').src=imgParam(a.artist.portrait,'w=108&auto=format')
+      if(a.artist.bio?.length){
+        const el=document.getElementById('artistBio')
+        a.artist.bio.forEach(b=>{ if(b._type==='block'){ const p=document.createElement('p'); p.textContent=b.children?.map(c=>c.text).join('')||''; el.appendChild(p) } })
+      }
+    }
+    window._artwork=a
+  }
+
+  async function startCheckout(){
+    const a=window._artwork
+    if(!a||!a.price){ document.getElementById('inquiryModal').classList.add('open'); return }
+    const btn=document.getElementById('btnPurchase')
+    btn.textContent='Loading…'; btn.disabled=true
+    try{
+      const res=await fetch('/api/checkout',{ method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ artworkSlug:a.slug, artworkTitle:a.title, artistName:a.artist?.name||'', price:a.price, imageUrl:a.mainImage||'' }) })
+      const json=await res.json()
+      if(json.url) window.location.href=json.url
+      else throw new Error()
+    }catch{ alert('Something went wrong. Please try again or contact us at info@mixiartstudio.us'); btn.textContent='Purchase'; btn.disabled=false }
+  }
+
+  function trackView(){
+    const key=`viewed_${slug}`
+    if(sessionStorage.getItem(key)) return
+    sessionStorage.setItem(key,'1')
+    fetch('/api/track',{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({slug}) }).catch(()=>{})
+  }
+
+  async function submitInquiry(){
+    const name=document.getElementById('inqName').value.trim()
+    const email=document.getElementById('inqEmail').value.trim()
+    const message=document.getElementById('inqMessage').value.trim()
+    const phone=document.getElementById('inqPhone').value.trim()
+    const install=document.getElementById('inqInstallments').checked
+    if(!name||!email){ alert('Please enter your name and email.'); return }
+    try {
+      const res=await fetch('/api/inquiry',{ method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ artworkSlug:slug, artworkTitle:window._artwork?.title, name, email, phone, message, interestedInInstallments:install }) })
+      if(res.ok){ document.getElementById('inquiryForm').style.display='none'; document.getElementById('inquirySuccess').style.display='block' }
+      else throw new Error()
+    } catch { alert('Something went wrong. Please email us at info@mixiartstudio.us') }
+  }
+
+  function toggleAcc(id){ const body=document.getElementById(id), row=body.previousElementSibling; body.classList.toggle('open'); row.classList.toggle('open') }
+  function openLightbox(){ document.getElementById('lightbox').classList.add('open') }
+  function closeLightbox(){ document.getElementById('lightbox').classList.remove('open') }
+  document.getElementById('inquiryModal').addEventListener('click',e=>{ if(e.target===e.currentTarget) e.currentTarget.classList.remove('open') })
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeLightbox(); document.getElementById('inquiryModal').classList.remove('open') } })
+  document.querySelectorAll('.nav-links a, .nbtn').forEach(a=>a.addEventListener('click',()=>document.querySelector('nav').classList.remove('open')))
+
+  loadArtwork()
+  const paymentStatus=new URLSearchParams(window.location.search).get('payment')
+  if(paymentStatus==='success'){
+    const b=document.createElement('div')
+    b.style.cssText='position:fixed;top:80px;left:0;right:0;background:#0C0C0C;color:#F5F4F0;text-align:center;padding:14px;font-size:11px;letter-spacing:2px;text-transform:uppercase;z-index:300;'
+    b.textContent='✓ Purchase complete — Mixi Art Studio will be in touch shortly'
+    document.body.appendChild(b); setTimeout(()=>b.remove(),8000)
+  }
+</script>
+</body>
+</html>

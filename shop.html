@@ -108,26 +108,18 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify
 .results-bar { padding:14px 48px; font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); border-bottom:1px solid var(--black); }
 
 /* WORKS GRID */
-.works-grid { display:grid; grid-template-columns:repeat(3,1fr); border-bottom:1px solid var(--black); }
-.work-card { border-right:1px solid var(--black); border-bottom:1px solid var(--black); display:flex; flex-direction:column; cursor:pointer; transition:background .15s; }
-.work-card:nth-child(3n) { border-right:none; }
-.work-card:hover { background:#F0EFEB; }
-.work-img-wrap { position:relative; background:var(--gl); aspect-ratio:4/3; overflow:hidden; border-bottom:1px solid var(--black); }
+.works-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:32px 24px; padding:32px 48px 8px; border-bottom:none; }
+.work-card { border:none; display:flex; flex-direction:column; cursor:pointer; transition:opacity .15s; }
+.work-card:hover { opacity:.82; }
+.work-img-wrap { position:relative; background:var(--gl); aspect-ratio:4/3; overflow:hidden; border-bottom:none; }
 .work-img-wrap img { width:100%; height:100%; object-fit:contain; display:block; transition:transform .5s ease; }
 .work-card:hover .work-img-wrap img { transform:scale(1.04); }
-.work-badge { position:absolute; top:0; left:0; font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; padding:6px 10px; background:var(--black); color:var(--white); }
-.work-badge.installments { background:var(--white); color:var(--black); border-right:1px solid var(--black); border-bottom:1px solid var(--black); }
-.work-badge.sold { background:var(--black); color:var(--white); }
-.work-body { padding:16px 18px 20px; display:flex; flex-direction:column; align-items:center; text-align:center; flex:1; }
+.work-body { padding:10px 4px 4px; display:flex; flex-direction:column; align-items:center; text-align:center; flex:1; }
 .work-artist { display:none; }
-.work-title { font-size:15px; color:var(--black); font-style:normal; margin-bottom:6px; line-height:1.35; }
-.work-meta { font-size:12px; letter-spacing:.5px; text-transform:uppercase; color:var(--gray); margin-bottom:10px; line-height:1.4; }
-.work-price { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:15px; letter-spacing:.5px; margin-top:auto; }
-.work-installment { font-size:12px; color:var(--gray); margin-top:4px; letter-spacing:.3px; }
-.work-actions { margin-top:14px; opacity:0; transition:opacity .2s; width:100%; }
-.work-card:hover .work-actions { opacity:1; }
-.btn-inquire { display:block; width:100%; text-align:center; font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:11px; letter-spacing:2px; text-transform:uppercase; padding:11px; background:var(--black); color:var(--white); border:none; cursor:pointer; transition:opacity .2s; }
-.btn-inquire:hover { opacity:.75; }
+.work-title { font-size:15px; color:var(--black); font-style:normal; margin-bottom:2px; line-height:1.3; }
+.work-meta { font-size:12px; letter-spacing:.5px; text-transform:uppercase; color:var(--gray); margin-bottom:4px; line-height:1.3; }
+.work-price { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:15px; letter-spacing:.5px; margin-top:2px; }
+.work-installment { font-size:12px; color:var(--gray); margin-top:2px; letter-spacing:.3px; }
 
 /* STATE MSG */
 .state-msg { grid-column:1 / -1; padding:90px 0; text-align:center; font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); }
@@ -220,10 +212,7 @@ footer { background:var(--black); }
   .work-price { font-size:16px !important; }
   .work-installment { font-size:12.5px !important; }
 
-  .works-grid { grid-template-columns:repeat(2,1fr) !important; }
-  .work-card:nth-child(3n) { border-right:1px solid var(--black); }
-  .work-card:nth-child(2n) { border-right:none; }
-  .work-actions { opacity:1 !important; }
+  .works-grid { grid-template-columns:repeat(2,1fr) !important; gap:24px 16px !important; padding:24px 16px 4px !important; }
 
   .info-strip { grid-template-columns:1fr !important; }
   .info-item { padding:24px 16px !important; border-right:none !important; border-bottom:1px solid var(--gl); }
@@ -506,11 +495,6 @@ footer { background:var(--black); }
       card.className='work-card'
       card.onclick=()=>{ window.location.href=`artwork.html?slug=${w.slug}` }
 
-      let badge=''
-      if(w.availability==='sold') badge='<span class="work-badge sold">Sold</span>'
-      else if(w.availability==='available') badge='<span class="work-badge">Available</span>'
-      else if(w.availability==='on_hold') badge='<span class="work-badge">On Hold</span>'
-
       const rawImg = w.mainImage||''
       const imgUrl = rawImg.includes('cdn.sanity.io') ? `${rawImg}?w=700&fit=max&auto=format` : rawImg
       const imgTag = imgUrl ? `<img src="${imgUrl}" alt="${w.title}" loading="lazy">` : ''
@@ -530,7 +514,7 @@ footer { background:var(--black); }
       if(w.dimensions?.height && w.dimensions?.width) dimStr=` · ${w.dimensions.height} × ${w.dimensions.width} in`
 
       card.innerHTML=`
-        <div class="work-img-wrap">${imgTag}${badge}</div>
+        <div class="work-img-wrap">${imgTag}</div>
         <div class="work-body">
           <p class="work-artist">${w.artistName||''}</p>
           <p class="work-title">${w.title||''}</p>

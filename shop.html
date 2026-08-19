@@ -113,7 +113,7 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify
 .work-card:nth-child(3n) { border-right:none; }
 .work-card:hover { background:#F0EFEB; }
 .work-img-wrap { position:relative; background:var(--gl); aspect-ratio:4/3; overflow:hidden; border-bottom:1px solid var(--black); }
-.work-img-wrap img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease; }
+.work-img-wrap img { width:100%; height:100%; object-fit:contain; display:block; transition:transform .5s ease; }
 .work-card:hover .work-img-wrap img { transform:scale(1.04); }
 .work-badge { position:absolute; top:0; left:0; font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; padding:6px 10px; background:var(--black); color:var(--white); }
 .work-badge.installments { background:var(--white); color:var(--black); border-right:1px solid var(--black); border-bottom:1px solid var(--black); }
@@ -508,12 +508,11 @@ footer { background:var(--black); }
 
       let badge=''
       if(w.availability==='sold') badge='<span class="work-badge sold">Sold</span>'
-      else if(w.installmentsAvailable && w.availability==='available') badge='<span class="work-badge installments">Klarna · Afterpay</span>'
       else if(w.availability==='available') badge='<span class="work-badge">Available</span>'
       else if(w.availability==='on_hold') badge='<span class="work-badge">On Hold</span>'
 
       const rawImg = w.mainImage||''
-      const imgUrl = rawImg.includes('cdn.sanity.io') ? `${rawImg}?w=600&h=450&fit=crop&auto=format` : rawImg
+      const imgUrl = rawImg.includes('cdn.sanity.io') ? `${rawImg}?w=700&fit=max&auto=format` : rawImg
       const imgTag = imgUrl ? `<img src="${imgUrl}" alt="${w.title}" loading="lazy">` : ''
 
       let priceHtml=''
@@ -537,9 +536,6 @@ footer { background:var(--black); }
           <p class="work-title">${w.title||''}</p>
           <p class="work-meta">${(w.medium||'')}${dimStr}${w.year?` · ${w.year}`:''}</p>
           ${priceHtml}
-          <div class="work-actions">
-            <button class="btn-inquire" onclick="event.stopPropagation();openModal('${w.slug}','${(w.title||'').replace(/'/g,"\\'")}','${(w.artistName||'').replace(/'/g,"\\'")}')">Inquire</button>
-          </div>
         </div>`
       grid.appendChild(card)
     })

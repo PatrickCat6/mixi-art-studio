@@ -37,7 +37,7 @@ function sizeTierFor(dimensions) {
 
 async function getArtworkForCheckout(slug) {
   const query = encodeURIComponent(`
-    *[_type == "artwork" && slug.current == "${slug}"][0]{
+    *[_type == "artwork" && !(_id in path("drafts.**")) && slug.current == "${slug}"][0]{
       title, price, priceOnRequest, availability, dimensions,
       "artistName": artist->name
     }

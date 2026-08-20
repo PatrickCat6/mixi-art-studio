@@ -83,7 +83,7 @@ export default async function handler(req, res) {
 
     // 3. Vistas actuales de todas las obras publicadas.
     const allArtworks = await sanityQuery(`
-      *[_type == "artwork" && defined(slug.current)] {
+      *[_type == "artwork" && !(_id in path("drafts.**")) && defined(slug.current)] {
         "slug": slug.current, title, views,
         "artistName": artist->name
       }

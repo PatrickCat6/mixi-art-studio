@@ -25,7 +25,7 @@ async function sanityMutation(mutations) {
 }
 
 async function getArtworkIdBySlug(slug) {
-  const query = encodeURIComponent(`*[_type == "artwork" && slug.current == "${slug}"][0]{ _id, inquiryCount }`)
+  const query = encodeURIComponent(`*[_type == "artwork" && !(_id in path("drafts.**")) && slug.current == "${slug}"][0]{ _id, inquiryCount }`)
   const url   = `https://${SANITY_PROJECT}.api.sanity.io/v2024-01-01/data/query/${SANITY_DATASET}?query=${query}`
   const res   = await fetch(url, {
     headers: { Authorization: `Bearer ${SANITY_TOKEN}` },

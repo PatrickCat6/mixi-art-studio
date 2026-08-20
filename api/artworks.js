@@ -12,7 +12,7 @@ const SANITY_TOKEN   = process.env.SANITY_READ_TOKEN
 const DOMAIN         = 'https://mixiartstudio.us'
 
 const LIST_QUERY = `
-  *[_type == "artwork"] | order(_createdAt desc) {
+  *[_type == "artwork" && !(_id in path("drafts.**"))] | order(_createdAt desc) {
     title, "slug": slug.current, "mainImage": mainImage.asset->url,
     "artistName": artist->name, "artistSlug": artist->slug.current,
     medium, year, dimensions, materials, category, availability,
@@ -22,7 +22,7 @@ const LIST_QUERY = `
 
 function detailQuery(slug) {
   return `
-    *[_type == "artwork" && slug.current == "${slug}"][0]{
+    *[_type == "artwork" && !(_id in path("drafts.**")) && slug.current == "${slug}"][0]{
       title, "slug": slug.current, "mainImage": mainImage.asset->url,
       "images": images[]{ "url": asset->url, caption }, videoUrl,
       materials, medium, year, dimensions,

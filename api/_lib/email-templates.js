@@ -237,3 +237,91 @@ The artwork has already been marked "Sold" in Sanity automatically.
     text: `New sale: ${artworkTitle}${artistName ? ` by ${artistName}` : ''}\nTotal: ${money(amountTotal, currency)}\n\nBuyer: ${buyerName || ''} <${buyerEmail || ''}>${buyerPhone ? ` · ${buyerPhone}` : ''}\n\n${shippingAddress ? `Ship to:\n${shippingAddress.line1 || ''}\n${shippingAddress.city || ''}, ${shippingAddress.state || ''} ${shippingAddress.postal_code || ''}\n${shippingAddress.country || ''}\n\n` : ''}Session: ${sessionId || ''}\nPayment intent: ${paymentIntentId || ''}`,
   }
 }
+
+// ── EMAIL 3: RESUMEN SEMANAL (inquiries pendientes + obras más vistas) ──
+export function weeklyDigestEmail(o) {
+  const { weekLabel, staleInquiries = [], mostViewed = [], isFirstRun = false } = o
+
+  const inquiryRow = (inq) => {
+    const artworkLabel = inq.artworkTitle
+      ? `${esc(inq.artworkTitle)}${inq.artistName ? ` (${esc(inq.artistName)})` : ''}`
+      : 'General inquiry'
+    const artworkLink = inq.artworkSlug
+      ? `${SITE_URL}/artwork.html?slug=${encodeURIComponent(inq.artworkSlug)}`
+      : null
+    return `
+<tr><td style="padding:16px 0;border-top:1px solid ${LINE};">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;color:${BLACK};">${esc(inq.name)}</td>
+<td style="text-align:right;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:${GRAY};">${inq.daysAgo}d ago</td>
+</tr>
+</table>
+<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${GRAY};margin-top:2px;">
+<a href="mailto:${esc(inq.email)}" style="color:${GRAY};">${esc(inq.email)}</a>${inq.phone ? ` · ${esc(inq.phone)}` : ''}
+</div>
+<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${BLACK};margin-top:6px;">
+${artworkLink ? `<a href="${artworkLink}" style="color:${BLACK};">${artworkLabel}</a>` : artworkLabel}
+</div>
+${inq.message ? `<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${GRAY};margin-top:6px;font-style:italic;">"${esc(inq.message).slice(0, 160)}${inq.message.length > 160 ? '…' : ''}"</div>` : ''}
+</td></tr>`
+  }
+
+  const viewedRow = (a, i) => {
+    const url = `${SITE_URL}/artwork.html?slug=${encodeURIComponent(a.slug || '')}`
+    return `
+<tr>
+<td style="padding:8px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${GRAY};width:20px;">${i + 1}.</td>
+<td style="padding:8px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:${BLACK};">
+<a href="${url}" style="color:${BLACK};text-decoration:none;">${esc(a.title)}</a>${a.artistName ? `<span style="color:${GRAY};"> — ${esc(a.artistName)}</span>` : ''}
+</td>
+<td style="padding:8px 0;text-align:right;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${GRAY};white-space:nowrap;">${a.delta} view${a.delta === 1 ? '' : 's'}</td>
+</tr>`
+  }
+
+  const inquiriesSection = staleInquiries.length
+    ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0">${staleInquiries.map(inquiryRow).join('')}</table>`
+    : `<div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:${GRAY};padding:12px 0;">No inquiries older than 3 days without a reply — nice work.</div>`
+
+  const viewedSection = isFirstRun
+    ? `<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${GRAY};padding:12px 0;">This is the first digest, so there's no prior week to compare against yet — next week's email will show view trends.</div>`
+    : mostViewed.length
+      ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0">${mostViewed.map(viewedRow).join('')}</table>`
+      : `<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${GRAY};padding:12px 0;">No new artwork views recorded this week.</div>`
+
+  const bodyHtml = `
+<tr><td style="padding:32px 0 4px;">
+<h1 style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:20px;font-weight:bold;color:${BLACK};">Weekly digest</h1>
+</td></tr>
+<tr><td style="padding:4px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${GRAY};">
+${esc(weekLabel)}
+</td></tr>
+
+<tr><td style="padding:28px 0 0;">
+<div style="font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:${GRAY};margin-bottom:4px;">Needs a reply (3+ days old)</div>
+${inquiriesSection}
+</td></tr>
+
+<tr><td style="padding:28px 0 0;">
+<div style="font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:${GRAY};margin-bottom:8px;">Most viewed this week</div>
+${viewedSection}
+</td></tr>
+
+<tr><td style="padding:28px 0 0;">
+<a href="${SITE_URL}/shop.html" style="display:inline-block;background-color:${BLACK};color:${WHITE};text-decoration:none;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:14px 28px;">View Shop</a>
+</td></tr>
+`
+
+  const textInquiries = staleInquiries.length
+    ? staleInquiries.map(i => `- ${i.name} <${i.email}> (${i.daysAgo}d ago) — ${i.artworkTitle || 'General inquiry'}`).join('\n')
+    : 'No inquiries older than 3 days without a reply.'
+  const textViewed = isFirstRun
+    ? 'First digest — no comparison yet.'
+    : (mostViewed.length ? mostViewed.map((a, i) => `${i + 1}. ${a.title}${a.artistName ? ` — ${a.artistName}` : ''} (${a.delta} views)`).join('\n') : 'No new views this week.')
+
+  return {
+    subject: `Weekly digest — ${weekLabel}`,
+    html: wrapEmail({ preheader: `${staleInquiries.length} inquiries need a reply.`, bodyHtml }),
+    text: `Weekly digest — ${weekLabel}\n\nNeeds a reply (3+ days old):\n${textInquiries}\n\nMost viewed this week:\n${textViewed}`,
+  }
+}

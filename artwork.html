@@ -319,13 +319,13 @@ footer { background:var(--black); }
         <span>Shipping and taxes</span><span class="arr">⌄</span>
       </div>
       <div class="acc-body" id="accShipping">
-        Professional art packing and shipping from Salt Lake City, UT. Domestic and international shipping available. Shipping costs calculated at checkout. All applicable taxes apply.
+        Professional art packing and shipping. Domestic and international shipping available. Shipping costs calculated at checkout. All applicable taxes apply.
       </div>
       <div class="acc-row" onclick="toggleAcc('accPayment')">
         <span>Payment options</span><span class="arr">⌄</span>
       </div>
       <div class="acc-body" id="accPayment">
-        Secure checkout via <strong>Square</strong>. Split into 4 interest-free installments with <strong>Klarna</strong> or <strong>Afterpay</strong> (USA only). Mixi Art Studio receives full payment at time of purchase.
+        Secure checkout via <strong>Stripe</strong>. Split into 4 interest-free installments with <strong>Klarna</strong> or <strong>Afterpay</strong> (USA only). Mixi Art Studio receives full payment at time of purchase.
       </div>
 
       <div class="gallery-row">
@@ -476,6 +476,26 @@ footer { background:var(--black); }
 
   function imgParam(url, params){ return url && url.includes('cdn.sanity.io') ? `${url}?${params}` : url }
 
+  // Espejo ligero de la lógica de api/_lib/origin.js, solo para mostrar de dónde
+  // sale la pieza en el panel de "Shipping and taxes". La fuente de verdad real
+  // (la que decide tarifas y el correo de confirmación) sigue viviendo en el
+  // servidor (checkout.js / webhook.js / origin.js).
+  function shippingOriginLabel(artist){
+    const EU_HINTS=['spain','spanish','france','french','italy','italian','germany','german','portugal','portuguese','united kingdom','uk','england','netherlands','dutch','belgium','switzerland','austria','greece','ireland','poland','sweden','norway','denmark','finland','europe','european']
+    function bucketFrom(text){
+      if(!text) return null
+      const s=text.toLowerCase()
+      if(s.includes('not provided')||s.includes('/')) return null
+      if(/\bmx\b/.test(s)||s.includes('mexic')) return 'Mexico'
+      if(/\bus\b/.test(s)||s.includes('usa')||s.includes('united states')||s.includes('american')) return 'the United States'
+      if(EU_HINTS.some(h=>s.includes(h))) return 'Europe'
+      return null
+    }
+    const basedIn=artist?.basedIn||''
+    const city=basedIn && !/not provided/i.test(basedIn) ? basedIn.split(',')[0].trim() : null
+    return bucketFrom(basedIn) ? (city||bucketFrom(basedIn)) : (bucketFrom(artist?.nationality||'') || 'Salt Lake City, UT')
+  }
+
   function render(a){
     document.getElementById('stateLoading').style.display='none'
     document.getElementById('artworkMain').style.display='block'
@@ -586,6 +606,9 @@ footer { background:var(--black); }
         moreLink.style.display='inline-block'
       }
     }
+    const originLabel=shippingOriginLabel(a.artist)
+    document.getElementById('accShipping').textContent=`Professional art packing and shipping from ${originLabel}. Domestic and international shipping available. Shipping costs calculated at checkout. All applicable taxes apply.`
+
     injectArtworkSEO(a)
     window._artwork=a
   }

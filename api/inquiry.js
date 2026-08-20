@@ -1,11 +1,19 @@
 // /api/inquiry.js
 // Recibe un POST con los datos del formulario de inquiry
-// y crea un documento en Sanity + incrementa inquiryCount en la obra.
+// y crea un documento en Sanity + incrementa inquiryCount en la obra +
+// avisa a info@mixiartstudio.us por correo (antes esto último no pasaba —
+// el inquiry se guardaba en silencio y nadie se enteraba hasta el resumen
+// semanal o hasta entrar a Sanity Studio).
+
+import { sendEmail } from './_lib/resend.js'
+import { internalInquiryNotificationEmail } from './_lib/email-templates.js'
 
 const SANITY_PROJECT = process.env.SANITY_PROJECT_ID
 const SANITY_DATASET = process.env.SANITY_DATASET
 const SANITY_TOKEN   = process.env.SANITY_WRITE_TOKEN
 const DOMAIN         = 'https://mixiartstudio.us'
+const INTERNAL_TO    = 'info@mixiartstudio.us'
+const ORDERS_FROM    = 'Mixi Art Studio <orders@mixiartstudio.us>'
 
 async function sanityMutation(mutations) {
   const url = `https://${SANITY_PROJECT}.api.sanity.io/v2024-01-01/data/mutate/${SANITY_DATASET}`
@@ -25,7 +33,7 @@ async function sanityMutation(mutations) {
 }
 
 async function getArtworkIdBySlug(slug) {
-  const query = encodeURIComponent(`*[_type == "artwork" && !(_id in path("drafts.**")) && slug.current == "${slug}"][0]{ _id, inquiryCount }`)
+  const query = encodeURIComponent(`*[_type == "artwork" && !(_id in path("drafts.**")) && slug.current == "${slug}"][0]{ _id, inquiryCount, title, "artistName": artist->name }`)
   const url   = `https://${SANITY_PROJECT}.api.sanity.io/v2024-01-01/data/query/${SANITY_DATASET}?query=${query}`
   const res   = await fetch(url, {
     headers: { Authorization: `Bearer ${SANITY_TOKEN}` },
@@ -68,8 +76,9 @@ export default async function handler(req, res) {
     }
 
     // Si viene con slug, vincular a la obra
+    let artwork = null
     if (artworkSlug) {
-      const artwork = await getArtworkIdBySlug(artworkSlug)
+      artwork = await getArtworkIdBySlug(artworkSlug)
       if (artwork) {
         inquiryDoc.artwork = { _type: 'reference', _ref: artwork._id }
 
@@ -89,6 +98,25 @@ export default async function handler(req, res) {
     await sanityMutation(mutations)
 
     console.log(`[inquiry] ✅ New inquiry from ${email} about ${artworkSlug || 'general'}`)
+
+    // 3. Avisar a info@ por correo. Un fallo aquí NO debe hacer fallar el
+    //    endpoint — el inquiry ya quedó guardado en Sanity, que es lo crítico.
+    try {
+      const notification = internalInquiryNotificationEmail({
+        name: inquiryDoc.name,
+        email: inquiryDoc.email,
+        phone: inquiryDoc.phone,
+        message: inquiryDoc.message,
+        interestedInInstallments: inquiryDoc.interestedInInstallments,
+        artworkTitle: artwork?.title || artworkTitle || '',
+        artworkSlug,
+        artistName: artwork?.artistName || '',
+      })
+      await sendEmail({ to: INTERNAL_TO, from: ORDERS_FROM, replyTo: inquiryDoc.email, ...notification })
+      console.log(`[inquiry] ✅ Notification email sent for ${email}`)
+    } catch (emailErr) {
+      console.error('[inquiry] Failed to send notification email:', emailErr.message)
+    }
 
     return res.status(200).json({ success: true })
 

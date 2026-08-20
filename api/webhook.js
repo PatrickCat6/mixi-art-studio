@@ -9,6 +9,7 @@
 import Stripe from 'stripe'
 import { sendEmail } from './_lib/resend.js'
 import { customerConfirmationEmail, internalSaleNotificationEmail } from './_lib/email-templates.js'
+import { resolveOrigin, deliveryEstimateFor } from './_lib/origin.js'
 
 const stripe    = new Stripe(process.env.STRIPE_SECRET_KEY)
 const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET
@@ -54,7 +55,9 @@ async function getArtworkForEmail(slug) {
   const query = encodeURIComponent(`
     *[_type == "artwork" && !(_id in path("drafts.**")) && slug.current == "${slug}"][0]{
       _id, title, mainImage, dimensions,
-      "artistName": artist->name
+      "artistName": artist->name,
+      "artistBasedIn": artist->basedIn,
+      "artistNationality": artist->nationality
     }
   `)
   const url = `https://${SANITY_PROJECT}.api.sanity.io/v2024-01-01/data/query/${SANITY_DATASET}?query=${query}`
@@ -69,12 +72,6 @@ async function getArtworkForEmail(slug) {
 function extractShippingAddress(session) {
   const shipping = session.shipping_details || session.shipping || null
   return shipping?.address || null
-}
-
-function deliveryEstimateFor(countryCode) {
-  return countryCode === 'US'
-    ? '5–10 business days'
-    : '10–21 business days'
 }
 
 export default async function handler(req, res) {
@@ -158,6 +155,10 @@ export default async function handler(req, res) {
       const shippingAmount   = session.shipping_cost?.amount_total ??
         (session.amount_total != null && amountSubtotal != null ? session.amount_total - amountSubtotal : null)
 
+      // La obra no siempre sale de Salt Lake City — sale de donde esté
+      // basado el artista (con nacionalidad como respaldo). Ver _lib/origin.js.
+      const origin = resolveOrigin({ basedIn: artwork.artistBasedIn, nationality: artwork.artistNationality })
+
       const emailData = {
         artworkTitle: artwork.title,
         artistName:   artwork.artistName || '',
@@ -169,7 +170,8 @@ export default async function handler(req, res) {
         amountSubtotal, shippingAmount,
         amountTotal:  session.amount_total,
         currency,
-        deliveryEstimate: shippingAddress?.country ? deliveryEstimateFor(shippingAddress.country) : '',
+        originLabel: origin.label,
+        deliveryEstimate: shippingAddress?.country ? deliveryEstimateFor(origin.bucket, shippingAddress.country) : '',
         sessionId:       session.id,
         paymentIntentId: session.payment_intent,
       }

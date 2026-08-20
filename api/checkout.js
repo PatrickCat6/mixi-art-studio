@@ -9,6 +9,7 @@
 // pagando menos de lo que cuesta realmente.
 
 import Stripe from 'stripe'
+import { resolveOrigin, countryLabelForBucket } from './_lib/origin.js'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
@@ -39,7 +40,9 @@ async function getArtworkForCheckout(slug) {
   const query = encodeURIComponent(`
     *[_type == "artwork" && !(_id in path("drafts.**")) && slug.current == "${slug}"][0]{
       title, price, priceOnRequest, availability, dimensions,
-      "artistName": artist->name
+      "artistName": artist->name,
+      "artistBasedIn": artist->basedIn,
+      "artistNationality": artist->nationality
     }
   `)
   const url = `https://${SANITY_PROJECT}.api.sanity.io/v2024-01-01/data/query/${SANITY_DATASET}?query=${query}`
@@ -89,6 +92,14 @@ export default async function handler(req, res) {
 
     const tier = sizeTierFor(artwork.dimensions)
     const rates = SHIPPING_RATES[tier]
+
+    // La pieza no siempre sale de Salt Lake City — sale de donde esté basado el
+    // artista (con nacionalidad como respaldo). Ver _lib/origin.js. Esto solo
+    // ajusta las ETIQUETAS que ve el comprador en el checkout de Stripe — las
+    // tarifas siguen siendo por tamaño (SHIPPING_RATES) hasta que definamos
+    // montos distintos por origen.
+    const origin = resolveOrigin({ basedIn: artwork.artistBasedIn, nationality: artwork.artistNationality })
+    const originLabel = countryLabelForBucket(origin.bucket)
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
@@ -142,7 +153,7 @@ export default async function handler(req, res) {
           shipping_rate_data: {
             type: 'fixed_amount',
             fixed_amount: { amount: rates.domestic, currency: 'usd' },
-            display_name: 'Domestic Shipping (US)',
+            display_name: `Domestic Shipping (${originLabel})`,
             delivery_estimate: {
               minimum: { unit: 'business_day', value: 5 },
               maximum: { unit: 'business_day', value: 10 },
@@ -153,7 +164,7 @@ export default async function handler(req, res) {
           shipping_rate_data: {
             type: 'fixed_amount',
             fixed_amount: { amount: rates.international, currency: 'usd' },
-            display_name: 'International Shipping',
+            display_name: `International Shipping (ships from ${originLabel})`,
             delivery_estimate: {
               minimum: { unit: 'business_day', value: 10 },
               maximum: { unit: 'business_day', value: 21 },

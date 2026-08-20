@@ -82,11 +82,12 @@ export function customerConfirmationEmail(o) {
     artworkTitle, artistName, artworkSlug, mainImage,
     buyerName, shippingAddress,
     amountSubtotal, shippingAmount, amountTotal, currency,
-    sizeTier, deliveryEstimate, sessionId,
+    sizeTier, deliveryEstimate, sessionId, originLabel,
   } = o
 
   const firstName = (buyerName || '').trim().split(' ')[0] || 'there'
   const artworkUrl = `${SITE_URL}/artwork.html?slug=${encodeURIComponent(artworkSlug || '')}`
+  const shipOrigin = originLabel || 'Salt Lake City'
 
   const imageBlock = mainImage
     ? `<tr><td style="padding:28px 0 0;">
@@ -99,7 +100,7 @@ export function customerConfirmationEmail(o) {
 <h1 style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:22px;font-weight:bold;color:${BLACK};letter-spacing:-.5px;">Thank you for your order, ${esc(firstName)}</h1>
 </td></tr>
 <tr><td style="padding:8px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.7;color:${BLACK};">
-We're preparing <em>${esc(artworkTitle)}</em>${artistName ? ` by ${esc(artistName)}` : ''} for shipment. You'll receive a separate email with tracking information once your piece leaves our studio in Salt Lake City.
+We're preparing <em>${esc(artworkTitle)}</em>${artistName ? ` by ${esc(artistName)}` : ''} for shipment. You'll receive a separate email with tracking information once your piece leaves our partner studio in ${esc(shipOrigin)}.
 </td></tr>
 
 ${imageBlock}
@@ -153,7 +154,7 @@ ${sessionId ? `<br><br>Order reference: ${esc(sessionId)}` : ''}
   return {
     subject: `Your order confirmation — ${artworkTitle}`,
     html: wrapEmail({ preheader: `Your Mixi Art Studio order for "${artworkTitle}" is confirmed.`, bodyHtml }),
-    text: `Thank you for your order, ${firstName}.\n\nWe're preparing "${artworkTitle}"${artistName ? ` by ${artistName}` : ''} for shipment.\n\nSubtotal: ${money(amountSubtotal, currency)}\nShipping: ${money(shippingAmount, currency)}\nTotal: ${money(amountTotal, currency)}\n\n${shippingAddress ? `Shipping to:\n${(shippingAddress.line1 || '')}\n${(shippingAddress.city || '')}, ${(shippingAddress.state || '')} ${(shippingAddress.postal_code || '')}\n${(shippingAddress.country || '')}\n\n` : ''}View your artwork: ${artworkUrl}\n\nQuestions? ${SUPPORT_EMAIL}`,
+    text: `Thank you for your order, ${firstName}.\n\nWe're preparing "${artworkTitle}"${artistName ? ` by ${artistName}` : ''} for shipment from our partner studio in ${shipOrigin}.\n\nSubtotal: ${money(amountSubtotal, currency)}\nShipping: ${money(shippingAmount, currency)}\nTotal: ${money(amountTotal, currency)}\n\n${shippingAddress ? `Shipping to:\n${(shippingAddress.line1 || '')}\n${(shippingAddress.city || '')}, ${(shippingAddress.state || '')} ${(shippingAddress.postal_code || '')}\n${(shippingAddress.country || '')}\n\n` : ''}View your artwork: ${artworkUrl}\n\nQuestions? ${SUPPORT_EMAIL}`,
   }
 }
 
@@ -164,8 +165,9 @@ export function internalSaleNotificationEmail(o) {
     buyerName, buyerEmail, buyerPhone,
     shippingAddress, billingAddress,
     amountSubtotal, shippingAmount, amountTotal, currency,
-    sessionId, paymentIntentId,
+    sessionId, paymentIntentId, originLabel,
   } = o
+  const shipOrigin = originLabel || 'Salt Lake City'
 
   const studioUrl = `https://mixiartstudio.us/artwork.html?slug=${encodeURIComponent(artworkSlug || '')}`
   const stripeUrl = paymentIntentId ? `https://dashboard.stripe.com/payments/${paymentIntentId}` : null
@@ -185,11 +187,18 @@ export function internalSaleNotificationEmail(o) {
 <em>${esc(artworkTitle)}</em>${artistName ? ` by ${esc(artistName)}` : ''} just sold. Time to pack and ship.
 </td></tr>
 
+<tr><td style="padding:18px 0 0;">
+<div style="background-color:${WHITE};border:1px solid ${BLACK};padding:12px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${BLACK};">
+<strong>Ships from ${esc(shipOrigin)}</strong> — this piece is not in the Salt Lake City studio unless that's also where the artist is based.
+</div>
+</td></tr>
+
 <tr><td style="padding:24px 0 0;">
 <div style="font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:${GRAY};margin-bottom:8px;">Order</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 ${row('Artwork', `${esc(artworkTitle)} <a href="${studioUrl}" style="color:${GRAY};">(view)</a>`)}
 ${row('Artist', esc(artistName))}
+${row('Ships from', esc(shipOrigin))}
 ${row('Size tier', esc(sizeTier))}
 ${row('Subtotal', money(amountSubtotal, currency))}
 ${row('Shipping', money(shippingAmount, currency))}
@@ -234,7 +243,7 @@ The artwork has already been marked "Sold" in Sanity automatically.
   return {
     subject: `New sale: ${artworkTitle} — ${money(amountTotal, currency)}`,
     html: wrapEmail({ preheader: `${artworkTitle} sold for ${money(amountTotal, currency)}.`, bodyHtml }),
-    text: `New sale: ${artworkTitle}${artistName ? ` by ${artistName}` : ''}\nTotal: ${money(amountTotal, currency)}\n\nBuyer: ${buyerName || ''} <${buyerEmail || ''}>${buyerPhone ? ` · ${buyerPhone}` : ''}\n\n${shippingAddress ? `Ship to:\n${shippingAddress.line1 || ''}\n${shippingAddress.city || ''}, ${shippingAddress.state || ''} ${shippingAddress.postal_code || ''}\n${shippingAddress.country || ''}\n\n` : ''}Session: ${sessionId || ''}\nPayment intent: ${paymentIntentId || ''}`,
+    text: `New sale: ${artworkTitle}${artistName ? ` by ${artistName}` : ''}\nTotal: ${money(amountTotal, currency)}\nShips from: ${shipOrigin}\n\nBuyer: ${buyerName || ''} <${buyerEmail || ''}>${buyerPhone ? ` · ${buyerPhone}` : ''}\n\n${shippingAddress ? `Ship to:\n${shippingAddress.line1 || ''}\n${shippingAddress.city || ''}, ${shippingAddress.state || ''} ${shippingAddress.postal_code || ''}\n${shippingAddress.country || ''}\n\n` : ''}Session: ${sessionId || ''}\nPayment intent: ${paymentIntentId || ''}`,
   }
 }
 

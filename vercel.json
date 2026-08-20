@@ -11,5 +11,8 @@
         { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
       ]
     }
+  ],
+  "crons": [
+    { "path": "/api/weekly-digest", "schedule": "0 15 * * 1" }
   ]
 }

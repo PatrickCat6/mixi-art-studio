@@ -247,6 +247,69 @@ The artwork has already been marked "Sold" in Sanity automatically.
   }
 }
 
+// ── EMAIL: NOTIFICACIÓN INTERNA DE NUEVO INQUIRY ────────────────────
+// Antes esto no existía — el formulario de contacto solo guardaba el mensaje
+// en Sanity y nadie se enteraba hasta el resumen semanal (o hasta entrar a
+// Sanity Studio). Ahora avisa a info@ al momento.
+export function internalInquiryNotificationEmail(o) {
+  const {
+    name, email, phone, message, interestedInInstallments,
+    artworkTitle, artworkSlug, artistName,
+  } = o
+
+  const artworkUrl = artworkSlug ? `${SITE_URL}/artwork.html?slug=${encodeURIComponent(artworkSlug)}` : null
+  const artworkLabel = artworkTitle
+    ? `${esc(artworkTitle)}${artistName ? ` (${esc(artistName)})` : ''}`
+    : 'General inquiry (no specific artwork)'
+
+  const row = (label, value) => value
+    ? `<tr>
+         <td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${GRAY};width:140px;vertical-align:top;">${esc(label)}</td>
+         <td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${BLACK};">${value}</td>
+       </tr>`
+    : ''
+
+  const bodyHtml = `
+<tr><td style="padding:32px 0 4px;">
+<h1 style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:20px;font-weight:bold;color:${BLACK};">New inquiry</h1>
+</td></tr>
+<tr><td style="padding:6px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:${BLACK};">
+${esc(name)} just sent a message${artworkTitle ? ` about <em>${esc(artworkTitle)}</em>` : ''}.
+</td></tr>
+
+<tr><td style="padding:24px 0 0;">
+<div style="font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:${GRAY};margin-bottom:8px;">Contact</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+${row('Name', esc(name))}
+${row('Email', `<a href="mailto:${esc(email)}" style="color:${BLACK};">${esc(email)}</a>`)}
+${row('Phone', esc(phone))}
+${row('Artwork', artworkUrl ? `<a href="${artworkUrl}" style="color:${BLACK};">${artworkLabel}</a>` : artworkLabel)}
+${row('Installments?', interestedInInstallments ? 'Yes' : null)}
+</table>
+</td></tr>
+
+${message ? `
+<tr><td style="padding:24px 0 0;">
+<div style="font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:${GRAY};margin-bottom:8px;">Message</div>
+<div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6;color:${BLACK};background-color:${WHITE};border:1px solid ${LINE};padding:14px 16px;">${esc(message)}</div>
+</td></tr>` : ''}
+
+<tr><td style="padding:28px 0 0;">
+<a href="mailto:${esc(email)}" style="display:inline-block;background-color:${BLACK};color:${WHITE};text-decoration:none;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:14px 28px;">Reply to ${esc(name)}</a>
+</td></tr>
+
+<tr><td style="padding:24px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:${GRAY};">
+Saved in Sanity Studio under Inquiries. If this sits unanswered for 3+ days it'll also show up in the weekly digest.
+</td></tr>
+`
+
+  return {
+    subject: artworkTitle ? `New inquiry: ${artworkTitle} — ${name}` : `New inquiry — ${name}`,
+    html: wrapEmail({ preheader: `${name} sent a message${artworkTitle ? ` about ${artworkTitle}` : ''}.`, bodyHtml }),
+    text: `New inquiry from ${name} <${email}>${phone ? ` · ${phone}` : ''}\n\nArtwork: ${artworkTitle ? `${artworkTitle}${artistName ? ` (${artistName})` : ''}` : 'General inquiry'}\n${interestedInInstallments ? 'Interested in installments: Yes\n' : ''}\n${message ? `Message:\n${message}\n` : ''}`,
+  }
+}
+
 // ── EMAIL 3: RESUMEN SEMANAL (inquiries pendientes + obras más vistas) ──
 export function weeklyDigestEmail(o) {
   const { weekLabel, staleInquiries = [], mostViewed = [], isFirstRun = false } = o

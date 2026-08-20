@@ -11,6 +11,15 @@
 
 const COUNTRY_NAMES = { US: 'the United States', MX: 'Mexico', EU: 'Europe' }
 
+// Etiqueta corta apta para UI (botones/labels de Stripe Checkout), a diferencia
+// de COUNTRY_NAMES que usamos en prosa dentro de los correos ("ships from the
+// United States"). Exportada para que checkout.js pueda etiquetar las opciones
+// de envío sin duplicar este mapeo.
+const COUNTRY_LABELS_SHORT = { US: 'US', MX: 'Mexico', EU: 'Europe' }
+export function countryLabelForBucket(bucket) {
+  return COUNTRY_LABELS_SHORT[bucket] || 'US'
+}
+
 // Estudio base de Mixi — respaldo cuando no hay datos suficientes del artista
 // (basedIn y nationality vacíos, "Not provided", o formato irreconocible).
 const DEFAULT_ORIGIN = { bucket: 'US', country: 'US', city: 'Salt Lake City', label: 'Salt Lake City, Utah' }

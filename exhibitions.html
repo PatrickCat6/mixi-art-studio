@@ -102,10 +102,10 @@ body, p, li, td, span, div {
 body { overflow-x:hidden; background:var(--white); color:var(--black); font-family:Arial,Helvetica,sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
 
 /* NAV */
-nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify-content:space-between; align-items:center; padding:0 32px; height:80px; background:var(--white); border-bottom:1px solid var(--black); }
+nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify-content:space-between; align-items:center; padding:0 44px; height:80px; background:var(--white); border-bottom:1px solid var(--black); }
 .nav-logo { display:block; flex-shrink:0; }
-.nav-r { display:flex; align-items:center; gap:20px; }
-.nav-links { display:flex; gap:20px; list-style:none; }
+.nav-r { display:flex; align-items:center; gap:44px; }
+.nav-links { display:flex; gap:34px; list-style:none; }
 .nav-links a { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:var(--black); transition:opacity .2s; }
 .nav-links a:hover { opacity:.4; }
 .nav-acts { display:flex; gap:6px; flex-shrink:0; }
@@ -114,6 +114,19 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify
 .nbtn-artsy:hover { background:var(--black); color:var(--white); }
 .nbtn-oc { background:var(--black); color:var(--white); }
 .nbtn-oc:hover { opacity:.7; }
+/* SEARCH OVERLAY */
+.search-overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(12,12,12,.92); z-index:500; align-items:flex-start; justify-content:center; padding-top:120px; }
+.search-overlay.active { display:flex; }
+.search-box { width:90%; max-width:600px; position:relative; }
+.search-box input { width:100%; font-family:Arial,Helvetica,sans-serif; font-weight:500; font-size:20px; letter-spacing:2px; text-transform:uppercase; background:transparent; border:none; border-bottom:2px solid rgba(255,255,255,.3); color:var(--white); padding:16px 40px 16px 0; outline:none; }
+.search-box input::placeholder { color:rgba(255,255,255,.25); }
+.search-close { position:absolute; right:0; top:50%; transform:translateY(-50%); background:none; border:none; color:rgba(255,255,255,.4); font-size:24px; cursor:pointer; font-family:Arial,Helvetica,sans-serif; }
+.search-close:hover { color:var(--white); }
+.nav-search { background:none; border:1px solid var(--gl); cursor:pointer; font-family:Arial,Helvetica,sans-serif; font-weight:500; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); padding:7px 16px; transition:all .2s; display:flex; align-items:center; gap:6px; }
+.nav-search:hover { border-color:var(--black); color:var(--black); }
+.nav-search svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; }
+.nav-search-mobile { display:none; background:none; border:none; padding:6px; cursor:pointer; align-items:center; justify-content:center; color:var(--black); }
+.nav-search-mobile svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; }
 
 /* HERO */
 .hero { height:100vh; padding-top:80px; background:var(--white); display:flex; flex-direction:column; border-bottom:1px solid var(--black); overflow:hidden; }
@@ -237,10 +250,10 @@ footer { background:var(--black); }
 :root { --black:#0C0C0C; --white:#F5F4F0; --gray:#999; --gl:#E0DDD8; --druk:'Drukwide',sans-serif; }
 body { overflow-x:hidden; background:var(--white); color:var(--black); font-family:Arial,Helvetica,sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
 
-nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify-content:space-between; align-items:center; padding:0 32px; height:80px; background:var(--white); border-bottom:1px solid var(--black); }
+nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify-content:space-between; align-items:center; padding:0 44px; height:80px; background:var(--white); border-bottom:1px solid var(--black); }
 .nav-logo { font-family:var(--druk); font-weight:700; font-size:46px; letter-spacing:2px; text-transform:uppercase; text-decoration:none; color:var(--black); }
-.nav-r { display:flex; align-items:center; gap:24px; }
-.nav-links { display:flex; gap:20px; list-style:none; }
+.nav-r { display:flex; align-items:center; gap:44px; }
+.nav-links { display:flex; gap:34px; list-style:none; }
 .nav-links a { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:var(--black); transition:opacity .2s; }
 .nav-links a:hover { opacity:.4; }
 .nav-links a.active { border-bottom:1px solid var(--black); padding-bottom:1px; }
@@ -407,6 +420,9 @@ footer { background:var(--black); }
   nav { padding: 0 16px !important; height: 56px !important; position: fixed !important; }
   .nav-links { display: none !important; }
   .nav-acts { display: none !important; }
+  .nav-search { display:none !important; }
+  .nav-search-mobile { display:flex !important; }
+  .nav-r { gap:14px !important; }
   .nav-toggle {
     display: flex !important;
     flex-direction: column;
@@ -415,7 +431,7 @@ footer { background:var(--black); }
     border: none;
     cursor: pointer;
     padding: 8px;
-    margin-left: auto;
+    margin-left: 0;
   }
   .nav-toggle span {
     display: block;
@@ -454,13 +470,14 @@ footer { background:var(--black); }
   }
   nav.open .nav-links li { border-bottom: 1px solid var(--gl); }
   nav.open .nav-links a { display: block !important; padding: 18px 0 !important; font-size: 26px !important; letter-spacing: .5px !important; }
-  nav.open .nav-acts {
-    display: flex !important;
-    flex-direction: column;
-    gap: 10px;
-    padding-top: 22px;
-  }
-  nav.open .nbtn { display: block !important; text-align: center !important; padding: 16px !important; font-size: 15px !important; white-space: nowrap !important; }
+    nav.open .nav-acts { display:flex !important; flex-direction:column; gap:0; padding:0; margin:0; border-bottom:1px solid var(--gl); order:-1; }
+  nav.open .nbtn { display:block !important; text-align:left !important; padding:18px 0 !important; font-size:26px !important; letter-spacing:.5px !important; background:transparent !important; color:var(--black) !important; border:none !important; }
+  nav.open .nav-links li:nth-child(1) { order:3; }
+  nav.open .nav-links li:nth-child(2) { order:2; }
+  nav.open .nav-links li:nth-child(3) { order:4; }
+  nav.open .nav-links li:nth-child(4) { order:5; }
+  nav.open .nav-links li:nth-child(5) { order:1; }
+  nav.open .nav-links li:nth-child(6) { order:6; }
 
   /* HERO */
   .hero { height: 100svh !important; padding-top: 56px !important; }
@@ -577,7 +594,8 @@ footer { background:var(--black); }
 <body>
 <nav>
   <a href="index.html" class="nav-logo">MIXI</a>
-  <div class="nav-r"><button class="nav-toggle" onclick="this.closest('nav').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button><ul class="nav-links">
+  <div class="nav-r"><button class="nav-search-mobile" onclick="document.getElementById('search-overlay').classList.add('active');document.getElementById('search-input').focus();" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></button>
+    <button class="nav-toggle" onclick="this.closest('nav').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button><ul class="nav-links">
       <li><a href="artists.html">Artists</a></li>
       <li><a href="exhibitions.html" class="active">Exhibitions</a></li>
       <li><a href="projects.html">Projects</a></li>
@@ -585,11 +603,20 @@ footer { background:var(--black); }
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
+    <button class="nav-search" onclick="document.getElementById('search-overlay').classList.add('active');document.getElementById('search-input').focus();" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>Search</button>
     <div class="nav-acts">
       <a href="shop.html" class="nbtn nbtn-oc">Shop</a>
     </div>
   </div>
 </nav>
+
+<!-- Search Overlay -->
+<div id="search-overlay" class="search-overlay">
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="Search artworks..." onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q){window.location.href='shop.html?q='+encodeURIComponent(q);}}" autocomplete="off">
+    <button class="search-close" onclick="document.getElementById('search-overlay').classList.remove('active');document.getElementById('search-input').value='';">&#10005;</button>
+  </div>
+</div>
 
 <!-- PAGE HEADER -->
 <div class="page-header">
@@ -732,5 +759,13 @@ footer { background:var(--black); }
     </div>
   </div>
 </footer>
+<script>
+(function(){
+  var so=document.getElementById('search-overlay');
+  if(!so) return;
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ so.classList.remove('active'); var si=document.getElementById('search-input'); if(si) si.value=''; } });
+  so.addEventListener('click',function(e){ if(e.target===e.currentTarget){ so.classList.remove('active'); var si=document.getElementById('search-input'); if(si) si.value=''; } });
+})();
+</script>
 </body>
 </html>

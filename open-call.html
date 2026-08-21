@@ -89,10 +89,10 @@ body { background:var(--dark); color:var(--yellow); font-family:var(--sans); -we
 p, li, span, div, a { font-family:var(--sans); }
 
 /* NAV (dark, immersive) */
-nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify-content:space-between; align-items:center; padding:0 32px; height:80px; background:rgba(20,20,20,.85); backdrop-filter:blur(8px); border-bottom:1px solid rgba(234,255,0,.25); }
+nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify-content:space-between; align-items:center; padding:0 44px; height:80px; background:rgba(20,20,20,.85); backdrop-filter:blur(8px); border-bottom:1px solid rgba(234,255,0,.25); }
 .nav-logo { font-family:var(--druk); font-weight:700; font-size:46px; letter-spacing:2px; text-transform:uppercase; text-decoration:none; color:var(--yellow); flex-shrink:0; }
-.nav-r { display:flex; align-items:center; gap:24px; }
-.nav-links { display:flex; gap:20px; list-style:none; margin:0; padding:0; }
+.nav-r { display:flex; align-items:center; gap:44px; }
+.nav-links { display:flex; gap:34px; list-style:none; margin:0; padding:0; }
 .nav-links a { font-family:var(--sans); font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:#f5f4f0; transition:color .2s; }
 .nav-links a:hover { color:var(--yellow); }
 .nav-acts { display:flex; gap:6px; flex-shrink:0; }
@@ -101,6 +101,19 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify
 .nbtn-artsy:hover { border-color:var(--yellow); color:var(--yellow); }
 .nbtn-oc { background:var(--yellow); color:var(--ink); }
 .nbtn-oc:hover { opacity:.8; }
+/* SEARCH OVERLAY */
+.search-overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(12,12,12,.94); z-index:500; align-items:flex-start; justify-content:center; padding-top:120px; }
+.search-overlay.active { display:flex; }
+.search-box { width:90%; max-width:600px; position:relative; }
+.search-box input { width:100%; font-family:var(--sans); font-weight:500; font-size:20px; letter-spacing:2px; text-transform:uppercase; background:transparent; border:none; border-bottom:2px solid rgba(245,244,240,.3); color:#f5f4f0; padding:16px 40px 16px 0; outline:none; }
+.search-box input::placeholder { color:rgba(245,244,240,.25); }
+.search-close { position:absolute; right:0; top:50%; transform:translateY(-50%); background:none; border:none; color:rgba(245,244,240,.4); font-size:24px; cursor:pointer; font-family:var(--sans); }
+.search-close:hover { color:#f5f4f0; }
+.nav-search { background:none; border:1px solid rgba(245,244,240,.3); cursor:pointer; font-family:var(--sans); font-weight:500; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#f5f4f0; padding:7px 16px; transition:all .2s; display:flex; align-items:center; gap:6px; }
+.nav-search:hover { border-color:var(--yellow); color:var(--yellow); }
+.nav-search svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; }
+.nav-search-mobile { display:none; background:none; border:none; padding:6px; cursor:pointer; align-items:center; justify-content:center; color:#f5f4f0; }
+.nav-search-mobile svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; }
 .nbtn-shop { background:#f5f4f0; color:var(--ink); }
 .nbtn-shop:hover { background:var(--yellow); }
 
@@ -200,7 +213,10 @@ footer { background:var(--ink); }
   .nav-logo { font-size:34px !important; }
   .nav-links { display:none !important; }
   .nav-acts { display:none !important; }
-  .nav-toggle { display:flex !important; flex-direction:column; gap:6px; background:none; border:none; cursor:pointer; padding:8px; margin-left:auto; }
+  .nav-search { display:none !important; }
+  .nav-search-mobile { display:flex !important; }
+  .nav-r { gap:14px !important; }
+  .nav-toggle { display:flex !important; flex-direction:column; gap:6px; background:none; border:none; cursor:pointer; padding:8px; margin-left:0; }
   .nav-toggle span { display:block; width:28px; height:2.5px; background:var(--yellow); transition:transform .25s ease, opacity .2s ease; }
   nav.open .nav-toggle { position:fixed; top:0; right:16px; height:56px; justify-content:center; z-index:1001; }
   nav.open .nav-toggle span:nth-child(1) { transform:translateY(8.5px) rotate(45deg); }
@@ -210,8 +226,14 @@ footer { background:var(--ink); }
   nav.open .nav-links { display:flex !important; flex-direction:column; gap:0; list-style:none; margin:0; padding:0; }
   nav.open .nav-links li { border-bottom:1px solid rgba(234,255,0,.2); }
   nav.open .nav-links a { display:block !important; padding:18px 0 !important; font-size:26px !important; letter-spacing:.5px !important; }
-  nav.open .nav-acts { display:flex !important; flex-direction:column; gap:10px; padding-top:22px; }
-  nav.open .nbtn { display:block !important; text-align:center !important; padding:16px !important; font-size:15px !important; }
+    nav.open .nav-acts { display:flex !important; flex-direction:column; gap:0; padding:0; margin:0; border-bottom:1px solid rgba(234,255,0,.2); order:-1; }
+  nav.open .nbtn { display:block !important; text-align:left !important; padding:18px 0 !important; font-size:26px !important; letter-spacing:.5px !important; background:transparent !important; color:#f5f4f0 !important; border:none !important; }
+  nav.open .nav-links li:nth-child(1) { order:3; }
+  nav.open .nav-links li:nth-child(2) { order:2; }
+  nav.open .nav-links li:nth-child(3) { order:4; }
+  nav.open .nav-links li:nth-child(4) { order:5; }
+  nav.open .nav-links li:nth-child(5) { order:1; }
+  nav.open .nav-links li:nth-child(6) { order:6; }
 
   .oc-sec { padding:72px 18px !important; }
   .hero { padding-top:96px !important; min-height:auto !important; }
@@ -239,6 +261,7 @@ footer { background:var(--ink); }
 <nav>
   <a href="index.html" class="nav-logo">MIXI</a>
   <div class="nav-r">
+    <button class="nav-search-mobile" onclick="document.getElementById('search-overlay').classList.add('active');document.getElementById('search-input').focus();" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></button>
     <button class="nav-toggle" onclick="this.closest('nav').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
     <ul class="nav-links">
       <li><a href="artists.html">Artists</a></li>
@@ -248,11 +271,20 @@ footer { background:var(--ink); }
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
+    <button class="nav-search" onclick="document.getElementById('search-overlay').classList.add('active');document.getElementById('search-input').focus();" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>Search</button>
     <div class="nav-acts">
       <a href="shop.html" class="nbtn nbtn-shop">Shop</a>
     </div>
   </div>
 </nav>
+
+<!-- Search Overlay -->
+<div id="search-overlay" class="search-overlay">
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="Search artworks..." onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q){window.location.href='shop.html?q='+encodeURIComponent(q);}}" autocomplete="off">
+    <button class="search-close" onclick="document.getElementById('search-overlay').classList.remove('active');document.getElementById('search-input').value='';">&#10005;</button>
+  </div>
+</div>
 
 <!-- HERO -->
 <section class="oc-sec hero" data-screen-label="Open Call Hero">
@@ -397,6 +429,14 @@ document.addEventListener("DOMContentLoaded", function(){
     links[i].addEventListener("click", function(){ nav.classList.remove("open"); });
   }
 });
+</script>
+<script>
+(function(){
+  var so=document.getElementById('search-overlay');
+  if(!so) return;
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ so.classList.remove('active'); var si=document.getElementById('search-input'); if(si) si.value=''; } });
+  so.addEventListener('click',function(e){ if(e.target===e.currentTarget){ so.classList.remove('active'); var si=document.getElementById('search-input'); if(si) si.value=''; } });
+})();
 </script>
 </body>
 </html>

@@ -247,6 +247,38 @@ The artwork has already been marked "Sold" in Sanity automatically.
   }
 }
 
+// ── EMAIL: CONFIRMACIÓN AL CLIENTE DE QUE SU INQUIRY LLEGÓ ──────────
+// Antes el formulario de contacto no confirmaba nada — la persona no sabía
+// si su mensaje realmente se envió. Esto es solo un acuse de recibo corto;
+// la respuesta real la sigue escribiendo alguien de Mixi a mano.
+export function customerInquiryConfirmationEmail(o) {
+  const { name, artworkTitle, artworkSlug, artistName } = o
+  const firstName = (name || '').trim().split(' ')[0] || 'there'
+  const artworkUrl = artworkSlug ? `${SITE_URL}/artwork.html?slug=${encodeURIComponent(artworkSlug)}` : null
+
+  const bodyHtml = `
+<tr><td style="padding:32px 0 4px;">
+<h1 style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:22px;font-weight:bold;color:${BLACK};letter-spacing:-.5px;">Thanks for reaching out, ${esc(firstName)}</h1>
+</td></tr>
+<tr><td style="padding:8px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.7;color:${BLACK};">
+We received your message${artworkTitle ? ` about <em>${esc(artworkTitle)}</em>${artistName ? ` by ${esc(artistName)}` : ''}` : ''}. Someone from our team will get back to you personally, usually within 1–2 business days.
+</td></tr>
+${artworkUrl ? `
+<tr><td style="padding:24px 0 0;">
+<a href="${artworkUrl}" style="display:inline-block;background-color:${BLACK};color:${WHITE};text-decoration:none;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:14px 28px;">View Artwork</a>
+</td></tr>` : ''}
+<tr><td style="padding:28px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.7;color:${GRAY};">
+In the meantime, feel free to reply directly to this email if you'd like to add anything.
+</td></tr>
+`
+
+  return {
+    subject: artworkTitle ? `We got your message about ${artworkTitle}` : `We got your message — Mixi Art Studio`,
+    html: wrapEmail({ preheader: `Thanks for reaching out to Mixi Art Studio — we'll reply soon.`, bodyHtml }),
+    text: `Thanks for reaching out, ${firstName}.\n\nWe received your message${artworkTitle ? ` about "${artworkTitle}"${artistName ? ` by ${artistName}` : ''}` : ''}. Someone from our team will get back to you personally, usually within 1–2 business days.\n\n${artworkUrl ? `View the artwork: ${artworkUrl}\n\n` : ''}Reply to this email if you'd like to add anything.`,
+  }
+}
+
 // ── EMAIL: NOTIFICACIÓN INTERNA DE NUEVO INQUIRY ────────────────────
 // Antes esto no existía — el formulario de contacto solo guardaba el mensaje
 // en Sanity y nadie se enteraba hasta el resumen semanal (o hasta entrar a
@@ -307,6 +339,43 @@ Saved in Sanity Studio under Inquiries. If this sits unanswered for 3+ days it'l
     subject: artworkTitle ? `New inquiry: ${artworkTitle} — ${name}` : `New inquiry — ${name}`,
     html: wrapEmail({ preheader: `${name} sent a message${artworkTitle ? ` about ${artworkTitle}` : ''}.`, bodyHtml }),
     text: `New inquiry from ${name} <${email}>${phone ? ` · ${phone}` : ''}\n\nArtwork: ${artworkTitle ? `${artworkTitle}${artistName ? ` (${artistName})` : ''}` : 'General inquiry'}\n${interestedInInstallments ? 'Interested in installments: Yes\n' : ''}\n${message ? `Message:\n${message}\n` : ''}`,
+  }
+}
+
+// ── EMAIL: RECORDATORIO DE CARRITO ABANDONADO ───────────────────────
+// Se dispara cuando una Checkout Session de Stripe expira sin completarse
+// (evento checkout.session.expired, ~24h después de que la persona empezó
+// el checkout). Tono suave a propósito — no es un descuento ni presión de
+// venta, solo "¿te quedaste viendo esto?, aquí estamos si tienes dudas".
+export function abandonedCartEmail(o) {
+  const { artworkTitle, artistName, artworkSlug, mainImage } = o
+  const artworkUrl = `${SITE_URL}/artwork.html?slug=${encodeURIComponent(artworkSlug || '')}`
+
+  const imageBlock = mainImage
+    ? `<tr><td style="padding:24px 0 0;">
+         <img src="${esc(mainImage)}" alt="${esc(artworkTitle)}" width="240" style="display:block;width:240px;max-width:100%;height:auto;border:1px solid ${LINE};">
+       </td></tr>`
+    : ''
+
+  const bodyHtml = `
+<tr><td style="padding:32px 0 4px;">
+<h1 style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:22px;font-weight:bold;color:${BLACK};letter-spacing:-.5px;">Still thinking it over?</h1>
+</td></tr>
+<tr><td style="padding:8px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.7;color:${BLACK};">
+You started checking out <em>${esc(artworkTitle)}</em>${artistName ? ` by ${esc(artistName)}` : ''} but didn't finish — no rush, it's still available. If you have any questions about the piece, sizing, or payment options (we offer 4 interest-free installments via Klarna or Afterpay), just reply to this email.
+</td></tr>
+
+${imageBlock}
+
+<tr><td style="padding:24px 0 0;">
+<a href="${artworkUrl}" style="display:inline-block;background-color:${BLACK};color:${WHITE};text-decoration:none;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:14px 28px;">Return to Artwork</a>
+</td></tr>
+`
+
+  return {
+    subject: `Still available: ${artworkTitle}`,
+    html: wrapEmail({ preheader: `"${artworkTitle}" is still available — pick up where you left off.`, bodyHtml }),
+    text: `Still thinking it over?\n\nYou started checking out "${artworkTitle}"${artistName ? ` by ${artistName}` : ''} but didn't finish — it's still available. If you have any questions about the piece, sizing, or payment options (4 interest-free installments via Klarna or Afterpay), just reply to this email.\n\nReturn to the artwork: ${artworkUrl}`,
   }
 }
 

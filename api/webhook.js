@@ -8,7 +8,7 @@
 
 import Stripe from 'stripe'
 import { sendEmail } from './_lib/resend.js'
-import { customerConfirmationEmail, internalSaleNotificationEmail } from './_lib/email-templates.js'
+import { customerConfirmationEmail, internalSaleNotificationEmail, abandonedCartEmail } from './_lib/email-templates.js'
 import { resolveOrigin, deliveryEstimateFor } from './_lib/origin.js'
 
 const stripe    = new Stripe(process.env.STRIPE_SECRET_KEY)
@@ -54,7 +54,7 @@ async function sanityMutation(mutations) {
 async function getArtworkForEmail(slug) {
   const query = encodeURIComponent(`
     *[_type == "artwork" && !(_id in path("drafts.**")) && slug.current == "${slug}"][0]{
-      _id, title, mainImage, dimensions,
+      _id, title, mainImage, dimensions, availability,
       "artistName": artist->name,
       "artistBasedIn": artist->basedIn,
       "artistNationality": artist->nationality
@@ -64,6 +64,39 @@ async function getArtworkForEmail(slug) {
   const res = await fetch(url, { headers: { Authorization: `Bearer ${SANITY_TOKEN}` } })
   const json = await res.json()
   return json.result || null
+}
+
+// Cuando una Checkout Session expira sin completarse (~24h después, el
+// default de Stripe), Stripe manda checkout.session.expired. Si la persona
+// alcanzó a escribir su email antes de abandonar, se lo mandamos como un
+// recordatorio suave — solo si la obra sigue disponible.
+async function handleExpiredCheckout(session) {
+  const artworkSlug = session.metadata?.artworkSlug
+  const buyerEmail  = session.customer_details?.email || session.customer_email || ''
+
+  if (!artworkSlug || !buyerEmail) {
+    console.log('[webhook] Checkout expired without slug/email — skipping abandoned-cart email')
+    return
+  }
+
+  const artwork = await getArtworkForEmail(artworkSlug)
+  if (!artwork || artwork.availability !== 'available') {
+    console.log(`[webhook] Checkout expired for ${artworkSlug}, but it's no longer available — skipping abandoned-cart email`)
+    return
+  }
+
+  try {
+    const email = abandonedCartEmail({
+      artworkTitle: artwork.title,
+      artistName: artwork.artistName || '',
+      artworkSlug,
+      mainImage: artwork.mainImage || '',
+    })
+    await sendEmail({ to: buyerEmail, from: ORDERS_FROM, replyTo: INTERNAL_TO, ...email })
+    console.log(`[webhook] ✅ Abandoned-cart email sent for ${artworkSlug} to ${buyerEmail}`)
+  } catch (emailErr) {
+    console.error('[webhook] Failed to send abandoned-cart email:', emailErr.message)
+  }
 }
 
 // La Checkout Session expone la dirección de envío en `shipping_details` en las
@@ -90,7 +123,19 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: `Webhook signature error: ${err.message}` })
   }
 
-  // Solo nos interesa checkout.session.completed
+  // Carrito abandonado: la sesión de checkout expiró sin completarse.
+  // Ver nota en vercel.json / instrucciones de Stripe — hay que habilitar
+  // este evento en el dashboard de Stripe para que llegue aquí.
+  if (event.type === 'checkout.session.expired') {
+    try {
+      await handleExpiredCheckout(event.data.object)
+    } catch (err) {
+      console.error('[webhook] Error handling expired checkout:', err.message)
+    }
+    return res.status(200).json({ received: true, action: 'abandoned_cart_checked' })
+  }
+
+  // Del resto de eventos, solo nos interesa checkout.session.completed
   if (event.type !== 'checkout.session.completed') {
     return res.status(200).json({ received: true, action: 'ignored' })
   }

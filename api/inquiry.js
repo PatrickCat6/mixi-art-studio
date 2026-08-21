@@ -6,7 +6,7 @@
 // semanal o hasta entrar a Sanity Studio).
 
 import { sendEmail } from './_lib/resend.js'
-import { internalInquiryNotificationEmail } from './_lib/email-templates.js'
+import { internalInquiryNotificationEmail, customerInquiryConfirmationEmail } from './_lib/email-templates.js'
 
 const SANITY_PROJECT = process.env.SANITY_PROJECT_ID
 const SANITY_DATASET = process.env.SANITY_DATASET
@@ -99,23 +99,37 @@ export default async function handler(req, res) {
 
     console.log(`[inquiry] ✅ New inquiry from ${email} about ${artworkSlug || 'general'}`)
 
-    // 3. Avisar a info@ por correo. Un fallo aquí NO debe hacer fallar el
-    //    endpoint — el inquiry ya quedó guardado en Sanity, que es lo crítico.
+    // 3. Avisar a info@ por correo y confirmarle al cliente que su mensaje
+    //    llegó. Un fallo aquí NO debe hacer fallar el endpoint — el inquiry
+    //    ya quedó guardado en Sanity, que es lo crítico.
     try {
+      const resolvedTitle = artwork?.title || artworkTitle || ''
+      const resolvedArtist = artwork?.artistName || ''
+
       const notification = internalInquiryNotificationEmail({
         name: inquiryDoc.name,
         email: inquiryDoc.email,
         phone: inquiryDoc.phone,
         message: inquiryDoc.message,
         interestedInInstallments: inquiryDoc.interestedInInstallments,
-        artworkTitle: artwork?.title || artworkTitle || '',
+        artworkTitle: resolvedTitle,
         artworkSlug,
-        artistName: artwork?.artistName || '',
+        artistName: resolvedArtist,
       })
-      await sendEmail({ to: INTERNAL_TO, from: ORDERS_FROM, replyTo: inquiryDoc.email, ...notification })
-      console.log(`[inquiry] ✅ Notification email sent for ${email}`)
+      const confirmation = customerInquiryConfirmationEmail({
+        name: inquiryDoc.name,
+        artworkTitle: resolvedTitle,
+        artworkSlug,
+        artistName: resolvedArtist,
+      })
+
+      await Promise.all([
+        sendEmail({ to: INTERNAL_TO, from: ORDERS_FROM, replyTo: inquiryDoc.email, ...notification }),
+        sendEmail({ to: inquiryDoc.email, from: ORDERS_FROM, replyTo: INTERNAL_TO, ...confirmation }),
+      ])
+      console.log(`[inquiry] ✅ Notification + confirmation emails sent for ${email}`)
     } catch (emailErr) {
-      console.error('[inquiry] Failed to send notification email:', emailErr.message)
+      console.error('[inquiry] Failed to send emails:', emailErr.message)
     }
 
     return res.status(200).json({ success: true })

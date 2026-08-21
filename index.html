@@ -240,6 +240,11 @@ footer { background:var(--black); }
 .flinks { list-style:none; display:flex; flex-direction:column; gap:8px; padding:0; margin:0; }
 .flinks a, .flinks span { font-size:18px; color:rgba(255,255,255,.7); text-decoration:none; transition:color .2s; }
 .flinks a:hover { color:var(--white); }
+.fnews { display:flex; gap:8px; margin-top:22px; max-width:300px; }
+.fnews input { flex:1; min-width:0; background:transparent; border:1px solid rgba(255,255,255,.25); color:var(--white); padding:11px 12px; font-size:14px; font-family:Arial,Helvetica,sans-serif; }
+.fnews input::placeholder { color:rgba(255,255,255,.4); }
+.fnews button { background:var(--white); color:var(--black); border:none; padding:0 18px; font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; white-space:nowrap; }
+.fnews-msg { font-size:13px; color:rgba(255,255,255,.6); margin-top:10px; }
 .fb { padding:14px 48px; display:flex; justify-content:space-between; align-items:center; }
 .fcopy { font-size:15px; color:rgba(255,255,255,.3); letter-spacing:1px; }
 .fsoc { display:flex; gap:18px; }
@@ -623,6 +628,11 @@ footer { background:var(--black); }
     <div>
       <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69af872c152808cad0b1b964_logo%20png.png" alt="Mixi Art Studio" class="flogo">
       <p class="fdesc">Transdisciplinary contemporary art studio. Latin American and North American artists. Salt Lake City, 2022.</p>
+      <form class="fnews" id="newsletterForm" onsubmit="return subscribeNewsletter(event)">
+        <input type="email" id="newsletterEmail" placeholder="Your email" required>
+        <button type="submit">Subscribe</button>
+      </form>
+      <div class="fnews-msg" id="newsletterMsg">New artists, new work, upcoming shows — no spam.</div>
     </div>
     <div>
       <div class="fct">Navigate</div>
@@ -659,6 +669,30 @@ footer { background:var(--black); }
 </footer>
 
 <script>
+async function subscribeNewsletter(e){
+  e.preventDefault()
+  var input = document.getElementById('newsletterEmail')
+  var msg = document.getElementById('newsletterMsg')
+  var email = input.value.trim()
+  var btn = e.target.querySelector('button')
+  btn.disabled = true
+  msg.textContent = 'Subscribing…'
+  try{
+    var res = await fetch('/api/subscribe', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email: email }) })
+    var json = await res.json()
+    if(res.ok){
+      msg.textContent = "You're subscribed — thank you!"
+      input.value = ''
+    } else {
+      msg.textContent = json.error || 'Something went wrong. Please try again.'
+    }
+  } catch(err) {
+    msg.textContent = 'Something went wrong. Please try again.'
+  }
+  btn.disabled = false
+  return false
+}
+
 document.addEventListener("DOMContentLoaded", function(){
   var btn = document.querySelector(".nav-toggle");
   var nav = document.querySelector("nav");

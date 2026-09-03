@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>We've Moved — Mixi Art Studio</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://mixiartstudio.us/">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<style>
+:root {
+  --black:#0C0C0C;
+  --white:#F5F4F0;
+  --gray:#999;
+  --gl:#E0DDD8;
+  --red:#A31E33;
+  --sans:Arial,Helvetica,sans-serif;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; height:100%; }
+body {
+  background:var(--black); color:var(--white); font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  display:flex; align-items:center; justify-content:center;
+  min-height:100vh; padding:24px; text-align:center;
+}
+.wrap { max-width:560px; display:flex; flex-direction:column; align-items:center; gap:22px; }
+.logo { font-family:var(--sans); font-weight:700; font-size:clamp(64px,14vw,104px); letter-spacing:1px; text-transform:uppercase; color:var(--white); margin:0; }
+.headline { font-family:var(--sans); font-weight:700; font-size:clamp(20px,3.6vw,28px); text-transform:uppercase; letter-spacing:.3px; color:var(--white); margin:0; line-height:1.25; }
+.sub { font-size:15px; line-height:1.65; color:var(--gray); margin:0; max-width:420px; }
+.sub b { color:var(--white); }
+.btn {
+  font-family:var(--sans); font-weight:700; font-size:13px; letter-spacing:2px; text-transform:uppercase;
+  background:var(--red); color:var(--white); padding:15px 32px; text-decoration:none;
+  transition:opacity .2s; margin-top:6px; display:inline-block; border:none;
+}
+.btn:hover { opacity:.85; }
+.countdown { font-size:12px; letter-spacing:1px; color:var(--gray); margin-top:2px; }
+.bar-track { width:180px; height:2px; background:#333; margin-top:2px; overflow:hidden; }
+.bar-fill { height:100%; background:var(--red); width:0%; transition:width linear; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <p class="logo">MIXI</p>
+  <h1 class="headline">We've moved to mixiartstudio.us</h1>
+  <p class="sub">Mixi Art Studio now lives on our main site. <b>opencallmixi.com</b> is retiring — update your bookmarks.</p>
+  <a class="btn" href="https://mixiartstudio.us">Continue to website →</a>
+  <div class="countdown" id="cd">Redirecting automatically in 6s</div>
+  <div class="bar-track"><div class="bar-fill" id="bar"></div></div>
+</div>
+
+<script>
+  var seconds = 6;
+  var cd = document.getElementById('cd');
+  var bar = document.getElementById('bar');
+  bar.style.transitionDuration = seconds + 's';
+  requestAnimationFrame(function(){ bar.style.width = '100%'; });
+  var t = setInterval(function(){
+    seconds--;
+    if (seconds <= 0) {
+      cd.textContent = 'Redirecting…';
+      clearInterval(t);
+      window.location.href = 'https://mixiartstudio.us';
+    } else {
+      cd.textContent = 'Redirecting automatically in ' + seconds + 's';
+    }
+  }, 1000);
+</script>
+
+</body>
+</html>

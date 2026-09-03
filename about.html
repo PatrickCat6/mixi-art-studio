@@ -450,6 +450,8 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify
   font-size:14px; color:var(--gray);
 }
 .cv-detail { flex:1; }
+.cv-detail a { color:var(--black); text-decoration:underline; text-decoration-color:var(--gl); transition:text-decoration-color .2s; }
+.cv-detail a:hover { text-decoration-color:var(--black); }
 
 /* MISSION STRIP */
 .mission {
@@ -775,7 +777,7 @@ footer { background:var(--black); }
   <!-- YURI -->
   <div class="founder-card">
     <div class="founder-photo">
-      <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69b726d655c714ea0e8d3298_Yuri-Portrait.png" alt="Yuri Ortiz" style="width:100%;height:100%;object-fit:cover;">
+      <img src="images/team/yuri-ortiz.jpg" alt="Yuri Ortiz" style="width:100%;height:100%;object-fit:cover;">
     </div>
     <div class="founder-name">Yuri Ortiz</div>
     <div class="founder-alias">Known as Yuskadd</div>
@@ -868,6 +870,76 @@ footer { background:var(--black); }
       <p>Bryan Vigil, known as Patrick Cat, is an artist originally from New York, based in Salt Lake City, Utah since 2020. Specializing in tattooing, he stands out for his self-taught background in oil and watercolor painting, developing unique styles: ColorOut and Neo Watercolor.</p>
       <p>He has collaborated with renowned tattoo studios in Mexico (Burial Art Gallery), the United States (Soho Ink, Parallax Art Studio, Awaken Tattoo, True Love, IjiEmporium), Spain (El Salado), and France (Le Gamin a Dix Dots), as well as with brands like Gold Bond. In Utah, he designed the cover for SLUGMag (April 2024) and has participated in group exhibitions including PRIMAVERA (Utah, 2024), Xolotl (Morelos, 2018), and Luxefalos (Morelos, 2015).</p>
       <p>Trained in Curatorship, Museography, and Conservation (Instituto Mexicano de Curaduria y Restauracion), he has worked since 2018 with his partner Yuri Ortiz, with whom he co-founded Mixi Art Studio in 2022. He is currently pursuing a diploma in Exhibition Design (NODE Center, Berlin) and a course in Artistic Career Structuring (Kontundente, Colombia).</p>
+    </div>
+    <!-- CV Toggle -->
+    <div class="cv-toggle">
+      <button class="cv-toggle-btn" onclick="var cv=document.getElementById('bryan-cv');var btn=this;if(cv.style.display==='none'){cv.style.display='block';btn.textContent='Hide CV ↑';}else{cv.style.display='none';btn.textContent='View CV ↓';}">View CV ↓</button>
+      <div id="bryan-cv" class="cv-content" style="display:none;">
+
+        <div class="cv-section">
+          <div class="cv-section-title">Education</div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">Course in Design and Creation of an Art Toy, Luaiso López, Domestika, Berkeley, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">Diploma in Exhibition Design, Node Center Curatorial Studies, Berlin, Germany</span></div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">Mentorships in Artistic Management and Art Market, Kontundente, Bogotá, Colombia</span></div>
+          <div class="cv-entry"><span class="cv-year">2024</span><span class="cv-detail">Course in Exhibition Design, Node Center Curatorial Studies, Berlin, Germany</span></div>
+          <div class="cv-entry"><span class="cv-year">2024</span><span class="cv-detail">Course in Launching an Independent Art Space, Node Center Curatorial Studies, Berlin, Germany</span></div>
+          <div class="cv-entry"><span class="cv-year">2024</span><span class="cv-detail">Course in Museography and Conservation, Mexican Institute of Curatorship and Restoration, Mexico City, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2024</span><span class="cv-detail">Course in Curatorship and Storytelling, Mexican Institute of Curatorship and Restoration, Mexico City, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2024</span><span class="cv-detail">Workshop in Creation of Natural Pigments and Watercolors, Cara de Planta and Indiana Christov, Mexico City, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2021</span><span class="cv-detail">Online Seminar on Realistic Tattooing, Fred Thomas, Murcia, Spain</span></div>
+          <div class="cv-entry"><span class="cv-year">2021</span><span class="cv-detail">Course in Bloodborne Pathogens Training, Above Training, Salt Lake City, Utah</span></div>
+        </div>
+
+        <div class="cv-section">
+          <div class="cv-section-title">Exhibitions</div>
+          <div class="cv-entry"><span class="cv-year">2026</span><span class="cv-detail">Group Show, Holy Art, Mexico City, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">"Third Annual Postcard Show", Brassworks Gallery, Portland, Oregon, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">"Tzompantli", Group Exhibit, Galería Goya, Mexico City, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">"The Devil's in the Details", Group Art Exhibit, Urban's Art Gallery, Salt Lake City, Utah, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">"PumpSkins", Solo Art Show, Mixi Art Studio, Salt Lake City, Utah, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2025</span><span class="cv-detail">"Folk Art Show", Collective Exhibition, The Union, Ogden, Utah, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2024</span><span class="cv-detail">"Primavera", Painting and Photography Exhibition, Misery &amp; Co Collective, curated by Yuri Ortiz Avila, Salt Lake City, Utah, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2023</span><span class="cv-detail">"Collective Art Exhibition", Misery &amp; Co Collective, curated by Yuri Ortiz Avila, Salt Lake City, Utah, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2018</span><span class="cv-detail">"Venadito en Pueblo Viejo", Anniversary Exhibition of Vivero Pueblo Viejo, managed by Gera Cristóbal, Cuautla, Morelos, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2018</span><span class="cv-detail">"Xolotl", Multidisciplinary Techniques Exhibition, Pulquería Xolotl, managed by Gera Cristóbal and Lore Balcázar, Cuautla, Morelos, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2015</span><span class="cv-detail">"Luxcéfalos", Photography and Painting Exhibition, private space, managed by Kenia Camacho, Cuautla, Morelos, Mexico</span></div>
+        </div>
+
+        <div class="cv-section">
+          <div class="cv-section-title">Selected Creative &amp; Cultural Projects</div>
+          <div class="cv-entry"><span class="cv-year">2025/04</span><span class="cv-detail">Guest Tattoo Artist, Sashatattoo, San Francisco, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2024/03</span><span class="cv-detail">Illustration for the cover of SLUG Mag, Salt Lake City, Utah, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2024/02</span><span class="cv-detail">Selected artwork and participation as a tattoo artist in an animated documentary for Netflix, Multitude Films Production, Salt Lake City, Utah, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2024/11</span><span class="cv-detail">Guest Tattoo Artist, Iji Emporium, San Francisco, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2023/06</span><span class="cv-detail">Guest Tattoo Artist, True Love Tattoo, Seattle, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2023/08</span><span class="cv-detail">Guest Tattoo Artist, Parallax Art Studio, Milpitas, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2023/09</span><span class="cv-detail">Guest Tattoo Artist, Le Gamin à Dix Doigts, Paris, France</span></div>
+          <div class="cv-entry"><span class="cv-year">2023/09</span><span class="cv-detail">Guest Tattoo Artist, El Salado, Madrid, Spain</span></div>
+          <div class="cv-entry"><span class="cv-year">2020/10</span><span class="cv-detail">Selected illustration for Gold Bond's "Champion Your Skin" campaign, New York, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2019/08</span><span class="cv-detail">Guest Tattoo Artist, Burial Art Gallery, Mexico City, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2019/07</span><span class="cv-detail">Guest Tattoo Artist, Awaken Tattoo Gallery, Chicago, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2019/06</span><span class="cv-detail">Guest Tattoo Artist, Blackhouse, Morelia, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2019/10</span><span class="cv-detail">Guest Tattoo Artist, Raventhorn Manor, Salt Lake City, USA</span></div>
+        </div>
+
+        <div class="cv-section">
+          <div class="cv-section-title">Interviews &amp; Press</div>
+          <div class="cv-entry"><span class="cv-year">2024.03.06</span><span class="cv-detail"><a href="https://www.slugmag.com/arts/tattoo-artistry-of-bryan-vigil/" target="_blank">"Coloring Cats &amp; Dogs: The Tattoo Artistry of Bryan Vigil"</a>, by James Orme, Slug Mag, Salt Lake City, Utah, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2024.03</span><span class="cv-detail"><a href="https://download1326.mediafire.com/59p7tj67zxagL5Bv2oAhdYttf1VTxS2OnSt_BDqXsBEo4Es4hkFrKNEYdRybg1rtUq0JsHs85V59zZmV0YX1kTx7Yqy8WvBpyw5NIBtwBE3IWYxGbMlFFNOe68BtHk3DArb43anVyifuV8mUE33zrgeDsbDHQleGzv8uMiMDNbcMBA/m8567xdxuuv3yyg/TatuArte+DEDO.pdf" target="_blank">"Color Out, llevar una propuesta al tatuaje"</a>, by Javier Anuar Ávila, Revista Tatuarte Magazine, Mexico City, Mexico</span></div>
+          <div class="cv-entry"><span class="cv-year">2024.02.20</span><span class="cv-detail"><a href="https://www.bustle.com/style/pretty-hand-tattoos" target="_blank">"Pretty Hand Tattoo Ideas That'll Make You Want New Ink"</a>, by Carolyn Steber, Bustle, New York, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2023.09.05</span><span class="cv-detail"><a href="https://boldjourney.com/news/meet-patrick-cat/" target="_blank">"Meet Patrick Cat"</a>, Bold Journey, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2023.07.05</span><span class="cv-detail"><a href="https://www.bustle.com/style/fall-2023-tattoo-trends" target="_blank">"The 10 Biggest Fall 2023 Tattoo Trends To Watch"</a>, by Carolyn Steber, Bustle, New York, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2022.05.31</span><span class="cv-detail"><a href="https://m.soundcloud.com/user-208104475/314-new-organic-water-colors" target="_blank">"Neo Organic Water Colors"</a>, Episode 314, The New Utah Podcast, Salt Lake City, Utah, USA</span></div>
+          <div class="cv-entry"><span class="cv-year">2018.11.15</span><span class="cv-detail"><a href="https://www.facebook.com/share/r/16HvVFVnp5/?mibextid=wwXIfr" target="_blank">"Talento Morelense"</a>, video interview, Morelos Tribe, Morelos, Mexico</span></div>
+        </div>
+
+        <div class="cv-section">
+          <div class="cv-section-title">Artistic Projects</div>
+          <div class="cv-entry"><span class="cv-year">2022 – Present</span><span class="cv-detail">Co-Founder, Mixi Art Studio — space for transdisciplinary arts</span></div>
+          <div class="cv-entry"><span class="cv-year">2015 – Present</span><span class="cv-detail">Founder, Patrick Cat Studio — tattoo space</span></div>
+        </div>
+
+      </div>
     </div>
     <div class="founder-social">
       <a href="https://www.instagram.com/patrickcat_art/" target="_blank">@patrickcat_art on Instagram →</a>

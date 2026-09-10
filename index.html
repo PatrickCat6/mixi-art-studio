@@ -674,10 +674,10 @@ footer { background:var(--black); }
     <div class="collab-fade"></div>
     <button class="collab-arrow collab-arrow-l" aria-label="Previous"
       onmouseenter="startCollabScroll(-1)" onmouseleave="stopCollabScroll()"
-      onclick="document.getElementById('collabRow').scrollBy({left:-240,behavior:'smooth'})">&#8249;</button>
+      onclick="scrollCollab(-1)">&#8249;</button>
     <button class="collab-arrow collab-arrow-r" aria-label="Next"
       onmouseenter="startCollabScroll(1)" onmouseleave="stopCollabScroll()"
-      onclick="document.getElementById('collabRow').scrollBy({left:240,behavior:'smooth'})">&#8250;</button>
+      onclick="scrollCollab(1)">&#8250;</button>
   </div>
 </div>
 
@@ -695,11 +695,6 @@ footer { background:var(--black); }
     <div>
       <img src="https://cdn.prod.website-files.com/69af75f4cb0da0cb8e4b814c/69af872c152808cad0b1b964_logo%20png.png" alt="Mixi Art Studio" class="flogo">
       <p class="fdesc">Transdisciplinary contemporary art studio. Latin American and North American artists. Salt Lake City, 2022.</p>
-      <form class="fnews" id="newsletterForm" onsubmit="return subscribeNewsletter(event)">
-        <input type="email" id="newsletterEmail" placeholder="Your email" required>
-        <button type="submit">Subscribe</button>
-      </form>
-      <div class="fnews-msg" id="newsletterMsg">New artists, new work, upcoming shows — no spam.</div>
     </div>
     <div>
       <div class="fct">Navigate</div>
@@ -957,6 +952,13 @@ function mcCallback(resp){
     _collabTimer = setInterval(function(){ row.scrollLeft += dir * 6; }, 16);
   }
   function stopCollabScroll(){ clearInterval(_collabTimer); }
+  function scrollCollab(dir){
+    stopCollabScroll();
+    var row = document.getElementById('collabRow');
+    if(!row) return;
+    var amt = Math.max(row.clientWidth * 0.85, 240);
+    row.scrollBy({ left: dir * amt, behavior: 'smooth' });
+  }
 </script>
 </body>
 </html>

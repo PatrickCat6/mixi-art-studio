@@ -54,7 +54,7 @@ async function sanityMutation(mutations) {
 async function getArtworkForEmail(slug) {
   const query = encodeURIComponent(`
     *[_type == "artwork" && !(_id in path("drafts.**")) && slug.current == "${slug}"][0]{
-      _id, title, mainImage, dimensions, availability,
+      _id, title, "mainImage": mainImage.asset->url, dimensions, availability,
       "artistName": artist->name,
       "artistBasedIn": artist->basedIn,
       "artistNationality": artist->nationality
